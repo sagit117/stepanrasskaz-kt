@@ -70,6 +70,7 @@ fun Application.module(testing: Boolean = false) {
             resources("css")
         }
     }
+}
 
 //    routing {
 //        get("/") {
@@ -93,5 +94,4 @@ fun Application.module(testing: Boolean = false) {
 //            call.respond(mapOf("hello" to "world"))
 //        }
 //    }
-}
 

@@ -1,4 +1,5 @@
 @import url("vars.css");
+@import url("panel-top.css");
 
 h1 {
     color: var(--red-color);
