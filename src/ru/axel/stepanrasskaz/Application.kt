@@ -5,6 +5,7 @@ import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -63,6 +64,10 @@ fun Application.module(testing: Boolean = false) {
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+        }
+
+        static("static") {
+            resources("css")
         }
     }
 
