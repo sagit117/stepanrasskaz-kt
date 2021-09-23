@@ -2,6 +2,7 @@ package ru.axel.stepanrasskaz.templates.layouts
 
 import io.ktor.html.*
 import kotlinx.html.*
+import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.templates.components.TopPanel
 
 /**
@@ -13,7 +14,9 @@ class EmptyLayout: Template<HTML> {
 
     override fun HTML.apply() {
         head {
+            meta(name = "viewport", content = "width=device-width, initial-scale=1")
             styleLink(url = "/static/index.css")
+            title(Config.appTitle)
         }
         body {
             insert(TopPanel(), topPanel)

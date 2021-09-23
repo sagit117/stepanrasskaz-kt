@@ -1,3 +1,5 @@
 :root {
-    --red-color: red;
+    --color-red: red;
+    --color-black: black;
+    --color-black-light: #000000c4;
 }

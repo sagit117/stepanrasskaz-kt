@@ -1,3 +1,5 @@
 .panel-top__wrapper {
-    background-color: var(--red-color);
+    display: flex;
+    background-color: var(--color-black-light);
+    height: 6rem;
 }
