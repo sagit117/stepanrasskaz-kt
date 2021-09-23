@@ -12,6 +12,7 @@ import io.ktor.auth.*
 import io.ktor.gson.*
 import kotlin.test.*
 import io.ktor.server.testing.*
+import ru.axel.stepanrasskaz.module
 
 class ApplicationTest {
     @Test

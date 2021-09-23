@@ -1,22 +1,18 @@
 package ru.axel.stepanrasskaz
 
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.html.*
-import kotlinx.html.*
-import io.ktor.features.*
 import io.ktor.auth.*
+import io.ktor.features.*
 import io.ktor.gson.*
-import ru.axel.stepanrasskaz.domain.moduleRoutingRoot
+import io.ktor.http.*
+import io.ktor.response.*
+import io.ktor.routing.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = true) {
+fun Application.module(testing: Boolean = false) {
     install(Compression) {
         gzip {
             // @TODO: потом нормально настроить
@@ -47,14 +43,14 @@ fun Application.module(testing: Boolean = true) {
     }
 
     // https://ktor.io/servers/features/https-redirect.html#testing
-    if (!testing) {
-        install(HttpsRedirect) {
-            // The port to redirect to. By default 443, the default HTTPS port.
-            sslPort = 443
-            // 301 Moved Permanently, or 302 Found redirect.
-            permanentRedirect = true
-        }
-    }
+//    if (!testing) { //@TODO: потом настроить нормально
+//        install(HttpsRedirect) {
+//            // The port to redirect to. By default 443, the default HTTPS port.
+//            sslPort = 443
+//            // 301 Moved Permanently, or 302 Found redirect.
+//            permanentRedirect = true
+//        }
+//    }
 
     install(Authentication) {
     }
