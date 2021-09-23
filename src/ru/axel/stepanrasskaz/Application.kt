@@ -10,6 +10,7 @@ import kotlinx.html.*
 import io.ktor.features.*
 import io.ktor.auth.*
 import io.ktor.gson.*
+import ru.axel.stepanrasskaz.domain.moduleRoutingRoot
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
@@ -67,23 +68,29 @@ fun Application.module(testing: Boolean = true) {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
-
-        get("/html-dsl") {
-            call.respondHtml {
-                body {
-                    h1 { +"HTML" }
-                    ul {
-                        for (n in 1..10) {
-                            li { +"$n" }
-                        }
-                    }
-                }
-            }
-        }
-
-        get("/json/gson") {
-            call.respond(mapOf("hello" to "world"))
-        }
     }
+
+//    routing {
+//        get("/") {
+//            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+//        }
+//
+//        get("/html-dsl") {
+//            call.respondHtml {
+//                body {
+//                    h1 { +"HTML" }
+//                    ul {
+//                        for (n in 1..10) {
+//                            li { +"$n" }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        get("/json/gson") {
+//            call.respond(mapOf("hello" to "world"))
+//        }
+//    }
 }
 
