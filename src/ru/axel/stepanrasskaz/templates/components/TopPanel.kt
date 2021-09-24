@@ -9,7 +9,7 @@ import ru.axel.stepanrasskaz.templates.data.menu.TopMenuData
  * Верхняя панель
  */
 class TopPanel: Template<FlowContent> {
-    val btnList = TemplatePlaceholder<Button>()
+    private val btnList = TemplatePlaceholder<Button>()
 
     override fun FlowContent.apply() {
         div {
@@ -17,7 +17,11 @@ class TopPanel: Template<FlowContent> {
 
             div {
                 classes = setOf("panel-top__logo")
-                +"LOGO"
+
+                img {
+                    src = Config.logoUrl
+                    alt = Config.appTitle
+                }
             }
             div {
                 classes = setOf("panel-top__title")

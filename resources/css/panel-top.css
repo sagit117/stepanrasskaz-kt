@@ -12,17 +12,27 @@
 .panel-top__wrapper > .panel-top__logo {
     display: flex;
     justify-content: flex-start;
-    align-content: center;
+    align-items: center;
+}
+
+.panel-top__logo > img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    box-shadow: 0 0 20px 8px grey;
 }
 
 .panel-top__wrapper > .panel-top__title {
     display: flex;
     justify-content: flex-start;
-    align-content: center;
+    align-items: center;
+
+    font-weight: 800;
+    font-size: 2rem;
 }
 
 .panel-top__wrapper > .panel-top__menu {
     display: flex;
     justify-content: flex-end;
-    align-content: center;
+    align-items: center;
 }

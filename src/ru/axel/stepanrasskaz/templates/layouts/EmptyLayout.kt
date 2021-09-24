@@ -10,11 +10,16 @@ import ru.axel.stepanrasskaz.templates.components.TopPanel
  */
 class EmptyLayout: Template<HTML> {
     val page = Placeholder<FlowContent>()
-    val topPanel = TemplatePlaceholder<TopPanel>()
+    private val topPanel = TemplatePlaceholder<TopPanel>()
 
     override fun HTML.apply() {
         head {
             meta(name = "viewport", content = "width=device-width, initial-scale=1")
+            link {
+                rel = "shortcut icon"
+                href = Config.appFavicon
+                type = "image/png"
+            }
             styleLink(url = "/static/index.css")
             title(Config.appTitle)
         }
