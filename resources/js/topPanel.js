@@ -3,6 +3,12 @@
 const account = document.getElementById("account")
 account?.addEventListener("click", loginClickHandler)
 
+/**
+ * Обработка клика по кнопки войти
+ */
 function loginClickHandler() {
-    document.location.assign("/login")
+    const loc = document.location
+    const path = "/login"
+
+    if (loc.pathname !== path) loc.assign(path)
 }
