@@ -1,7 +1,7 @@
 @import "vars.css";
 /*@import "normalize.css";*/
 @import "panel-top.css";
-@import "components.css";
+@import "buttons.css";
 
 * {
     font-family: "Montserrat", sans-serif;

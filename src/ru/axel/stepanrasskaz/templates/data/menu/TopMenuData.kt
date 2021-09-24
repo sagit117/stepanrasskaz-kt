@@ -7,7 +7,7 @@ import ru.axel.stepanrasskaz.templates.data.buttons.ButtonData
  */
 class TopMenuData {
     fun getButtons(): List<ButtonData> {
-        return listOf(ButtonData("account","Войти", setOf("btn", "btn-success"), "/static/account-arrow-right.svg"))
+        return listOf(ButtonData("account","Войти", setOf("btn", "btn-primary"), "/static/account-arrow-right.svg"))
     }
 }
 
