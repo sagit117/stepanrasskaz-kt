@@ -6,6 +6,7 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.http.content.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -56,8 +57,21 @@ fun Application.module(testing: Boolean = false) {
     install(Authentication) {
     }
 
+    /** серриализация объектов запроса */
     install(ContentNegotiation) {
         gson {
+        }
+    }
+
+    /** логирование запросов */
+    install(CallLogging) {
+        format { call ->
+            val status = call.response.status()
+            val httpMethod = call.request.httpMethod.value
+            val userAgent = call.request.headers["User-Agent"]
+            val uri = call.request.uri
+
+            "Status: $status, HTTP method: $httpMethod, User agent: $userAgent, uri: $uri"
         }
     }
 
