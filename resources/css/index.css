@@ -2,6 +2,7 @@
 /*@import "normalize.css";*/
 @import "panel-top.css";
 @import "buttons.css";
+@import "login-page.css";
 
 * {
     font-family: "Montserrat", sans-serif;
@@ -27,4 +28,7 @@ body {
 
 .p1 {
     padding: .5rem;
+}
+.p2 {
+    padding: 1rem;
 }

@@ -13,7 +13,7 @@ fun Route.loginRoute() {
         }
     }
 
-    post("/login") {
+    post("/api/v1/login") {
 
     }
 }
