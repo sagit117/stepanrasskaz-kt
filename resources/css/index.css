@@ -1,3 +1,7 @@
 @import url("vars.css");
 @import url("normalize.css");
 @import url("panel-top.css");
+
+.p1 {
+    padding: .5rem;
+}
