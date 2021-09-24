@@ -8,17 +8,10 @@
 
     --color-white: #ffffff;
 
+    --color-green: #0ab30a;
+    --color-green1: #157347;
+    --color-green2: #146c43;
+    --color-success: #198754;
+
     --color-text: #0d0d0d;
-}
-
-* {
-    font-family: "Montserrat", sans-serif;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Montserrat", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: var(--color-text);
 }

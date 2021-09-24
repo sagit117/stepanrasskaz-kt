@@ -28,7 +28,11 @@ class TopPanel: Template<FlowContent> {
                 val buttons = TopMenuData().getButtons()
 
                 for (btn in buttons) {
-                    +btn.id
+                    div {
+                        id = btn.id
+                        classes = btn.classes
+                        +btn.title
+                    }
                 }
             }
         }
