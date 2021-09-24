@@ -31,7 +31,21 @@ class TopPanel: Template<FlowContent> {
                     div {
                         id = btn.id
                         classes = btn.classes
-                        +btn.title
+
+                        if (btn.iconUrl !== null) {
+                            div {
+                                classes = setOf("btn__img")
+
+                                img {
+                                    src = btn.iconUrl
+                                    alt = btn.id
+                                }
+                            }
+                        }
+
+                        div {
+                            +btn.title
+                        }
                     }
                 }
             }

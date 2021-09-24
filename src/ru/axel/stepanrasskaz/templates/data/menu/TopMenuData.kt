@@ -1,6 +1,6 @@
 package ru.axel.stepanrasskaz.templates.data.menu
 
-data class TopMenuButton(val id: String, val title: String, val classes: Set<String>)
+data class TopMenuButton(val id: String, val title: String, val classes: Set<String>, val iconUrl: String? = null)
 
 /**
  * Класс для конфигураций меню верхней понели
@@ -8,7 +8,7 @@ data class TopMenuButton(val id: String, val title: String, val classes: Set<Str
 class TopMenuData {
 
     fun getButtons(): List<TopMenuButton> {
-        return listOf(TopMenuButton("login","Войти", setOf("btn", "btn-success")))
+        return listOf(TopMenuButton("account","Войти", setOf("btn", "btn-success"), "/static/account-arrow-right.svg"))
     }
 }
 

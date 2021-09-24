@@ -34,3 +34,11 @@
     box-shadow: 0 0 0 0.25rem rgb(22 229 133 / 50%);
 }
 
+.btn > .btn__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: .2rem;
+    filter: invert(1);
+}
+

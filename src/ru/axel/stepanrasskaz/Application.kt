@@ -17,14 +17,14 @@ fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
     install(Compression) {
         gzip {
-            // @TODO: потом нормально настроить
+            // TODO: потом нормально настроить
 //            condition {
 //                request.headers[HttpHeaders.Referrer]?.startsWith("https://my.domain/") == true
 //            }
             priority = 1.0
         }
         deflate {
-            // @TODO: потом нормально настроить
+            // TODO: потом нормально настроить
 //            condition {
 //                request.headers[HttpHeaders.Referrer]?.startsWith("https://my.domain/") == true
 //            }
@@ -33,19 +33,17 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
-    install(CORS) { //@TODO: потом настроить нормально
+    install(CORS) { // TODO: потом настроить нормально
         method(HttpMethod.Options)
         method(HttpMethod.Put)
         method(HttpMethod.Delete)
-//        method(HttpMethod.Patch)
         header(HttpHeaders.Authorization)
-//        header("MyCustomHeader")
         allowCredentials = true
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
 
     // https://ktor.io/servers/features/https-redirect.html#testing
-//    if (!testing) { //@TODO: потом настроить нормально
+//    if (!testing) { // TODO: потом настроить нормально
 //        install(HttpsRedirect) {
 //            // The port to redirect to. By default 443, the default HTTPS port.
 //            sslPort = 443
@@ -82,6 +80,7 @@ fun Application.module(testing: Boolean = false) {
 
         static("static") {
             resources("css")
+            resources("image")
         }
     }
 }
