@@ -8,7 +8,6 @@ import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 fun Route.loginRoute() {
     get("/login") {
         call.respondHtmlTemplate(EmptyLayout()) {
-            topPanel { }
             page { }
         }
     }
