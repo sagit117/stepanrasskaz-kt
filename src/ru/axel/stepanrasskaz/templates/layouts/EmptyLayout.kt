@@ -9,7 +9,7 @@ import ru.axel.stepanrasskaz.templates.pages.BasePage
 /**
  * Пустой слой, который имеет только верхнюю панель
  */
-class EmptyLayout(val Page: BasePage): Template<HTML> {
+class EmptyLayout(private val Page: BasePage): Template<HTML> {
     private val topPanel = TemplatePlaceholder<TopPanel>()
     private val page = TemplatePlaceholder<BasePage>()
 

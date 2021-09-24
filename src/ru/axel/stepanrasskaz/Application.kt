@@ -4,11 +4,13 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.gson.*
+import io.ktor.html.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.request.*
-import io.ktor.response.*
 import io.ktor.routing.*
+import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
+import ru.axel.stepanrasskaz.templates.pages.HomePage
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
@@ -75,12 +77,15 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+            call.respondHtmlTemplate(EmptyLayout(HomePage())) {
+
+            }
         }
 
         static("static") {
             resources("css")
             resources("image")
+            resources("js")
         }
     }
 }
