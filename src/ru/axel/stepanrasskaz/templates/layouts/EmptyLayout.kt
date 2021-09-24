@@ -4,13 +4,14 @@ import io.ktor.html.*
 import kotlinx.html.*
 import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.templates.components.TopPanel
+import ru.axel.stepanrasskaz.templates.pages.BasePage
 
 /**
  * Пустой слой, который имеет только верхнюю панель
  */
-class EmptyLayout: Template<HTML> {
-    val page = Placeholder<FlowContent>()
+class EmptyLayout(val Page: BasePage): Template<HTML> {
     private val topPanel = TemplatePlaceholder<TopPanel>()
+    private val page = TemplatePlaceholder<BasePage>()
 
     override fun HTML.apply() {
         head {
@@ -25,7 +26,12 @@ class EmptyLayout: Template<HTML> {
         }
         body {
             insert(TopPanel(), topPanel)
-            insert(page)
+
+            div {
+                classes = setOf("content")
+
+                insert(Page, page)
+            }
         }
     }
 }
