@@ -16,6 +16,7 @@ class TopPanel: Template<FlowContent> {
             classes = setOf("panel-top__wrapper", "p1")
 
             div {
+                id = "logo"
                 classes = setOf("panel-top__logo")
 
                 img {
@@ -24,6 +25,7 @@ class TopPanel: Template<FlowContent> {
                 }
             }
             div {
+                id = "title"
                 classes = setOf("panel-top__title")
                 +Config.appTitle
             }
