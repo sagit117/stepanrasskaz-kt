@@ -6,14 +6,13 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.domain.user.UserController
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
+import ru.axel.stepanrasskaz.utils.sha256
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
-import java.security.MessageDigest
 
 fun Route.loginRoute() {
     get("/login") {
@@ -33,26 +32,16 @@ fun Route.loginRoute() {
         }
 
         if (authDTO != null) {
-            val userController = UserController(DataBase.getDB())
+            val userController = UserController(DataBase.getCollection())
 
-            launch {
+            runBlocking {
                 val user = userController.findOne(authDTO.getEmail())
 
-                fun hash(input: String): String {
-                    val bytes = input.toByteArray()
-                    val md = MessageDigest.getInstance("SHA-256")
-                    val digest = md.digest(bytes)
-                    return digest.fold("") { str, it -> str + "%02x".format(it) }
+                if (user?.password == authDTO.password.sha256()) {
+                    call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString()))
+                } else {
+                    call.respond(HttpStatusCode.Unauthorized)
                 }
-
-                fun String.sha256(): String {
-                    return hash(this)
-                }
-
-                println("123".sha256())
-                println("123".sha256())
-
-                call.respond(mapOf("user" to user))
             }
         }
     }

@@ -1,7 +1,7 @@
 package ru.axel.stepanrasskaz.connectors
 
-import com.mongodb.reactivestreams.client.MongoDatabase
 import io.ktor.application.*
+import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
@@ -29,5 +29,9 @@ object DataBase {
 
     fun getDB(): CoroutineDatabase {
         return db
+    }
+
+    inline fun <reified T: Any> getCollection(): CoroutineCollection<T> {
+        return getDB().getCollection()
     }
 }
