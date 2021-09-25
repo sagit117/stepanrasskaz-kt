@@ -1,7 +1,5 @@
 package ru.axel.stepanrasskaz
 
-import com.mongodb.MongoClientSettings
-import com.mongodb.client.MongoClient
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
@@ -11,10 +9,8 @@ import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.routing.*
-import org.litote.kmongo.KMongo
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.HomePage
-import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
