@@ -12,6 +12,7 @@ class Button(private val btn: ButtonData): Template<FlowContent> {
         div {
             id = btn.id
             classes = btn.classes
+            tabIndex = "0"
 
             if (btn.iconUrl !== null) {
                 div {

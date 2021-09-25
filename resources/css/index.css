@@ -2,7 +2,9 @@
 /*@import "normalize.css";*/
 @import "panel-top.css";
 @import "buttons.css";
-@import "login-page.css";
+@import "inputs.css";
+@import "labels.css";
+@import "auth-page.css";
 
 * {
     font-family: "Montserrat", sans-serif;
@@ -31,4 +33,17 @@ body {
 }
 .p2 {
     padding: 1rem;
+}
+
+.mb1 {
+    margin-bottom: .5rem;
+}
+.mb2 {
+    margin-bottom: 1rem;
+}
+.mt4 {
+    margin-top: 2rem;
+}
+.mr1 {
+    margin-right: .5rem;
 }
