@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 /**
  * Класс для валидации Email
  */
-class Email(val email: String) {
+class Email(private val email: String) {
 
     init {
         val emailPattern = Pattern.compile(

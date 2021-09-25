@@ -14,20 +14,20 @@ fun Application.moduleMongoDB() {
     val mongoClient = connectionString?.let { KMongo.createClient(it).coroutine }
     val dataBase = dataBaseName?.let { mongoClient?.getDatabase(it) }
 
-    DataBase.setDB(dataBase)
+    if (dataBase != null) DataBase.setDB(dataBase)
 }
 
 /**
  * Хранит данные о подключение к mongo
  */
 object DataBase {
-    private var db: CoroutineDatabase? = null
+    private lateinit var db: CoroutineDatabase
 
-    fun setDB(database: CoroutineDatabase?) {
+    fun setDB(database: CoroutineDatabase) {
         db = database
     }
 
-    fun getDB(): CoroutineDatabase? {
+    fun getDB(): CoroutineDatabase {
         return db
     }
 }

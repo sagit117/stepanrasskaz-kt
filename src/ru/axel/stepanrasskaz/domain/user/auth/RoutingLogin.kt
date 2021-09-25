@@ -6,9 +6,14 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import ru.axel.stepanrasskaz.connectors.DataBase
+import ru.axel.stepanrasskaz.domain.user.UserController
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
+import java.security.MessageDigest
 
 fun Route.loginRoute() {
     get("/login") {
@@ -28,9 +33,27 @@ fun Route.loginRoute() {
         }
 
         if (authDTO != null) {
-            println(authDTO)
+            val userController = UserController(DataBase.getDB())
 
-            call.respond(mapOf("hello" to "world"))
+            launch {
+                val user = userController.findOne(authDTO.getEmail())
+
+                fun hash(input: String): String {
+                    val bytes = input.toByteArray()
+                    val md = MessageDigest.getInstance("SHA-256")
+                    val digest = md.digest(bytes)
+                    return digest.fold("") { str, it -> str + "%02x".format(it) }
+                }
+
+                fun String.sha256(): String {
+                    return hash(this)
+                }
+
+                println("123".sha256())
+                println("123".sha256())
+
+                call.respond(mapOf("user" to user))
+            }
         }
     }
 }
