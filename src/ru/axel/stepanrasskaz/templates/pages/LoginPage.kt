@@ -57,6 +57,16 @@ class LoginPage: BasePage() {
                     }
                 }
             }
+
+            script {
+                src = "/static/api.js"
+                type = "module"
+            }
+
+            script {
+                src = "/static/auth-form.js"
+                type = "module"
+            }
         }
     }
 }
