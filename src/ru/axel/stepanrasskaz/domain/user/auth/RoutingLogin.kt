@@ -2,6 +2,7 @@ package ru.axel.stepanrasskaz.domain.user.auth
 
 import io.ktor.application.*
 import io.ktor.html.*
+import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -18,10 +19,18 @@ fun Route.loginRoute() {
 
     post("/api/v1/login") {
         val authData = call.receive<AuthDTO>()
-        val authDTO = AuthDTO(authData.login, authData.password)
+        var authDTO: AuthDTO? = null
 
-        println(authDTO)
+        try {
+            authDTO = AuthDTO(authData.login, authData.password)
+        } catch (error: IllegalArgumentException) {
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+        }
 
-        call.respond(mapOf("hello" to "world"))
+        if (authDTO != null) {
+            println(authDTO)
+
+            call.respond(mapOf("hello" to "world"))
+        }
     }
 }
