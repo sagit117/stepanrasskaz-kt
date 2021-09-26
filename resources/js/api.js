@@ -15,6 +15,7 @@ class Api {
             })
             .catch((error) => {
                 console.error(error)
+
                 return Promise.reject(error)
             })
     }

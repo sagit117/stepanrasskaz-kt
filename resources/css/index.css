@@ -39,6 +39,9 @@ body {
 .right {
     right: 0;
 }
+.top {
+    top: 0
+}
 
 .p1 {
     padding: .5rem;
@@ -55,6 +58,9 @@ body {
 }
 .mt4 {
     margin-top: 2rem;
+}
+.mr-auto {
+    margin-right: auto;
 }
 .mr1 {
     margin-right: .5rem;

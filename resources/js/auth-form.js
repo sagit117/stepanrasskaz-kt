@@ -1,4 +1,5 @@
 "use strict"
+
 import Api from "./api.js"
 import Toast from "./toasts.js"
 
@@ -14,7 +15,14 @@ function authClickHandler() {
         .then((res) => {
             localStorage.setItem("token", res.token)
 
-            console.log(new Toast())
+            const toast = new Toast("Учетные данные подтверждены", "Вы вошли в систему", "SUCCESS", 3, () => {
+                const loc = document.location
+                const path = "/"
+
+                if (loc.pathname !== path) loc.assign(path)
+            })
+
+            toast.render("toasts")
         })
         .catch((error) => {
             console.error(error?.message)

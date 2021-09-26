@@ -1,5 +1,5 @@
 .toasts__wrapper {
-    position: absolute;
+    position: fixed;
 }
 
 .toast {
@@ -24,6 +24,22 @@
     border-bottom: 1px solid rgba(0,0,0,.05);
     border-top-left-radius: calc(.25rem - 1px);
     border-top-right-radius: calc(.25rem - 1px);
+}
+
+.toast-status {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
+}
+
+.toast-status__ERROR {
+    background-color: var(--color-error);
+}
+.toast-status__SUCCESS {
+    background-color: var(--color-success);
+}
+.toast-status__WARNING {
+    background-color: var(--color-warning);
 }
 
 .toast > .toast__body {

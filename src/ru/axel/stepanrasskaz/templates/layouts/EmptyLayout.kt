@@ -32,7 +32,7 @@ class EmptyLayout(private val Page: BasePage): Template<HTML> {
 
                 div {
                     id = "toasts"
-                    classes = setOf("toasts__wrapper", "bottom", "right")
+                    classes = setOf("toasts__wrapper", "bottom", "right", "p2")
                 }
 
                 insert(Page, page)

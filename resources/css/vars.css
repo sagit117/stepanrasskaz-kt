@@ -1,5 +1,6 @@
 :root {
     --color-red: red;
+    --color-error: red;
 
     --color-black: black;
     --color-black-light: #27282c;
@@ -25,4 +26,6 @@
     --color-purpur: #6b3f70;
 
     --color-text: #0d0d0d;
+
+    --color-warning: orange;
 }
