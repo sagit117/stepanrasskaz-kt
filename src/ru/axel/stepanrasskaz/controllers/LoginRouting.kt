@@ -6,9 +6,11 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.sessions.*
 import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.domain.user.UserService
+import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
@@ -43,6 +45,7 @@ fun Route.loginRoute(configJWT: ConfigJWT) {
                     /** создать jwt для ответа */
                     val token = userService.createJWT(configJWT, user)
 
+                    call.sessions.set(token?.let { it -> UserSession(token = it) })
                     call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)

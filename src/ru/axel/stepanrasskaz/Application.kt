@@ -4,13 +4,12 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.gson.*
-import io.ktor.html.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.routing.*
-import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
-import ru.axel.stepanrasskaz.templates.pages.HomePage
+import io.ktor.sessions.*
+import ru.axel.stepanrasskaz.domain.user.UserSession
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
@@ -72,6 +71,14 @@ fun Application.module(testing: Boolean = false) {
             val uri = call.request.uri
 
             "Status: $status, HTTP method: $httpMethod, User agent: $userAgent, uri: $uri"
+        }
+    }
+
+    install(Sessions) {
+        cookie<UserSession>("user_session") {
+            cookie.path = "/"
+            cookie.maxAgeInSeconds = 600
+            cookie.httpOnly = true
         }
     }
 

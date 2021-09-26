@@ -12,4 +12,10 @@ fun Route.homeRouting() {
 
         }
     }
+
+    get("/home") {
+        call.respondHtmlTemplate(DefaultLayout(HomePage())) {
+
+        }
+    }
 }
