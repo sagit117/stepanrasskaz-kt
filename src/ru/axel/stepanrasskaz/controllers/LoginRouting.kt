@@ -1,4 +1,4 @@
-package ru.axel.stepanrasskaz.domain.user.auth
+package ru.axel.stepanrasskaz.controllers
 
 import io.ktor.application.*
 import io.ktor.html.*

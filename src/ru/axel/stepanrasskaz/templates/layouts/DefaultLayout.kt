@@ -6,10 +6,7 @@ import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.templates.components.TopPanel
 import ru.axel.stepanrasskaz.templates.pages.BasePage
 
-/**
- * Пустой слой, который имеет только верхнюю панель
- */
-class EmptyLayout(private val Page: BasePage): Template<HTML> {
+class DefaultLayout(private val Page: BasePage): Template<HTML> {
     private val topPanel = TemplatePlaceholder<TopPanel>()
     private val page = TemplatePlaceholder<BasePage>()
 
@@ -45,4 +42,5 @@ class EmptyLayout(private val Page: BasePage): Template<HTML> {
             }
         }
     }
+
 }

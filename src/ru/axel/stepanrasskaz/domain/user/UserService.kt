@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.eq
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
-import ru.axel.stepanrasskaz.domain.utils.BaseController
+import ru.axel.stepanrasskaz.domain.utils.BaseService
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.sha256
 import java.util.*
@@ -13,7 +13,7 @@ import java.util.*
 /**
  * Контроллер для всех операций с колекцией пользователей
  */
-class UserService(collection: CoroutineCollection<UserModel>): BaseController<UserModel>(collection) {
+class UserService(collection: CoroutineCollection<UserModel>): BaseService<UserModel>(collection) {
 
     private suspend fun findOne(email: String): UserModel? {
         return collection.findOne(UserModel::email eq email)

@@ -11,7 +11,6 @@ import io.ktor.request.*
 import io.ktor.routing.*
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.HomePage
-import java.security.MessageDigest
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
@@ -77,12 +76,6 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-        get("/") {
-            call.respondHtmlTemplate(EmptyLayout(HomePage())) {
-
-            }
-        }
-
         static("static") {
             resources("css")
             resources("image")

@@ -1,8 +1,9 @@
-package ru.axel.stepanrasskaz.domain
+package ru.axel.stepanrasskaz
 
 import io.ktor.application.*
 import io.ktor.routing.*
-import ru.axel.stepanrasskaz.domain.user.auth.loginRoute
+import ru.axel.stepanrasskaz.controllers.homeRouting
+import ru.axel.stepanrasskaz.controllers.loginRoute
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 
 /**
@@ -17,5 +18,6 @@ fun Application.moduleRoutingRoot() {
 
     routing {
         loginRoute(ConfigJWT(secret, issuer, audience, clientRealm))
+        homeRouting()
     }
 }

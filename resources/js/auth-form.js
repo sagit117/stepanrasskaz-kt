@@ -17,7 +17,7 @@ const btnAuth = document.getElementById("auth")
 btnAuth?.addEventListener("click", authClickHandler)
 
 /**
- * бработчик кнопки войти
+ * обработчик кнопки войти
  */
 function authClickHandler() {
     Api.auth(inputEmail?.value, inputPasswor?.value)

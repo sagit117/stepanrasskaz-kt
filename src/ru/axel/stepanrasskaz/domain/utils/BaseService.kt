@@ -6,7 +6,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
 /**
  * Базовый контроллер для наследования
  */
-open class BaseController<T: Any>(val collection: CoroutineCollection<T>) {
+open class BaseService<T: Any>(val collection: CoroutineCollection<T>) {
 
     suspend fun insertOne(model: T) {
         collection.insertOne(model)
