@@ -1,5 +1,7 @@
 package ru.axel.stepanrasskaz.domain.user.auth
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
 import io.ktor.html.*
 import io.ktor.http.*
@@ -10,11 +12,12 @@ import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.domain.user.UserController
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
-import ru.axel.stepanrasskaz.utils.sha256
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
+import ru.axel.stepanrasskaz.utils.ConfigJWT
+import java.util.*
 
-fun Route.loginRoute() {
+fun Route.loginRoute(configJWT: ConfigJWT) {
     get("/login") {
         call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
 
@@ -35,10 +38,14 @@ fun Route.loginRoute() {
             val userController = UserController(DataBase.getCollection())
 
             runBlocking {
-                val user = userController.findOne(authDTO.getEmail())
 
-                if (user?.password == authDTO.password.sha256()) {
-                    call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString()))
+                if (userController.checkAuth(authDTO)) {
+                    val user = userController.getUser(authDTO)
+
+                    /** создать jwt для ответа */
+                    val token = userController.createJWT(configJWT, authDTO)
+
+                    call.respond(HttpStatusCode.OK, mapOf("id" to user?.id.toString(), "token" to token))
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)
                 }
