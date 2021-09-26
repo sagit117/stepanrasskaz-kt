@@ -14,31 +14,24 @@ import java.util.*
  * Контроллер для всех операций с колекцией пользователей
  */
 class UserController(collection: CoroutineCollection<UserModel>): BaseController<UserModel>(collection) {
-    private var user: UserModel? = null
 
     private suspend fun findOne(email: String): UserModel? {
         return collection.findOne(UserModel::email eq email)
     }
 
-    suspend fun checkAuth(authDTO: AuthDTO): Boolean {
-        user = findOne(authDTO.getEmail())
-
-        return  user?.password == authDTO.password.sha256()
+    fun checkAuth(userModel: UserModel, authDTO: AuthDTO): Boolean {
+        return  userModel.password == authDTO.password.sha256()
     }
 
     suspend fun getUser(authDTO: AuthDTO): UserModel? {
-        if (user == null) {
-            user = findOne(authDTO.getEmail())
-        }
-
-        return user
+        return findOne(authDTO.getEmail())
     }
 
-    suspend fun createJWT(configJWT: ConfigJWT, authDTO: AuthDTO): String? {
+    fun createJWT(configJWT: ConfigJWT, userModel: UserModel): String? {
         return JWT.create()
             .withAudience(configJWT.audience)
             .withIssuer(configJWT.issuer)
-            .withClaim("useremail", getUser(authDTO)?.email)
+            .withClaim("email", userModel.email)
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(configJWT.secret))
     }

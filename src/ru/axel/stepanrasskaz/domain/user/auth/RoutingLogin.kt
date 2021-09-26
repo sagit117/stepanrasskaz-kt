@@ -1,7 +1,5 @@
 package ru.axel.stepanrasskaz.domain.user.auth
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
 import io.ktor.html.*
 import io.ktor.http.*
@@ -15,7 +13,6 @@ import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
 import ru.axel.stepanrasskaz.utils.ConfigJWT
-import java.util.*
 
 fun Route.loginRoute(configJWT: ConfigJWT) {
     get("/login") {
@@ -38,12 +35,12 @@ fun Route.loginRoute(configJWT: ConfigJWT) {
             val userController = UserController(DataBase.getCollection())
 
             runBlocking {
+                val user = userController.getUser(authDTO)
 
-                if (userController.checkAuth(authDTO)) {
-                    val user = userController.getUser(authDTO)
+                if (user?.let { it -> userController.checkAuth(it, authDTO) } == true) {
 
                     /** создать jwt для ответа */
-                    val token = userController.createJWT(configJWT, authDTO)
+                    val token = userController.createJWT(configJWT, user)
 
                     call.respond(HttpStatusCode.OK, mapOf("id" to user?.id.toString(), "token" to token))
                 } else {
