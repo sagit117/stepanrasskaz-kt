@@ -33,6 +33,13 @@ body {
     position: relative;
 }
 
+.bottom {
+    bottom: 0;
+}
+.right {
+    right: 0;
+}
+
 .p1 {
     padding: .5rem;
 }
