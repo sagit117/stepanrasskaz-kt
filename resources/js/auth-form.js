@@ -4,7 +4,14 @@ import Api from "./api.js"
 import Toast from "./toasts.js"
 
 const inputEmail = document.getElementById("email")
+inputEmail?.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") authClickHandler()
+})
+
 const inputPasswor = document.getElementById("password")
+inputPasswor?.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") authClickHandler()
+})
 
 const btnAuth = document.getElementById("auth")
 btnAuth?.addEventListener("click", authClickHandler)
