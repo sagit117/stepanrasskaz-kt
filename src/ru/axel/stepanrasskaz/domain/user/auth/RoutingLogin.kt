@@ -8,7 +8,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.connectors.DataBase
-import ru.axel.stepanrasskaz.domain.user.UserController
+import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
@@ -25,6 +25,7 @@ fun Route.loginRoute(configJWT: ConfigJWT) {
         val authData = call.receive<AuthDTO>()
         var authDTO: AuthDTO? = null
 
+        /** проверяем на ошибки в веденных данных */
         try {
             authDTO = AuthDTO(authData.login, authData.password)
         } catch (error: IllegalArgumentException) {
@@ -32,17 +33,17 @@ fun Route.loginRoute(configJWT: ConfigJWT) {
         }
 
         if (authDTO != null) {
-            val userController = UserController(DataBase.getCollection())
+            val userService = UserService(DataBase.getCollection())
 
             runBlocking {
-                val user = userController.getUser(authDTO)
+                val user = userService.getUser(authDTO)
 
-                if (user?.let { it -> userController.checkAuth(it, authDTO) } == true) {
+                if (user?.let { it -> userService.checkAuth(it, authDTO) } == true) {
 
                     /** создать jwt для ответа */
-                    val token = userController.createJWT(configJWT, user)
+                    val token = userService.createJWT(configJWT, user)
 
-                    call.respond(HttpStatusCode.OK, mapOf("id" to user?.id.toString(), "token" to token))
+                    call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)
                 }

@@ -9,8 +9,12 @@ btnAuth?.addEventListener("click", authClickHandler)
 
 function authClickHandler() {
     Api.auth(inputEmail?.value, inputPasswor?.value)
+        .then((res) => res.json())
         .then((res) => {
-            console.log(res)
+            localStorage.setItem("token", res.token)
+        })
+        .catch((error) => {
+            console.error(error?.message)
         })
 }
 

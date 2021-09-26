@@ -13,7 +13,7 @@ import java.util.*
 /**
  * Контроллер для всех операций с колекцией пользователей
  */
-class UserController(collection: CoroutineCollection<UserModel>): BaseController<UserModel>(collection) {
+class UserService(collection: CoroutineCollection<UserModel>): BaseController<UserModel>(collection) {
 
     private suspend fun findOne(email: String): UserModel? {
         return collection.findOne(UserModel::email eq email)

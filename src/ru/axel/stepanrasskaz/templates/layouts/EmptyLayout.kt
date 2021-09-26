@@ -3,6 +3,7 @@ package ru.axel.stepanrasskaz.templates.layouts
 import io.ktor.html.*
 import kotlinx.html.*
 import ru.axel.stepanrasskaz.Config
+import ru.axel.stepanrasskaz.templates.components.Toast
 import ru.axel.stepanrasskaz.templates.components.TopPanel
 import ru.axel.stepanrasskaz.templates.pages.BasePage
 
@@ -29,6 +30,10 @@ class EmptyLayout(private val Page: BasePage): Template<HTML> {
 
             div {
                 classes = setOf("content")
+
+                div {
+                    classes = setOf("toasts__wrapper")
+                }
 
                 insert(Page, page)
             }
