@@ -9,23 +9,37 @@ const inputPasswor = document.getElementById("password")
 const btnAuth = document.getElementById("auth")
 btnAuth?.addEventListener("click", authClickHandler)
 
+/**
+ * бработчик кнопки войти
+ */
 function authClickHandler() {
     Api.auth(inputEmail?.value, inputPasswor?.value)
-        .then((res) => res.json())
+        .then((res) => {
+            if (res.ok) return res.json()
+
+            throw new Error(res.status)
+        })
         .then((res) => {
             localStorage.setItem("token", res.token)
 
-            const toast = new Toast("Учетные данные подтверждены", "Вы вошли в систему", "SUCCESS", 3, () => {
+            new Toast("Учетные данные подтверждены", "Вы вошли в систему", "SUCCESS", 3, () => {
                 const loc = document.location
                 const path = "/"
 
                 if (loc.pathname !== path) loc.assign(path)
             })
-
-            toast.render("toasts")
+                .render("toasts")
         })
         .catch((error) => {
-            console.error(error?.message)
+            switch (+error.message) {
+                case 400:
+                case 401:
+                    new Toast("Ошибка", "Не верный логин или пароль", "ERROR", 3).render("toasts");
+                    break;
+
+                default:
+                    new Toast("Ошибка", "Произошла внутреняя ошибка сервера", "ERROR", 3).render("toasts");
+            }
         })
 }
 
