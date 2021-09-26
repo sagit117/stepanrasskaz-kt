@@ -37,6 +37,11 @@ class EmptyLayout(private val Page: BasePage): Template<HTML> {
 
                 insert(Page, page)
             }
+
+            script {
+                src = "static/toasts.js"
+                type = "module"
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 "use strict"
 import Api from "./api.js"
+import Toast from "./toasts.js"
 
 const inputEmail = document.getElementById("email")
 const inputPasswor = document.getElementById("password")
@@ -12,6 +13,8 @@ function authClickHandler() {
         .then((res) => res.json())
         .then((res) => {
             localStorage.setItem("token", res.token)
+
+            console.log(new Toast())
         })
         .catch((error) => {
             console.error(error?.message)
