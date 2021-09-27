@@ -2,16 +2,20 @@ package ru.axel.stepanrasskaz.connectors
 
 import org.apache.commons.mail.DefaultAuthenticator
 import org.apache.commons.mail.SimpleEmail
+import ru.axel.stepanrasskaz.utils.ConfigMailer
 
-class Mailer {
+class Mailer(configMailer: ConfigMailer) {
     val email = SimpleEmail()
 
     init {
-        email.hostName = "smtp.googlemail.com"
-        email.setSmtpPort(587)
-        email.setAuthenticator(DefaultAuthenticator("reports.sti.mailer@gmail.com", "neosjhdbhJHJHf34f"))
-        email.isSSLOnConnect = true
-        email.setFrom("reports.sti.mailer@gmail.com")
+        email.hostName = configMailer.hostName
+        email.setSmtpPort(configMailer.smtpPort)
+        email.setAuthenticator(DefaultAuthenticator(configMailer.user, configMailer.password))
+        email.isSSLOnConnect = configMailer.isSSLOnConnect
+        email.setFrom(configMailer.from)
+    }
+
+    fun send() {
         email.subject = "test"
         email.setMsg("message-content")
         email.addTo("sagit117@gmail.com")
