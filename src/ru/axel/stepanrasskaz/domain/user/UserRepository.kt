@@ -8,7 +8,7 @@ import ru.axel.stepanrasskaz.domain.role.RoleRepository
 data class UserRepository(
     @BsonId
     val id: Id<UserRepository> = newId(),
-    val name: String,
+    val name: String = "",
     val email: String,
     val password: String,
     val role: RoleRepository = RoleRepository.TEMP

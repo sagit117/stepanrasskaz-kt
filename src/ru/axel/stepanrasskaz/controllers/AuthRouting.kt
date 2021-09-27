@@ -12,6 +12,7 @@ import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
+import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
 import ru.axel.stepanrasskaz.templates.pages.RegistryPage
@@ -58,6 +59,34 @@ fun Route.authRoute(configJWT: ConfigJWT) {
     get("/registry") {
         call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
 
+        }
+    }
+
+    post("api/v1/registry") {
+        val registryData = call.receive<RegistryDTO>()
+        var registryDTO: RegistryDTO? = null
+
+        /** проверяем на ошибки в веденных данных */
+        try {
+            registryDTO = RegistryDTO(registryData.login, registryData.password)
+        } catch (error: IllegalArgumentException) {
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+        }
+
+        if (registryDTO != null) {
+            val userService = UserService(DataBase.getCollection())
+
+            runBlocking {
+                val user = userService.getUser(registryDTO)
+
+                if (user == null) {
+                    val id = userService.insertOne(registryDTO)
+
+                    call.respond(HttpStatusCode.OK, mapOf("id" to id))
+                } else {
+                    call.respond(HttpStatusCode.BadRequest)
+                }
+            }
         }
     }
 }
