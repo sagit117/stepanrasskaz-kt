@@ -5,7 +5,7 @@ import org.apache.commons.mail.SimpleEmail
 import ru.axel.stepanrasskaz.utils.ConfigMailer
 
 class Mailer(configMailer: ConfigMailer) {
-    val email = SimpleEmail()
+    private val email = SimpleEmail()
 
     init {
         email.hostName = configMailer.hostName

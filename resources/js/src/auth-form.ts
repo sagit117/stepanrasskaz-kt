@@ -73,12 +73,7 @@ function authClickHandler() {
  */
 function registryClickHandler() {
     Api.registry({ login: inputEmail?.value, password: inputPassword?.value })
-        .then((res) => {
-            if (res.ok) return res.json()
-
-            throw new Error(String(res.status))
-        })
-        .then((_res: object) => {
+        .then((_res) => {
             new Toast("Учетные данные подтверждены", "Вы зарегистрированы в системе", "SUCCESS", 3, () => {
                 goRoute("/login")
             })

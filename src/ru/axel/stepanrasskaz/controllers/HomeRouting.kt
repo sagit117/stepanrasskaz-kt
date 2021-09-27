@@ -5,7 +5,6 @@ import io.ktor.application.*
 import io.ktor.html.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
-import ru.axel.stepanrasskaz.connectors.Mailer
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.templates.layouts.DefaultLayout
 import ru.axel.stepanrasskaz.templates.pages.HomePage
@@ -26,8 +25,6 @@ fun Route.homeRouting(jwtVerifier: JWTVerifier) {
         }
 
 //        println(email)
-
-        Mailer()
 
         call.respondHtmlTemplate(DefaultLayout(HomePage())) {
 

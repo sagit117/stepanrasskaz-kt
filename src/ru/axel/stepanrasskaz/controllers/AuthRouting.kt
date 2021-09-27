@@ -9,6 +9,7 @@ import io.ktor.routing.*
 import io.ktor.sessions.*
 import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.connectors.DataBase
+import ru.axel.stepanrasskaz.connectors.Mailer
 import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
@@ -17,8 +18,9 @@ import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
 import ru.axel.stepanrasskaz.templates.pages.RegistryPage
 import ru.axel.stepanrasskaz.utils.ConfigJWT
+import ru.axel.stepanrasskaz.utils.ConfigMailer
 
-fun Route.authRoute(configJWT: ConfigJWT) {
+fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     get("/login") {
         call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
 
@@ -80,9 +82,13 @@ fun Route.authRoute(configJWT: ConfigJWT) {
                 val user = userService.getUser(registryDTO)
 
                 if (user == null) {
-                    val id = userService.insertOne(registryDTO)
+                    val result = userService.insertOne(registryDTO)
 
-                    call.respond(HttpStatusCode.OK, mapOf("id" to id))
+                    if (result?.wasAcknowledged() == true) call.respond(HttpStatusCode.OK)
+                    else call.respond(HttpStatusCode.InternalServerError)
+
+                    // todo: доделать отправку почты
+                    Mailer(configMailer).send()
                 } else {
                     call.respond(HttpStatusCode.BadRequest)
                 }

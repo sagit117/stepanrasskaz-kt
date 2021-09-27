@@ -45,7 +45,7 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
             .sign(Algorithm.HMAC256(configJWT.secret))
     }
 
-    suspend fun insertOne(registryDTO: RegistryDTO): BsonValue? {
-        return collection.insertOne(UserRepository(email = registryDTO.getEmail(), password = registryDTO.password.sha256())).insertedId
+    suspend fun insertOne(registryDTO: RegistryDTO): InsertOneResult? {
+        return collection.insertOne(UserRepository(email = registryDTO.getEmail(), password = registryDTO.password.sha256()))
     }
 }
