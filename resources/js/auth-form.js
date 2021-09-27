@@ -17,21 +17,31 @@ btnGoAuth?.addEventListener("click", () => {
     goRoute("/login")
 })
 
+const btnRegistry = document.getElementById("registry")
+btnRegistry?.addEventListener("click", registryClickHandler)
+
 const inputEmail = document.getElementById("email")
 inputEmail?.addEventListener("keypress", (event) => {
     if (event.key === "Enter" && btnAuth) authClickHandler()
+    if (event.key === "Enter" && btnRegistry) registryClickHandler()
 })
 
 const inputPassword = document.getElementById("password")
 inputPassword?.addEventListener("keypress", (event) => {
     if (event.key === "Enter" && btnAuth) authClickHandler()
+    if (event.key === "Enter" && btnRegistry) registryClickHandler()
+})
+
+const inputPasswordConfirm = document.getElementById("password-confirm")
+inputPasswordConfirm?.addEventListener("keypress", (event) => {
+    if (event.key === "Enter" && btnRegistry) registryClickHandler()
 })
 
 /**
  * обработчик кнопки войти
  */
 function authClickHandler() {
-    Api.auth(inputEmail?.value, inputPasswor?.value)
+    Api.auth(inputEmail?.value, inputPassword?.value)
         .then((res) => {
             if (res.ok) return res.json()
 
@@ -57,4 +67,34 @@ function authClickHandler() {
             }
         })
 }
+
+/**
+ * обработчик кнопки регистрация
+ */
+function registryClickHandler() {
+    Api.registry({ login: inputEmail?.value, password: inputPassword?.value })
+        .then((res) => {
+            if (res.ok) return res.json()
+
+            throw new Error(res.status)
+        })
+        .then((res) => {
+            new Toast("Учетные данные подтверждены", "Вы зарегистрированы в системе", "SUCCESS", 3, () => {
+                goRoute("/login")
+            })
+                .render("toasts")
+        })
+        .catch((error) => {
+            switch (+error.message) {
+                case 400:
+                case 401:
+                    new Toast("Ошибка", "Возможно email уже зарегистрирован", "ERROR", 3).render("toasts");
+                    break;
+
+                default:
+                    new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
+            }
+        })
+}
+
 

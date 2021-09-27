@@ -19,6 +19,25 @@ class Api {
                 return Promise.reject(error)
             })
     }
+
+    registry(body) {
+        return fetch(this.#url + "/registry", {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(body),
+        })
+            .then((res) => {
+                return Promise.resolve(res)
+            })
+            .catch((error) => {
+                console.error(error)
+
+                return Promise.reject(error)
+            })
+    }
 }
 
 export default new Api()
