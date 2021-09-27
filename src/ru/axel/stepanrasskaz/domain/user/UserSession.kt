@@ -1,3 +1,5 @@
 package ru.axel.stepanrasskaz.domain.user
 
-data class UserSession(val token: String)
+import io.ktor.auth.*
+
+data class UserSession(val token: String): Principal

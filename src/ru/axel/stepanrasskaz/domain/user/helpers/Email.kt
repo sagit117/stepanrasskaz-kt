@@ -18,12 +18,12 @@ class Email(private val email: String) {
             ")+"
         )
 
-        if (!emailPattern.matcher(email).matches()) {
+        if (!emailPattern.matcher(email.trim().lowercase()).matches()) {
             throw IllegalArgumentException("Email required")
         }
     }
 
     override fun toString(): String {
-        return email
+        return email.trim().lowercase()
     }
 }

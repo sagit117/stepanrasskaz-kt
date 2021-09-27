@@ -56,31 +56,7 @@ fun Application.module(testing: Boolean = false) {
 //        }
 //    }
 
-//    val clientRealm = environment.config.property("jwt.realm").getString()
-//    val secret = environment.config.property("jwt.secret").getString()
-//    val issuer = environment.config.property("jwt.issuer").getString()
-//    val audience = environment.config.property("jwt.audience").getString()
-
     install(Authentication) {
-//        jwt("auth-jwt") {
-//            realm = clientRealm
-//            verifier(
-//                JWT
-//                .require(Algorithm.HMAC256(secret))
-//                .withAudience(audience)
-//                .withIssuer(issuer)
-//                .build())
-//
-//            validate { credential ->
-//                if (credential.payload.getClaim("email").asString() != "") {
-//                    println(credential.payload.getClaim("email").asString())
-//
-//                    JWTPrincipal(credential.payload)
-//                } else {
-//                    null
-//                }
-//            }
-//        }
     }
 
     /** серриализация объектов запроса */

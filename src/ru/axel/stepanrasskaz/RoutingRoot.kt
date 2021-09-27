@@ -1,9 +1,13 @@
 package ru.axel.stepanrasskaz
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
 import io.ktor.routing.*
+import io.ktor.sessions.*
 import ru.axel.stepanrasskaz.controllers.homeRouting
 import ru.axel.stepanrasskaz.controllers.loginRoute
+import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 
 /**
@@ -16,8 +20,16 @@ fun Application.moduleRoutingRoot() {
     val audience = environment.config.property("jwt.audience").getString()
     val clientRealm = environment.config.property("jwt.realm").getString()
 
+    val configJWT = ConfigJWT(secret, issuer, audience, clientRealm)
+
+    val jwtVerifier = JWT
+        .require(Algorithm.HMAC256(secret))
+        .withAudience(audience)
+        .withIssuer(issuer)
+        .build()
+
     routing {
-        loginRoute(ConfigJWT(secret, issuer, audience, clientRealm))
-        homeRouting()
+        loginRoute(configJWT)
+        homeRouting(jwtVerifier)
     }
 }

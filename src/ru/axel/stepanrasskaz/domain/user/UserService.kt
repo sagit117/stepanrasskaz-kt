@@ -13,25 +13,26 @@ import java.util.*
 /**
  * Контроллер для всех операций с колекцией пользователей
  */
-class UserService(collection: CoroutineCollection<UserModel>): BaseService<UserModel>(collection) {
+class UserService(collection: CoroutineCollection<UserRepository>): BaseService<UserRepository>(collection) {
 
-    private suspend fun findOne(email: String): UserModel? {
-        return collection.findOne(UserModel::email eq email)
+    private suspend fun findOne(email: String): UserRepository? {
+        return collection.findOne(UserRepository::email eq email)
     }
 
-    fun checkAuth(userModel: UserModel, authDTO: AuthDTO): Boolean {
-        return  userModel.password == authDTO.password.sha256()
+    fun checkAuth(userRepository: UserRepository, authDTO: AuthDTO): Boolean {
+        println(userRepository)
+        return  userRepository.password.trim() == authDTO.password.sha256()
     }
 
-    suspend fun getUser(authDTO: AuthDTO): UserModel? {
+    suspend fun getUser(authDTO: AuthDTO): UserRepository? {
         return findOne(authDTO.getEmail())
     }
 
-    fun createJWT(configJWT: ConfigJWT, userModel: UserModel): String? {
+    fun createJWT(configJWT: ConfigJWT, userRepository: UserRepository): String? {
         return JWT.create()
             .withAudience(configJWT.audience)
             .withIssuer(configJWT.issuer)
-            .withClaim("email", userModel.email)
+            .withClaim("email", userRepository.email)
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(configJWT.secret))
     }
