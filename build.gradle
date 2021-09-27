@@ -42,6 +42,7 @@ dependencies {
     implementation "org.litote.kmongo:kmongo-coroutine:4.3.0"
     implementation "org.litote.kmongo:kmongo-id:4.3.0"
     implementation "io.ktor:ktor-server-sessions:$ktor_version"
+    implementation "org.apache.commons:commons-email:1.5"
 }
 
 application {
