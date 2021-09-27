@@ -12,6 +12,7 @@ import ru.axel.stepanrasskaz.templates.pages.HomePage
 fun Route.homeRouting(jwtVerifier: JWTVerifier) {
 
     get("/") {
+
         val token = call.sessions.get<UserSession>()?.token
 
         val email = try {
@@ -20,10 +21,10 @@ fun Route.homeRouting(jwtVerifier: JWTVerifier) {
                 .getClaim("email")
                 .asString()
         } catch (error: Exception) {
-            false
+            null
         }
 
-        println(email)
+//        println(email)
 
         call.respondHtmlTemplate(DefaultLayout(HomePage())) {
 

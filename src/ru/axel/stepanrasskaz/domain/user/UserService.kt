@@ -20,7 +20,6 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
     }
 
     fun checkAuth(userRepository: UserRepository, authDTO: AuthDTO): Boolean {
-        println(userRepository)
         return  userRepository.password.trim() == authDTO.password.sha256()
     }
 
@@ -33,6 +32,7 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
             .withAudience(configJWT.audience)
             .withIssuer(configJWT.issuer)
             .withClaim("email", userRepository.email)
+            .withClaim("role", userRepository.role.toString())
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(configJWT.secret))
     }
