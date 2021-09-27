@@ -1,6 +1,6 @@
 'use strict'
 
-export function goRoute(path) {
+export function goRoute(path: string) {
     if (!path || typeof path !== "string") return
 
     const loc = document.location

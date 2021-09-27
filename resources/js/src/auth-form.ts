@@ -20,19 +20,19 @@ btnGoAuth?.addEventListener("click", () => {
 const btnRegistry = document.getElementById("registry")
 btnRegistry?.addEventListener("click", registryClickHandler)
 
-const inputEmail = document.getElementById("email")
+const inputEmail: HTMLInputElement | null = document.getElementById("email") as HTMLInputElement
 inputEmail?.addEventListener("keypress", (event) => {
     if (event.key === "Enter" && btnAuth) authClickHandler()
     if (event.key === "Enter" && btnRegistry) registryClickHandler()
 })
 
-const inputPassword = document.getElementById("password")
+const inputPassword: HTMLInputElement | null = document.getElementById("password") as HTMLInputElement
 inputPassword?.addEventListener("keypress", (event) => {
     if (event.key === "Enter" && btnAuth) authClickHandler()
     if (event.key === "Enter" && btnRegistry) registryClickHandler()
 })
 
-const inputPasswordConfirm = document.getElementById("password-confirm")
+const inputPasswordConfirm: HTMLInputElement | null = document.getElementById("password-confirm") as HTMLInputElement
 inputPasswordConfirm?.addEventListener("keypress", (event) => {
     if (event.key === "Enter" && btnRegistry) registryClickHandler()
 })
@@ -45,7 +45,7 @@ function authClickHandler() {
         .then((res) => {
             if (res.ok) return res.json()
 
-            throw new Error(res.status)
+            throw new Error(String(res.status))
         })
         .then((res) => {
             localStorage.setItem("token", res.token)
@@ -76,9 +76,9 @@ function registryClickHandler() {
         .then((res) => {
             if (res.ok) return res.json()
 
-            throw new Error(res.status)
+            throw new Error(String(res.status))
         })
-        .then((res) => {
+        .then((_res: object) => {
             new Toast("Учетные данные подтверждены", "Вы зарегистрированы в системе", "SUCCESS", 3, () => {
                 goRoute("/login")
             })

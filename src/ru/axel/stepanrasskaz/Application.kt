@@ -87,7 +87,7 @@ fun Application.module(testing: Boolean = false) {
         static("static") {
             resources("css")
             resources("image")
-            resources("js")
+            resources("js/dist/src")
         }
     }
 }

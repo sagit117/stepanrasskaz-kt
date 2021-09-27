@@ -16,7 +16,7 @@ export default class Toast {
      * @param timer - время показа в секундах
      * @param cb - callback будет выполнен после закрытия
      */
-    constructor(title, message, type, timer, cb) {
+    constructor(title: string, message: string, type: "ERROR" | "WARNING" | "SUCCESS", timer: number, cb?: () => void) {
         this.#type = type
         this.#message = message
         this.#title = title
@@ -29,19 +29,19 @@ export default class Toast {
     }
 
     destroy() {
-        const elem = document.getElementById(this.#id)
+        const elem = document.getElementById(String(this.#id))
         elem?.remove()
         this.#cb?.()
     }
 
-    render(id) {
+    render(id: string) {
         const root = document.getElementById(id)
 
         if (!root) throw new Error("root div is required")
 
         /** toast */
         const toastDiv = document.createElement("div")
-        toastDiv.setAttribute("id", this.#id)
+        toastDiv.setAttribute("id", String(this.#id))
         toastDiv.classList.add("toast")
         toastDiv.classList.add("mx1")
 
