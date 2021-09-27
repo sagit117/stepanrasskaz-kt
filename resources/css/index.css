@@ -49,6 +49,12 @@ body {
 .p2 {
     padding: 1rem;
 }
+.pt2 {
+    padding-top: 1rem;
+}
+.pb2 {
+    padding-bottom: 1rem;
+}
 
 .mb1 {
     margin-bottom: .5rem;
@@ -67,4 +73,7 @@ body {
 }
 .mx1 {
     margin: .5rem;
+}
+.ml-auto {
+    margin-left: auto;
 }

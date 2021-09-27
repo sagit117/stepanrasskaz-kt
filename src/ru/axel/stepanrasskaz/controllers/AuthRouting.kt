@@ -14,9 +14,10 @@ import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
+import ru.axel.stepanrasskaz.templates.pages.RegistryPage
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 
-fun Route.loginRoute(configJWT: ConfigJWT) {
+fun Route.authRoute(configJWT: ConfigJWT) {
     get("/login") {
         call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
 
@@ -51,6 +52,12 @@ fun Route.loginRoute(configJWT: ConfigJWT) {
                     call.respond(HttpStatusCode.Unauthorized)
                 }
             }
+        }
+    }
+
+    get("/registry") {
+        call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
+
         }
     }
 }

@@ -4,10 +4,8 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
 import io.ktor.routing.*
-import io.ktor.sessions.*
 import ru.axel.stepanrasskaz.controllers.homeRouting
-import ru.axel.stepanrasskaz.controllers.loginRoute
-import ru.axel.stepanrasskaz.domain.user.UserSession
+import ru.axel.stepanrasskaz.controllers.authRoute
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 
 /**
@@ -29,7 +27,7 @@ fun Application.moduleRoutingRoot() {
         .build()
 
     routing {
-        loginRoute(configJWT)
+        authRoute(configJWT)
         homeRouting(jwtVerifier)
     }
 }

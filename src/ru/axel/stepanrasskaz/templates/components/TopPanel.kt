@@ -39,6 +39,9 @@ class TopPanel: Template<FlowContent> {
             }
         }
 
-        script { src = "/static/panel-top.js" }
+        script {
+            src = "/static/panel-top.js"
+            type = "module"
+        }
     }
 }

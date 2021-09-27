@@ -9,6 +9,13 @@
     box-shadow: 4px 8px 8px 0 var(--color-grey);
 }
 
+@media screen and (max-width: 440px) {
+    .panel-top__wrapper {
+        grid-template-columns: auto;
+        height: auto;
+    }
+}
+
 .panel-top__wrapper > .panel-top__logo {
     display: flex;
     justify-content: flex-start;

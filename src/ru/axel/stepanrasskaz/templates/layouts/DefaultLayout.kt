@@ -37,6 +37,10 @@ class DefaultLayout(private val Page: BasePage): Template<HTML> {
             }
 
             script {
+                src = "/static/utils.js"
+                type = "module"
+            }
+            script {
                 src = "static/toasts.js"
                 type = "module"
             }

@@ -9,7 +9,7 @@ import ru.axel.stepanrasskaz.templates.data.listcontrols.AuthListControlsData
 /**
  * Страница логина
  */
-class LoginPage: BasePage() {
+class RegistryPage: BasePage() {
     private val btnList = TemplatePlaceholder<Button>()
 
     override fun FlowContent.apply() {
@@ -20,7 +20,7 @@ class LoginPage: BasePage() {
                 classes = setOf("auth-form__wrapper", "p2")
 
                 h4 {
-                    +"Вход в систему"
+                    +"Регистрация"
                 }
 
                 label {
@@ -47,10 +47,22 @@ class LoginPage: BasePage() {
                     placeholder = "Введите пароль"
                 }
 
+                label {
+                    htmlFor = "password-confirm"
+                    +"Пароль еще раз:"
+                }
+                input {
+                    classes = setOf("mb2")
+                    type = InputType.password
+                    name = "password-confirm"
+                    id = "password-confirm"
+                    placeholder = "Введите пароль еще раз"
+                }
+
                 div {
                     classes = setOf("auth-form__controls", "pt2", "pb2")
 
-                    val btns = AuthListControlsData().getControlsForLogin()
+                    val btns = AuthListControlsData().getControlsForRegistry()
 
                     for (btn in btns) {
                         insert(Button(btn), btnList)
