@@ -4,8 +4,10 @@ import Api from "./api.js"
 import Toast from "./toasts.js"
 import { goRoute } from "./utils.js"
 
+/** buttons */
+
 const btnAuth = document.getElementById("auth")
-btnAuth?.addEventListener("click", authClickHandler)
+btnAuth?.addEventListener("click", () => preSendCheck(authClickHandler))
 
 const btnGoRegistry = document.getElementById("go-registry")
 btnGoRegistry?.addEventListener("click", () => {
@@ -18,24 +20,67 @@ btnGoAuth?.addEventListener("click", () => {
 })
 
 const btnRegistry = document.getElementById("registry")
-btnRegistry?.addEventListener("click", registryClickHandler)
+btnRegistry?.addEventListener("click", () => preSendCheck(registryClickHandler))
+
+/** inputs */
 
 const inputEmail: HTMLInputElement | null = document.getElementById("email") as HTMLInputElement
 inputEmail?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnAuth) authClickHandler()
-    if (event.key === "Enter" && btnRegistry) registryClickHandler()
+    if (event.key === "Enter" && btnAuth) preSendCheck(authClickHandler)
+    if (event.key === "Enter" && btnRegistry) preSendCheck(registryClickHandler)
+
+    inputEmail?.classList.remove("input-error")
 })
 
 const inputPassword: HTMLInputElement | null = document.getElementById("password") as HTMLInputElement
 inputPassword?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnAuth) authClickHandler()
-    if (event.key === "Enter" && btnRegistry) registryClickHandler()
+    if (event.key === "Enter" && btnAuth) preSendCheck(authClickHandler)
+    if (event.key === "Enter" && btnRegistry) preSendCheck(registryClickHandler)
+
+    inputPassword?.classList.remove("input-error")
 })
 
 const inputPasswordConfirm: HTMLInputElement | null = document.getElementById("password-confirm") as HTMLInputElement
 inputPasswordConfirm?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnRegistry) registryClickHandler()
+    if (event.key === "Enter" && btnRegistry) preSendCheck(registryClickHandler)
+
+    inputPasswordConfirm?.classList.remove("input-error")
 })
+
+/**
+ * Предварительная проверка введенных значений, перед отправкой на сервер
+ * @param cb - функция выполниться если проверка прошла успешно
+ */
+function preSendCheck(cb: () => void) {
+    if (!inputEmail?.value) {
+        inputEmail?.classList.add("input-error")
+
+        new Toast("Предупреждение", "Email не должен быть пустым", "WARNING", 3)
+            .render("toasts")
+
+        return
+    }
+    if (!inputPassword?.value) {
+        inputPassword?.classList.add("input-error")
+
+        new Toast("Предупреждение", "Пароль не должен быть пустым", "WARNING", 3)
+            .render("toasts")
+
+        return
+    }
+
+    /** registry */
+    if (inputPasswordConfirm && (inputPassword?.value !== inputPasswordConfirm?.value)) {
+        inputPasswordConfirm?.classList.add("input-error")
+
+        new Toast("Предупреждение", "Пароль должен совпадать с подтверждением пароля", "WARNING", 3)
+            .render("toasts")
+
+        return
+    }
+
+    cb()
+}
 
 /**
  * обработчик кнопки войти
@@ -73,7 +118,9 @@ function authClickHandler() {
  */
 function registryClickHandler() {
     Api.registry({ login: inputEmail?.value, password: inputPassword?.value })
-        .then((_res) => {
+        .then((res) => {
+            if (!res.ok) throw new Error(String(res.status))
+
             new Toast("Учетные данные подтверждены", "Вы зарегистрированы в системе", "SUCCESS", 3, () => {
                 goRoute("/login")
             })
@@ -83,7 +130,7 @@ function registryClickHandler() {
             switch (+error.message) {
                 case 400:
                 case 401:
-                    new Toast("Ошибка", "Возможно email уже зарегистрирован", "ERROR", 3).render("toasts");
+                    new Toast("Ошибка", "Проверьте email, возможно он уже зарегистрирован", "ERROR", 3).render("toasts");
                     break;
 
                 default:

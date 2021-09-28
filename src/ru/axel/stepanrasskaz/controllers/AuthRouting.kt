@@ -84,11 +84,19 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 if (user == null) {
                     val result = userService.insertOne(registryDTO)
 
-                    if (result?.wasAcknowledged() == true) call.respond(HttpStatusCode.OK)
-                    else call.respond(HttpStatusCode.InternalServerError)
+                    if (result?.wasAcknowledged() == true) {
+                        call.respond(HttpStatusCode.OK)
 
-                    // todo: доделать отправку почты
-                    Mailer(configMailer).send()
+                        // TODO: доделать отправку почты
+                        Mailer(configMailer)
+                            .send(
+                                "Вы зарегистрированы",
+                                "Вы успешно зарегистрировались на ресурсе",
+                                setOf(registryDTO.getEmail())
+                            )
+                    } else {
+                        call.respond(HttpStatusCode.InternalServerError)
+                    }
                 } else {
                     call.respond(HttpStatusCode.BadRequest)
                 }

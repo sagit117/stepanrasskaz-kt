@@ -15,10 +15,14 @@ class Mailer(configMailer: ConfigMailer) {
         email.setFrom(configMailer.from)
     }
 
-    fun send() {
-        email.subject = "test"
-        email.setMsg("message-content")
-        email.addTo("sagit117@gmail.com")
+    fun send(subject: String, msg: String, emails: Set<String>) {
+        email.subject = subject
+        email.setMsg(msg)
+
+        for(mail in emails) {
+            email.addTo(mail)
+        }
+
         email.send()
     }
 }
