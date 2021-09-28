@@ -12,6 +12,7 @@ import ru.axel.stepanrasskaz.templates.pages.BasePage
 class EmptyLayout(private val Page: BasePage): Template<HTML> {
     private val topPanel = TemplatePlaceholder<TopPanel>()
     private val page = TemplatePlaceholder<BasePage>()
+    var isAdmin = false
 
     override fun HTML.apply() {
         head {
@@ -26,7 +27,7 @@ class EmptyLayout(private val Page: BasePage): Template<HTML> {
         }
 
         body {
-            insert(TopPanel(), topPanel)
+            insert(TopPanel(isAdmin), topPanel)
 
             div {
                 classes = setOf("content")

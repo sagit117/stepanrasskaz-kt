@@ -50,9 +50,9 @@ fun Application.moduleRoutingRoot() {
     val configMailer = ConfigMailer(hostName, smtpPort, user, password, from, isSSLOnConnect, charSet)
 
     routing {
-        /** перехват данных из куки */
+        /** перехват куки и получение данных пользователя */
         intercept(ApplicationCallPipeline.Features) {
-            if (!call.request.uri.startsWith("/static")) {
+            if (!call.request.uri.startsWith("/static/")) {
                 val token = call.sessions.get<UserSession>()?.token
 
                 val verifierToken = try {
@@ -62,11 +62,10 @@ fun Application.moduleRoutingRoot() {
                 }
 
                 val email = verifierToken?.getClaim("email")?.asString()
-
                 val userService = UserService(DataBase.getCollection())
 
                 runBlocking {
-                    val userRepository = email?.let { it1 -> userService.getUser(it1) }
+                    val userRepository = email?.let { it -> userService.getUser(it) }
 
                     if (userRepository != null) {
                         call.attributes.put(userRepoAttributeKey, userRepository)

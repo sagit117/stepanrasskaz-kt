@@ -9,5 +9,9 @@ class TopMenuData {
     fun getButtons(): List<ButtonData> {
         return listOf(ButtonData("account","Войти", setOf("btn", "btn-primary"), "/static/account-arrow-right.svg"))
     }
+
+    fun getAdminButtons(): List<ButtonData> {
+        return listOf(ButtonData("account","Кабинет", setOf("btn", "btn-primary"), "/static/account-arrow-right.svg"))
+    }
 }
 

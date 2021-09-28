@@ -3,12 +3,14 @@ package ru.axel.stepanrasskaz.templates.layouts
 import io.ktor.html.*
 import kotlinx.html.*
 import ru.axel.stepanrasskaz.Config
+import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.templates.components.TopPanel
 import ru.axel.stepanrasskaz.templates.pages.BasePage
 
 class DefaultLayout(private val Page: BasePage): Template<HTML> {
     private val topPanel = TemplatePlaceholder<TopPanel>()
     private val page = TemplatePlaceholder<BasePage>()
+    var isAdmin = false
 
     override fun HTML.apply() {
         head {
@@ -23,7 +25,7 @@ class DefaultLayout(private val Page: BasePage): Template<HTML> {
         }
 
         body {
-            insert(TopPanel(), topPanel)
+            insert(TopPanel(isAdmin), topPanel)
 
             div {
                 classes = setOf("content")

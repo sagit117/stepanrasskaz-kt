@@ -8,8 +8,10 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
 import kotlinx.coroutines.runBlocking
+import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.connectors.Mailer
+import ru.axel.stepanrasskaz.domain.role.RoleRepository
 import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
@@ -24,8 +26,10 @@ import ru.axel.stepanrasskaz.utils.ConfigMailer
 
 fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     get("/login") {
-        call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
+        val connectUserData = call.attributes[Config.userRepoAttributeKey]
 
+        call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
+            isAdmin = connectUserData.role == RoleRepository.ADMIN
         }
     }
 
@@ -69,8 +73,10 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     }
 
     get("/registry") {
-        call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
+        val connectUserData = call.attributes[Config.userRepoAttributeKey]
 
+        call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
+            isAdmin = connectUserData.role == RoleRepository.ADMIN
         }
     }
 
