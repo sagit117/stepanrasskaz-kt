@@ -2,6 +2,7 @@ package ru.axel.stepanrasskaz
 
 import io.ktor.application.*
 import io.ktor.auth.*
+import io.ktor.client.engine.*
 import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
@@ -9,6 +10,7 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
+import io.ktor.util.pipeline.*
 import ru.axel.stepanrasskaz.domain.user.UserSession
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
@@ -77,7 +79,7 @@ fun Application.module(testing: Boolean = false) {
     install(Sessions) {
         cookie<UserSession>("user_session") {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = 600
+            cookie.maxAgeInSeconds = 2592000 // 30 days
             cookie.httpOnly = true
             cookie.extensions["SameSite"] = "lax"
         }

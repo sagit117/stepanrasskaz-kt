@@ -3,16 +3,15 @@ package ru.axel.stepanrasskaz.domain.user
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.mongodb.client.result.InsertOneResult
-import org.bson.BsonValue
 import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.eq
+import org.litote.kmongo.json
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.utils.BaseService
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.sha256
 import java.util.*
-import kotlin.reflect.KClass
 
 /**
  * Контроллер для всех операций с колекцией пользователей
@@ -31,21 +30,21 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
         return when(dto) {
             is AuthDTO -> findOne(dto.getEmail())
             is RegistryDTO -> findOne(dto.getEmail())
+            is String -> findOne(dto)
             else -> null
         }
     }
 
-    fun createJWT(configJWT: ConfigJWT, userRepository: UserRepository): String? {
+    fun createJWT(configJWT: ConfigJWT, userRepository: UserRepository): String {
         return JWT.create()
             .withAudience(configJWT.audience)
             .withIssuer(configJWT.issuer)
-            .withClaim("email", userRepository.email)
-            .withClaim("role", userRepository.role.toString())
-            .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+            .withClaim("userEmail", userRepository.email)
+            .withExpiresAt(Date(System.currentTimeMillis() + 2592000000)) // 30 days
             .sign(Algorithm.HMAC256(configJWT.secret))
     }
 
-    suspend fun insertOne(registryDTO: RegistryDTO): InsertOneResult? {
+    suspend fun insertOne(registryDTO: RegistryDTO): InsertOneResult {
         return collection.insertOne(UserRepository(email = registryDTO.getEmail(), password = registryDTO.password.sha256()))
     }
 }

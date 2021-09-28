@@ -6,5 +6,6 @@ data class ConfigMailer(
     val user: String,
     val password: String,
     val from: String,
-    val isSSLOnConnect: Boolean = true)
+    val isSSLOnConnect: Boolean = true,
+    val charSet: String = "utf-8")
 

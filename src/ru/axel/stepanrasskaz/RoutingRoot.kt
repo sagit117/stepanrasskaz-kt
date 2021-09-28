@@ -3,9 +3,19 @@ package ru.axel.stepanrasskaz
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
+import io.ktor.request.*
 import io.ktor.routing.*
+import io.ktor.sessions.*
+import io.ktor.util.*
+import io.ktor.util.pipeline.*
+import kotlinx.coroutines.runBlocking
+import ru.axel.stepanrasskaz.Config.userRepoAttributeKey
+import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.controllers.homeRouting
 import ru.axel.stepanrasskaz.controllers.authRoute
+import ru.axel.stepanrasskaz.domain.user.UserRepository
+import ru.axel.stepanrasskaz.domain.user.UserService
+import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
 
@@ -35,11 +45,38 @@ fun Application.moduleRoutingRoot() {
     val password = environment.config.property("mailer.password").getString()
     val isSSLOnConnect = environment.config.property("mailer.isSSLOnConnect").getString().toBoolean()
     val from = environment.config.property("mailer.from").getString()
+    val charSet = environment.config.property("mailer.charSet").getString()
 
-    val configMailer = ConfigMailer(hostName, smtpPort, user, password, from, isSSLOnConnect)
+    val configMailer = ConfigMailer(hostName, smtpPort, user, password, from, isSSLOnConnect, charSet)
 
     routing {
+        /** перехват данных из куки */
+        intercept(ApplicationCallPipeline.Features) {
+            if (!call.request.uri.startsWith("/static")) {
+                val token = call.sessions.get<UserSession>()?.token
+
+                val verifierToken = try {
+                    jwtVerifier.verify(token)
+                } catch (error: Exception) {
+                    null
+                }
+
+                val email = verifierToken?.getClaim("email")?.asString()
+
+                val userService = UserService(DataBase.getCollection())
+
+                runBlocking {
+                    val userRepository = email?.let { it1 -> userService.getUser(it1) }
+
+                    if (userRepository != null) {
+                        call.attributes.put(userRepoAttributeKey, userRepository)
+                    }
+                }
+            }
+
+        }
+
         authRoute(configJWT, configMailer)
-        homeRouting(jwtVerifier)
+        homeRouting()
     }
 }

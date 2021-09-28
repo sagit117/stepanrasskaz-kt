@@ -13,7 +13,7 @@ class Mailer(configMailer: ConfigMailer) {
         email.setAuthenticator(DefaultAuthenticator(configMailer.user, configMailer.password))
         email.isSSLOnConnect = configMailer.isSSLOnConnect
         email.setFrom(configMailer.from)
-        email.setCharset("utf-8")
+        email.setCharset(configMailer.charSet)
     }
 
     fun send(subject: String, msgHtml: String, emails: Set<String>, altMsgText: String = "Your email client does not support HTML messages") {
