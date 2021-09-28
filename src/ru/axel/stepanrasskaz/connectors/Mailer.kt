@@ -1,11 +1,11 @@
 package ru.axel.stepanrasskaz.connectors
 
 import org.apache.commons.mail.DefaultAuthenticator
-import org.apache.commons.mail.SimpleEmail
+import org.apache.commons.mail.HtmlEmail
 import ru.axel.stepanrasskaz.utils.ConfigMailer
 
 class Mailer(configMailer: ConfigMailer) {
-    private val email = SimpleEmail()
+    private val email = HtmlEmail()
 
     init {
         email.hostName = configMailer.hostName
@@ -15,9 +15,12 @@ class Mailer(configMailer: ConfigMailer) {
         email.setFrom(configMailer.from)
     }
 
-    fun send(subject: String, msg: String, emails: Set<String>) {
+    fun send(subject: String, msgHtml: String, emails: Set<String>, altMsgText: String = "Your email client does not support HTML messages") {
         email.subject = subject
-        email.setMsg(msg)
+        email.setMsg(msgHtml)
+
+        email.setHtmlMsg(msgHtml)
+        email.setTextMsg(altMsgText)
 
         for(mail in emails) {
             email.addTo(mail)

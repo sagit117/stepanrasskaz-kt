@@ -14,9 +14,11 @@ import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
+import ru.axel.stepanrasskaz.templates.entryMail
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
 import ru.axel.stepanrasskaz.templates.pages.RegistryPage
+import ru.axel.stepanrasskaz.templates.registryMail
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
 
@@ -51,6 +53,14 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
 
                     call.sessions.set(token?.let { it -> UserSession(token = it) })
                     call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
+
+                    Mailer(configMailer)
+                        .send(
+                            "Вы вошли в систему",
+                            entryMail(),
+                            setOf(user.email),
+                            "Если это были не Вы, восстановите пароль!"
+                        )
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)
                 }
@@ -87,12 +97,12 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                     if (result?.wasAcknowledged() == true) {
                         call.respond(HttpStatusCode.OK)
 
-                        // TODO: доделать отправку почты
                         Mailer(configMailer)
                             .send(
                                 "Вы зарегистрированы",
-                                "Вы успешно зарегистрировались на ресурсе",
-                                setOf(registryDTO.getEmail())
+                                registryMail(),
+                                setOf(registryDTO.getEmail()),
+                                "Вы успешно зарегистрировались на ресурсе!"
                             )
                     } else {
                         call.respond(HttpStatusCode.InternalServerError)
