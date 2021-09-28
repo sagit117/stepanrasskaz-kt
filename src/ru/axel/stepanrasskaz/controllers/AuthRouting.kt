@@ -76,7 +76,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         val connectUserData = call.attributes[Config.userRepoAttributeKey]
 
         call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
-            isAdmin = connectUserData.role == RoleRepository.ADMIN
+            isAdmin = connectUserData?.role == RoleRepository.ADMIN
         }
     }
 
