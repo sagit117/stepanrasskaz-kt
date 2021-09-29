@@ -11,5 +11,7 @@ data class UserRepository(
     val name: String = "",
     val email: String,
     val password: String,
-    val role: RoleRepository = RoleRepository.TEMP
+    val role: RoleRepository = RoleRepository.TEMP,
+    val isBlocked: Boolean = false, // перманентная блокировка
+    val isNeedPassword: Boolean = false // блокировка до ввода пароля
     )

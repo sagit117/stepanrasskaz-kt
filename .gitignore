@@ -1,6 +1,7 @@
 /.gradle
 /.idea
 /resources/js/node_modules
+/resources/application.conf
 /out
 /build
 *.iml

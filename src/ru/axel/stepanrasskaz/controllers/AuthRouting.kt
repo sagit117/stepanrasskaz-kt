@@ -12,6 +12,7 @@ import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.connectors.Mailer
 import ru.axel.stepanrasskaz.domain.role.RoleRepository
+import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
@@ -26,10 +27,14 @@ import ru.axel.stepanrasskaz.utils.ConfigMailer
 
 fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     get("/login") {
-        val connectUserData = call.attributes[Config.userRepoAttributeKey]
+        val connectUserData = try {
+            call.attributes[Config.userRepoAttributeKey]
+        } catch (error: Exception) {
+            null
+        }
 
         call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
-            isAdmin = connectUserData.role == RoleRepository.ADMIN
+            isAdmin = connectUserData?.role == RoleRepository.ADMIN
         }
     }
 
@@ -55,7 +60,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                     /** создать jwt для ответа */
                     val token = userService.createJWT(configJWT, user)
 
-                    call.sessions.set(token?.let { it -> UserSession(token = it) })
+                    call.sessions.set(UserSession(token = token))
                     call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
 
                     Mailer(configMailer)
@@ -73,7 +78,11 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     }
 
     get("/registry") {
-        val connectUserData = call.attributes[Config.userRepoAttributeKey]
+        val connectUserData: UserRepository? = try {
+            call.attributes[Config.userRepoAttributeKey]
+        } catch (error: Exception) {
+            null
+        }
 
         call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
             isAdmin = connectUserData?.role == RoleRepository.ADMIN
@@ -100,7 +109,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 if (user == null) {
                     val result = userService.insertOne(registryDTO)
 
-                    if (result?.wasAcknowledged() == true) {
+                    if (result.wasAcknowledged()) {
                         call.respond(HttpStatusCode.OK)
 
                         Mailer(configMailer)

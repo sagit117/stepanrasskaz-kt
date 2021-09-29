@@ -9,7 +9,7 @@
     box-shadow: 4px 8px 8px 0 var(--color-grey);
 }
 
-@media screen and (max-width: 440px) {
+@media (max-width: 440px) {
     .panel-top__wrapper {
         grid-template-columns: auto;
         height: auto;

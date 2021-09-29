@@ -65,7 +65,7 @@ fun Application.moduleRoutingRoot() {
                 val userService = UserService(DataBase.getCollection())
 
                 runBlocking {
-                    val userRepository = email?.let { it -> userService.getUser(it) }
+                    val userRepository: UserRepository? = email?.let { it -> userService.getUser(it) }
 
                     if (userRepository != null) {
                         call.attributes.put(userRepoAttributeKey, userRepository)

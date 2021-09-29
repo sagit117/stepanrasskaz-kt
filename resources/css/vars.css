@@ -28,4 +28,6 @@
     --color-text: #0d0d0d;
 
     --color-warning: orange;
+
+    --min-screen-size: 440px;
 }

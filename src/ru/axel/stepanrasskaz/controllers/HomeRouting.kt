@@ -10,10 +10,14 @@ import ru.axel.stepanrasskaz.templates.pages.HomePage
 
 fun Route.homeRouting() {
     get("/") {
-        val connectUserData = call.attributes[userRepoAttributeKey]
+        val connectUserData = try {
+            call.attributes[userRepoAttributeKey]
+        } catch (error: Exception) {
+            null
+        }
 
         call.respondHtmlTemplate(DefaultLayout(HomePage())) {
-            isAdmin = connectUserData.role == RoleRepository.ADMIN
+            isAdmin = connectUserData?.role == RoleRepository.ADMIN
         }
     }
 }

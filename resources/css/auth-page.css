@@ -10,7 +10,19 @@
     margin-top: 4rem;
     border-radius: 15px;
     box-shadow: 4px 8px 8px 0 var(--color-grey);
-    min-width: 20%;
+    min-width: 30%;
+}
+
+@media (max-width: 440px) {
+    .auth-form__wrapper {
+        min-width: 100%;
+    }
+}
+
+@media (min-width: 441px) and (max-width: 1024px) {
+    .auth-form__wrapper {
+        min-width: 60%;
+    }
 }
 
 .auth-form__controls {
