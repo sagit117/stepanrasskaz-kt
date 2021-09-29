@@ -34,7 +34,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         }
 
         call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
-            isAdmin = connectUserData?.role == RoleRepository.ADMIN
+            user = connectUserData
         }
     }
 
@@ -85,7 +85,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         }
 
         call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
-            isAdmin = connectUserData?.role == RoleRepository.ADMIN
+            user = connectUserData
         }
     }
 

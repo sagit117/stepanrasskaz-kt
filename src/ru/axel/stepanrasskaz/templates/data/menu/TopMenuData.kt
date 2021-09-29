@@ -13,5 +13,9 @@ class TopMenuData {
     fun getAdminButtons(): List<ButtonData> {
         return listOf(ButtonData("account","Кабинет", setOf("btn", "btn-primary"), "/static/account-arrow-right.svg"))
     }
+
+    fun getClientButtons(): List<ButtonData> {
+        return listOf(ButtonData("account","Кабинет", setOf("btn", "btn-primary"), "/static/account-arrow-right.svg"))
+    }
 }
 

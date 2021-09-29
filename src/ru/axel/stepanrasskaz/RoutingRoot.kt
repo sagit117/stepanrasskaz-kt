@@ -6,9 +6,8 @@ import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
-import io.ktor.util.*
-import io.ktor.util.pipeline.*
 import kotlinx.coroutines.runBlocking
+import org.litote.kmongo.Id
 import ru.axel.stepanrasskaz.Config.userRepoAttributeKey
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.controllers.homeRouting
@@ -61,11 +60,11 @@ fun Application.moduleRoutingRoot() {
                     null
                 }
 
-                val email = verifierToken?.getClaim("email")?.asString()
+                val id = verifierToken?.getClaim("id")?.asString()
                 val userService = UserService(DataBase.getCollection())
 
                 runBlocking {
-                    val userRepository: UserRepository? = email?.let { it -> userService.getUser(it) }
+                    val userRepository: UserRepository? = id?.let { it -> userService.findOneById(it) }
 
                     if (userRepository != null) {
                         call.attributes.put(userRepoAttributeKey, userRepository)

@@ -39,7 +39,7 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
         return JWT.create()
             .withAudience(configJWT.audience)
             .withIssuer(configJWT.issuer)
-            .withClaim("userEmail", userRepository.email)
+            .withClaim("id", userRepository.id.toString())
             .withExpiresAt(Date(System.currentTimeMillis() + 2592000000)) // 30 days
             .sign(Algorithm.HMAC256(configJWT.secret))
     }
