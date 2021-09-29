@@ -33,8 +33,12 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
             null
         }
 
-        call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
-            user = connectUserData
+        if (connectUserData == null) {
+            call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
+                user = connectUserData
+            }
+        } else {
+            call.respondRedirect("/account")
         }
     }
 
