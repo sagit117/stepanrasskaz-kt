@@ -73,6 +73,7 @@ fun Application.moduleRoutingRoot() {
                 }
             }
 
+            proceed()
         }
 
         authRoute(configJWT, configMailer)

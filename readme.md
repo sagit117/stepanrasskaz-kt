@@ -1,5 +1,7 @@
 ### Добавление нового роутинга
 
+Новый маршрут подключается через RootRouting
+
 ```kotlin
 fun Route.accountRoute() {
     get("/account") {

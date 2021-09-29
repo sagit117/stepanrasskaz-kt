@@ -20,6 +20,7 @@ import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.templates.entryMail
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
+import ru.axel.stepanrasskaz.templates.pages.RecoveryPasswordPage
 import ru.axel.stepanrasskaz.templates.pages.RegistryPage
 import ru.axel.stepanrasskaz.templates.registryMail
 import ru.axel.stepanrasskaz.utils.ConfigJWT
@@ -38,7 +39,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 user = connectUserData
             }
         } else {
-            call.respondRedirect("/account")
+            call.respondRedirect("/account/${connectUserData.id}")
         }
     }
 
@@ -88,8 +89,12 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
             null
         }
 
-        call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
-            user = connectUserData
+        if (connectUserData == null) {
+            call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
+                user = connectUserData
+            }
+        } else {
+            call.respondRedirect("/account/${connectUserData.id}")
         }
     }
 
@@ -130,6 +135,22 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                     call.respond(HttpStatusCode.BadRequest)
                 }
             }
+        }
+    }
+
+    get("/recovery/password") {
+        val connectUserData = try {
+            call.attributes[Config.userRepoAttributeKey]
+        } catch (error: Exception) {
+            null
+        }
+
+        if (connectUserData == null) {
+            call.respondHtmlTemplate(EmptyLayout(RecoveryPasswordPage())) {
+                user = connectUserData
+            }
+        } else {
+            call.respondRedirect("/account/${connectUserData.id}")
         }
     }
 }
