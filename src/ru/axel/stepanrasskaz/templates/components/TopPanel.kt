@@ -34,13 +34,16 @@ class TopPanel(private val user: UserRepository? = null): Template<FlowContent> 
             div {
                 classes = setOf("panel-top__menu")
 
-                val btns = if (user?.role == RoleRepository.ADMIN) {
-                    TopMenuData().getAdminButtons()
-                } else if (user?.email != null) {
-                    TopMenuData().getClientButtons()
-                } else {
-                    TopMenuData().getButtons()
-                }
+                val btns =
+                    if (user != null) {
+                        if (user.role.indexOf(RoleRepository.ADMIN) != -1) {
+                            TopMenuData().getAdminButtons()
+                        } else {
+                            TopMenuData().getClientButtons()
+                        }
+                    } else {
+                        TopMenuData().getButtons()
+                    }
 
                 for (btn in btns) {
                     insert(Button(btn), btnList)

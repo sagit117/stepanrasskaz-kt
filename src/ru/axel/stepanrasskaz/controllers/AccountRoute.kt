@@ -20,7 +20,10 @@ fun Route.accountRoute() {
         }
 
         // TODO: подумать как сделать более универсально
-        if (call.parameters["id"].toString() != connectUserData?.id.toString() && connectUserData?.role != RoleRepository.ADMIN) {
+        if (call.parameters["id"].toString() != connectUserData?.id.toString()
+            && (connectUserData?.role?.indexOf(RoleRepository.ADMIN) == -1
+                    || connectUserData?.role?.indexOf(RoleRepository.USER_DATA_READ) == -1)
+        ) {
             call.respond(HttpStatusCode.Unauthorized)
 
             return@get
