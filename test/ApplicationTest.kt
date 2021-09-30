@@ -1,8 +1,9 @@
 package ru.axel
 
 import io.ktor.http.*
-import kotlin.test.*
 import io.ktor.server.testing.*
+import junit.framework.TestCase.assertEquals
+import org.junit.Test
 import ru.axel.stepanrasskaz.module
 
 class ApplicationTest {

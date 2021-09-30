@@ -16,6 +16,7 @@ import ru.axel.stepanrasskaz.controllers.authRoute
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
+import ru.axel.stepanrasskaz.domain.user.helpers.HashMapUser
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
 
@@ -65,7 +66,23 @@ fun Application.moduleRoutingRoot() {
                 val userService = UserService(DataBase.getCollection())
 
                 runBlocking {
-                    val userRepository: UserRepository? = id?.let { it -> userService.findOneById(it) }
+                    val userRepository: UserRepository? = id?.let { it ->
+                        /** хеширование запросов к бд */
+                        val hashUser = HashMapUser.getUsers(id)
+
+                        if (hashUser != null) {
+                            return@let hashUser
+                        } else {
+                            val dbUser = userService.findOneById(it)
+
+                            if (dbUser != null) {
+                                HashMapUser.addUsers(dbUser)
+                                return@let dbUser
+                            } else {
+                                return@let null
+                            }
+                        }
+                    }
 
                     if (userRepository != null) {
                         call.attributes.put(userRepoAttributeKey, userRepository)
