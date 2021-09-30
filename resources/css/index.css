@@ -5,6 +5,7 @@
 @import "inputs.css";
 @import "labels.css";
 @import "toasts.css";
+@import "spinner.css";
 @import "auth-page.css";
 
 * {
@@ -31,6 +32,17 @@ body {
 
 .content {
     position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--color-black-light);
+    opacity: 0.4;
 }
 
 .bottom {

@@ -7,10 +7,12 @@
 }
 
 .auth-form__wrapper {
+    position: relative;
     margin-top: 4rem;
     border-radius: 15px;
     box-shadow: 4px 8px 8px 0 var(--color-grey);
-    min-width: 30%;
+    min-width: 422px;
+    overflow: hidden;
 }
 
 @media (max-width: 440px) {
@@ -27,5 +29,14 @@
 
 .auth-form__controls {
     display: flex;
+    justify-content: end;
     height: 5rem;
+}
+
+.spinner__wrapper {
+    position: absolute;
+    left: 50%;
+}
+.spinner__wrapper > .spinner {
+    color: var(--color-grey1);
 }

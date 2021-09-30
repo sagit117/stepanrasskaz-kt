@@ -17,7 +17,13 @@ class RegistryPage: BasePage() {
             classes = setOf("auth__wrapper")
 
             div {
+                id = "auth-form"
                 classes = setOf("auth-form__wrapper", "p2")
+
+                div {
+                    id = "spinner-wrapper"
+                    classes = setOf("spinner__wrapper")
+                }
 
                 h4 {
                     +"Регистрация"
@@ -68,6 +74,11 @@ class RegistryPage: BasePage() {
                         insert(Button(btn), btnList)
                     }
                 }
+            }
+
+            script {
+                src = "/static/spinner.js"
+                type = "module"
             }
 
             script {

@@ -13,7 +13,13 @@ class RecoveryPasswordPage: BasePage() {
             classes = setOf("auth__wrapper")
 
             div {
+                id = "auth-form"
                 classes = setOf("auth-form__wrapper", "p2")
+
+                div {
+                    id = "spinner-wrapper"
+                    classes = setOf("spinner__wrapper")
+                }
 
                 h4 {
                     +"Восстановление пароля"
@@ -40,6 +46,11 @@ class RecoveryPasswordPage: BasePage() {
                         insert(Button(btn), btnList)
                     }
                 }
+            }
+
+            script {
+                src = "/static/spinner.js"
+                type = "module"
             }
 
             script {

@@ -6,7 +6,7 @@ export default class Toast {
     #title
     #timer
     #cb
-    #id = Math.random() * 100
+    #id = "toast-" + Math.random() * 100
 
     /**
      * Создаем toast data
@@ -29,7 +29,7 @@ export default class Toast {
     }
 
     destroy() {
-        const elem = document.getElementById(String(this.#id))
+        const elem = document.getElementById(this.#id)
         elem?.remove()
         this.#cb?.()
     }

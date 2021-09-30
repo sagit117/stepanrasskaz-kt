@@ -1,6 +1,7 @@
 "use strict";
 import Api from "./api.js";
 import Toast from "./toasts.js";
+import Spinner from "./spinner.js";
 import { goRoute } from "./utils.js";
 /** buttons */
 const btnAuth = document.getElementById("auth");
@@ -72,6 +73,8 @@ function preSendCheck(cb) {
  * обработчик кнопки войти
  */
 function authClickHandler() {
+    const spinner = new Spinner("auth-form");
+    spinner.render("spinner-wrapper");
     Api.auth(inputEmail?.value, inputPassword?.value)
         .then((res) => {
         if (res.ok)
@@ -94,12 +97,15 @@ function authClickHandler() {
             default:
                 new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
         }
-    });
+    })
+        .finally(() => spinner.destroy());
 }
 /**
  * обработчик кнопки регистрация
  */
 function registryClickHandler() {
+    const spinner = new Spinner("auth-form");
+    spinner.render("spinner-wrapper");
     Api.registry({ login: inputEmail?.value, password: inputPassword?.value })
         .then((res) => {
         if (!res.ok)
@@ -118,6 +124,7 @@ function registryClickHandler() {
             default:
                 new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
         }
-    });
+    })
+        .finally(() => spinner.destroy());
 }
 //# sourceMappingURL=auth-form.js.map

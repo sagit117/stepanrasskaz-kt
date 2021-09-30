@@ -5,7 +5,7 @@ export default class Toast {
     #title;
     #timer;
     #cb;
-    #id = Math.random() * 100;
+    #id = "toast-" + Math.random() * 100;
     /**
      * Создаем toast data
      * @param title - заголовок
@@ -25,7 +25,7 @@ export default class Toast {
         }, (this.#timer * 1000) || 3000);
     }
     destroy() {
-        const elem = document.getElementById(String(this.#id));
+        const elem = document.getElementById(this.#id);
         elem?.remove();
         this.#cb?.();
     }
