@@ -10,6 +10,7 @@
     position: relative;
     margin-top: 4rem;
     border-radius: 15px;
+    border-left: 1rem solid var(--color-purpur);
     box-shadow: 4px 8px 8px 0 var(--color-grey);
     min-width: 422px;
     overflow: hidden;
