@@ -23,8 +23,8 @@ btnGoAuth?.addEventListener("click", () => {
 const btnRegistry = document.getElementById("registry")
 btnRegistry?.addEventListener("click", () => preSendCheck(registryClickHandler))
 
-const btnForgotPass = document.getElementById("go-forgot-password")
-btnForgotPass?.addEventListener("click", () => {
+const btnGoForgotPass = document.getElementById("go-forgot-password")
+btnGoForgotPass?.addEventListener("click", () => {
     goRoute("/recovery/password")
 })
 
