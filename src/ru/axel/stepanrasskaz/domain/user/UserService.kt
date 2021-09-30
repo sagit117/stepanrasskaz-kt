@@ -13,6 +13,8 @@ import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.sha256
 import java.util.*
 
+// TODO: удалять запись из hashMapUser если есть изменения по пользователю
+
 /**
  * Контроллер для всех операций с колекцией пользователей
  */
