@@ -2,10 +2,7 @@ package ru.axel.stepanrasskaz.domain.user.auth.dto
 
 import ru.axel.stepanrasskaz.domain.user.helpers.Email
 
-/**
- * DTO данные для передачи логина и пароля
- */
-data class AuthDTO(val login: String, val password: String) {
+data class SetCodeDTO(val login: String) {
     private val email: Email = Email(login)
 
     fun getEmail(): String {
@@ -13,6 +10,6 @@ data class AuthDTO(val login: String, val password: String) {
     }
 
     override fun toString(): String {
-        return "email=$email password=$password"
+        return "email=$email"
     }
 }

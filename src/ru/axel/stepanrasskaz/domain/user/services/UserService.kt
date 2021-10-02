@@ -3,8 +3,11 @@ package ru.axel.stepanrasskaz.domain.user.services
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.mongodb.client.result.InsertOneResult
+import com.mongodb.client.result.UpdateResult
+import org.bson.types.ObjectId
 import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
@@ -48,5 +51,9 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
 
     suspend fun insertOne(registryDTO: RegistryDTO): InsertOneResult {
         return collection.insertOne(UserRepository(email = registryDTO.getEmail(), password = registryDTO.password.sha256()))
+    }
+
+    suspend fun setPassCode(id: String, code: String): UpdateResult {
+        return collection.updateOneById(ObjectId(id), setValue(UserRepository::passChangeCode, code))
     }
 }

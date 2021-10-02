@@ -16,6 +16,7 @@ import ru.axel.stepanrasskaz.domain.user.services.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
+import ru.axel.stepanrasskaz.domain.user.auth.dto.SetCodeDTO
 import ru.axel.stepanrasskaz.templates.entryMail
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
@@ -24,6 +25,7 @@ import ru.axel.stepanrasskaz.templates.pages.RegistryPage
 import ru.axel.stepanrasskaz.templates.registryMail
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
+import ru.axel.stepanrasskaz.utils.RandomCode
 
 fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     get("/login") {
@@ -43,40 +45,39 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     }
 
     post("/api/v1/login") {
-        val authData = call.receive<AuthDTO>()
-        var authDTO: AuthDTO? = null
+        val authDTO = call.receive<AuthDTO>()
 
         /** проверяем на ошибки в веденных данных */
         try {
-            authDTO = AuthDTO(authData.login, authData.password)
+            AuthDTO(authDTO.login, authDTO.password)
         } catch (error: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+
+            return@post
         }
 
-        if (authDTO != null) {
-            val userService = UserService(DataBase.getCollection())
+        val userService = UserService(DataBase.getCollection())
 
-            runBlocking {
-                val user = userService.getUser(authDTO)
+        runBlocking {
+            val user = userService.getUser(authDTO)
 
-                if (user?.let { it -> userService.checkAuth(it, authDTO) } == true) {
+            if (user?.let { it -> userService.checkAuth(it, authDTO) } == true) {
 
-                    /** создать jwt для ответа */
-                    val token = userService.createJWT(configJWT, user)
+                /** создать jwt для ответа */
+                val token = userService.createJWT(configJWT, user)
 
-                    call.sessions.set(UserSession(token = token))
-                    call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
+                call.sessions.set(UserSession(token = token))
+                call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
 
-                    Mailer(configMailer)
-                        .send(
-                            "Вы вошли в систему",
-                            entryMail(),
-                            setOf(user.email),
-                            "Если это были не Вы, восстановите пароль!"
-                        )
-                } else {
-                    call.respond(HttpStatusCode.Unauthorized)
-                }
+                Mailer(configMailer)
+                    .send(
+                        "Вы вошли в систему",
+                        entryMail(),
+                        setOf(user.email),
+                        "Если это были не Вы, восстановите пароль!"
+                    )
+            } else {
+                call.respond(HttpStatusCode.Unauthorized)
             }
         }
     }
@@ -98,41 +99,40 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     }
 
     post("api/v1/registry") {
-        val registryData = call.receive<RegistryDTO>()
-        var registryDTO: RegistryDTO? = null
+        val registryDTO = call.receive<RegistryDTO>()
 
         /** проверяем на ошибки в веденных данных */
         try {
-            registryDTO = RegistryDTO(registryData.login, registryData.password)
+            RegistryDTO(registryDTO.login, registryDTO.password)
         } catch (error: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+
+            return@post
         }
 
-        if (registryDTO != null) {
-            val userService = UserService(DataBase.getCollection())
+        val userService = UserService(DataBase.getCollection())
 
-            runBlocking {
-                val user = userService.getUser(registryDTO)
+        runBlocking {
+            val user = userService.getUser(registryDTO)
 
-                if (user == null) {
-                    val result = userService.insertOne(registryDTO)
+            if (user == null) {
+                val result = userService.insertOne(registryDTO)
 
-                    if (result.wasAcknowledged()) {
-                        call.respond(HttpStatusCode.OK)
+                if (result.wasAcknowledged()) {
+                    call.respond(HttpStatusCode.OK)
 
-                        Mailer(configMailer)
-                            .send(
-                                "Вы зарегистрированы",
-                                registryMail(),
-                                setOf(registryDTO.getEmail()),
-                                "Вы успешно зарегистрировались на ресурсе!"
-                            )
-                    } else {
-                        call.respond(HttpStatusCode.InternalServerError)
-                    }
+                    Mailer(configMailer)
+                        .send(
+                            "Вы зарегистрированы",
+                            registryMail(),
+                            setOf(registryDTO.getEmail()),
+                            "Вы успешно зарегистрировались на ресурсе!"
+                        )
                 } else {
-                    call.respond(HttpStatusCode.BadRequest)
+                    call.respond(HttpStatusCode.InternalServerError)
                 }
+            } else {
+                call.respond(HttpStatusCode.BadRequest)
             }
         }
     }
@@ -150,6 +150,45 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
             }
         } else {
             call.respondRedirect("/account/${connectUserData.id}")
+        }
+    }
+
+    post("/api/v1/set/passwordcode") {
+        val setCodeDTO = call.receive<SetCodeDTO>()
+
+        /** проверяем на ошибки в веденных данных */
+        try {
+            SetCodeDTO(setCodeDTO.login)
+        } catch (error: IllegalArgumentException) {
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+
+            return@post
+        }
+
+        val userService = UserService(DataBase.getCollection())
+
+        runBlocking {
+            val user = userService.getUser(setCodeDTO.getEmail())
+
+            if (user != null) {
+                val result = userService.setPassCode(user.id.toString(), RandomCode(10))
+
+                if (result.wasAcknowledged()) {
+                    call.respond(HttpStatusCode.OK)
+
+//                    Mailer(configMailer)
+//                        .send(
+//                            "Вы зарегистрированы",
+//                            registryMail(),
+//                            setOf(user.email),
+//                            "Вы успешно зарегистрировались на ресурсе!"
+//                        )
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError)
+                }
+            } else {
+                call.respond(HttpStatusCode.BadRequest)
+            }
         }
     }
 }

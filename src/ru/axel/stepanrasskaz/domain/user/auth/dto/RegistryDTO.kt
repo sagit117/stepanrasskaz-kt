@@ -6,13 +6,13 @@ import ru.axel.stepanrasskaz.domain.user.helpers.Email
  * DTO данные для регистрации по логину и паролю
  */
 data class RegistryDTO(val login: String, val password: String) {
-    private val email: Email = Email(login)
+    private val email: String = Email(login).toString()
 
     fun getEmail(): String {
-        return email.toString()
+        return email
     }
 
     override fun toString(): String {
-        return "email=${ email.toString() } password=$password"
+        return "email=$email password=$password"
     }
 }
