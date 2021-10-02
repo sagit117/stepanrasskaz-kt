@@ -1,11 +1,11 @@
-package ru.axel.stepanrasskaz.domain.user
+package ru.axel.stepanrasskaz.domain.user.services
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.mongodb.client.result.InsertOneResult
 import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.eq
-import org.litote.kmongo.json
+import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.utils.BaseService

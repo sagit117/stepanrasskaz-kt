@@ -11,9 +11,8 @@ import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.connectors.Mailer
-import ru.axel.stepanrasskaz.domain.role.RoleRepository
 import ru.axel.stepanrasskaz.domain.user.UserRepository
-import ru.axel.stepanrasskaz.domain.user.UserService
+import ru.axel.stepanrasskaz.domain.user.services.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO

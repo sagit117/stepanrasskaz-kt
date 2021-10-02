@@ -7,14 +7,13 @@ import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
 import kotlinx.coroutines.runBlocking
-import org.litote.kmongo.Id
 import ru.axel.stepanrasskaz.Config.userRepoAttributeKey
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.controllers.accountRoute
 import ru.axel.stepanrasskaz.controllers.homeRouting
 import ru.axel.stepanrasskaz.controllers.authRoute
 import ru.axel.stepanrasskaz.domain.user.UserRepository
-import ru.axel.stepanrasskaz.domain.user.UserService
+import ru.axel.stepanrasskaz.domain.user.services.UserService
 import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.helpers.HashMapUser
 import ru.axel.stepanrasskaz.utils.ConfigJWT
