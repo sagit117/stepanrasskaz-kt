@@ -139,9 +139,8 @@ function passwordSetCode() {
         .then((res) => {
         if (!res.ok)
             throw new Error(String(res.status));
-        // todo: обработка формы
         new Toast("Учетные данные подтверждены", "Код выслан на указанные email", "SUCCESS", 3, () => {
-            goRoute("/");
+            goRoute("/password/change");
         })
             .render("toasts");
     })

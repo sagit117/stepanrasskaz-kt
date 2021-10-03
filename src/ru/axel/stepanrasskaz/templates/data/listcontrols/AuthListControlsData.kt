@@ -27,4 +27,11 @@ class AuthListControlsData {
             ButtonData("forgot-password", "Запросить код", setOf("btn", "btn-success"))
         )
     }
+
+    fun getControlsForChangePassword(): List<ButtonData> {
+        return listOf(
+            ButtonData("go-auth", "Войти", setOf("btn", "btn-primary", "mr1", "ml-auto")),
+            ButtonData("change-password", "Сменить пароль", setOf("btn", "btn-success"))
+        )
+    }
 }

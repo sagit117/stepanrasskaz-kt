@@ -2,7 +2,6 @@ package ru.axel.stepanrasskaz.domain.user.session
 
 import kotlinx.coroutines.*
 import ru.axel.stepanrasskaz.Config
-import java.lang.Thread.sleep
 import kotlin.collections.HashMap
 
 /**

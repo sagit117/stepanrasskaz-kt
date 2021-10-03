@@ -20,6 +20,7 @@ import ru.axel.stepanrasskaz.domain.user.auth.dto.SetCodeDTO
 import ru.axel.stepanrasskaz.templates.codeForChangePassword
 import ru.axel.stepanrasskaz.templates.entryMail
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
+import ru.axel.stepanrasskaz.templates.pages.ChangePasswordPage
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
 import ru.axel.stepanrasskaz.templates.pages.RecoveryPasswordPage
 import ru.axel.stepanrasskaz.templates.pages.RegistryPage
@@ -38,7 +39,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
 
         if (connectUserData == null) {
             call.respondHtmlTemplate(EmptyLayout(LoginPage())) {
-                user = connectUserData
+
             }
         } else {
             call.respondRedirect("/account/${connectUserData.id}")
@@ -92,7 +93,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
 
         if (connectUserData == null) {
             call.respondHtmlTemplate(EmptyLayout(RegistryPage())) {
-                user = connectUserData
+
             }
         } else {
             call.respondRedirect("/account/${connectUserData.id}")
@@ -147,7 +148,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
 
         if (connectUserData == null) {
             call.respondHtmlTemplate(EmptyLayout(RecoveryPasswordPage())) {
-                user = connectUserData
+
             }
         } else {
             call.respondRedirect("/account/${connectUserData.id}")
@@ -183,7 +184,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                             "Код для восстановления пароля",
                             codeForChangePassword(code),
                             setOf(user.email),
-                            "Ваш код для востановления пароля $code, введите его в соответствующее поле"
+                            "Ваш код для востановления пароля $code, введите его в соответствующее поле. Важно использовать тот-же браузер, с которого был запрос!"
                         )
                 } else {
                     call.respond(HttpStatusCode.InternalServerError)
@@ -191,6 +192,22 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
             } else {
                 call.respond(HttpStatusCode.BadRequest)
             }
+        }
+    }
+
+    get("/password/change") {
+        val connectUserData = try {
+            call.attributes[Config.userRepoAttributeKey]
+        } catch (error: Exception) {
+            null
+        }
+
+        if (connectUserData == null) {
+            call.respondHtmlTemplate(EmptyLayout(ChangePasswordPage())) {
+
+            }
+        } else {
+            call.respondRedirect("/account/${connectUserData.id}")
         }
     }
 }

@@ -14,5 +14,5 @@ object Config {
     val userRepoAttributeKey = AttributeKey<UserRepository>("userRepo")
 
     const val hashMapUserSize: Int = 100 // TODO: вписать вывод из БД
-    const val lifeTimeUserID: Long = 60 // время жизни куки userID
+    const val lifeTimeUserID: Long = 900 // время жизни куки userID
 }

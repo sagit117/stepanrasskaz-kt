@@ -9,5 +9,7 @@ fun entryMail(): String {
 }
 
 fun codeForChangePassword(code: String): String {
-    return "<b>Ваш код для востановления пароля $code, введите его в соответствующее поле</b>"
+    return "<b>Ваш код для востановления пароля $code, введите его в соответствующее поле</b>" +
+            "<br />" +
+            "<span style='color: red;'>Важно использовать тот-же браузер, с которого был запрос!</span>"
 }
