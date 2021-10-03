@@ -14,7 +14,7 @@ object HashMapUser {
     }
 
     fun addUsers(user: UserRepository) {
-        // TODO: зможно стоит ограничить размер как-то по другому
+        // TODO: возможно стоит ограничить размер как-то по другому
         if (user.id.toString() !in mapUser) {
             if (mapUser.size == hashMapUserSize) mapUser.clear()
 

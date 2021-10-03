@@ -7,6 +7,8 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.connectors.DataBase
@@ -15,8 +17,10 @@ import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.services.UserService
 import ru.axel.stepanrasskaz.domain.user.session.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
+import ru.axel.stepanrasskaz.domain.user.auth.dto.ChangePasswordDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.SetCodeDTO
+import ru.axel.stepanrasskaz.domain.user.session.UserDataMemory
 import ru.axel.stepanrasskaz.domain.user.session.UserID
 import ru.axel.stepanrasskaz.domain.user.session.UserStack
 import ru.axel.stepanrasskaz.templates.codeForChangePassword
@@ -48,44 +52,6 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         }
     }
 
-    post("/api/v1/login") {
-        val authData = call.receive<AuthDTO>()
-
-        /** проверяем на ошибки в веденных данных */
-        val authDTO = try {
-            AuthDTO(authData.login, authData.password)
-        } catch (error: IllegalArgumentException) {
-            call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
-
-            return@post
-        }
-
-        val userService = UserService(DataBase.getCollection())
-
-        runBlocking {
-            val user = userService.getUser(authDTO)
-
-            if (user?.let { it -> userService.checkAuth(it, authDTO) } == true) {
-
-                /** создать jwt для ответа */
-                val token = userService.createJWT(configJWT, user)
-
-                call.sessions.set(UserSession(token = token))
-                call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
-
-                Mailer(configMailer)
-                    .send(
-                        "Вы вошли в систему",
-                        entryMail(),
-                        setOf(user.email),
-                        "Если это были не Вы, восстановите пароль!"
-                    )
-            } else {
-                call.respond(HttpStatusCode.Unauthorized)
-            }
-        }
-    }
-
     get("/registry") {
         val connectUserData: UserRepository? = try {
             call.attributes[Config.userRepoAttributeKey]
@@ -102,21 +68,92 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         }
     }
 
-    post("api/v1/registry") {
-        val registryData = call.receive<RegistryDTO>()
+    route("/password") {
+        get("/recovery") {
+            val connectUserData = try {
+                call.attributes[Config.userRepoAttributeKey]
+            } catch (error: Exception) {
+                null
+            }
 
-        /** проверяем на ошибки в веденных данных */
-        val registryDTO = try {
-            RegistryDTO(registryData.login, registryData.password)
-        } catch (error: IllegalArgumentException) {
-            call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+            if (connectUserData == null) {
+                call.respondHtmlTemplate(EmptyLayout(RecoveryPasswordPage())) {
 
-            return@post
+                }
+            } else {
+                call.respondRedirect("/account/${connectUserData.id}")
+            }
         }
 
-        val userService = UserService(DataBase.getCollection())
+        get("/change") {
+            val connectUserData = try {
+                call.attributes[Config.userRepoAttributeKey]
+            } catch (error: Exception) {
+                null
+            }
 
-        runBlocking {
+            if (connectUserData == null) {
+                call.respondHtmlTemplate(EmptyLayout(ChangePasswordPage())) {
+
+                }
+            } else {
+                call.respondRedirect("/account/${connectUserData.id}")
+            }
+        }
+    }
+
+    route("/api/v1") {
+        post("/login") {
+            val authData = call.receive<AuthDTO>()
+
+            /** проверяем на ошибки в веденных данных */
+            val authDTO = try {
+                AuthDTO(authData.login, authData.password)
+            } catch (error: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+
+                return@post
+            }
+
+            val userService = UserService(DataBase.getCollection())
+
+            val user = userService.getUser(authDTO)
+
+            if (user?.let { userService.checkAuth(it, authDTO) } == true) {
+
+                /** создать jwt для ответа */
+                val token = userService.createJWT(configJWT, user)
+
+                call.sessions.set(UserSession(token = token))
+
+                call.respond(HttpStatusCode.OK, mapOf("id" to user.id.toString(), "token" to token))
+
+                Mailer(configMailer)
+                    .send(
+                        "Вы вошли в систему",
+                        entryMail(),
+                        setOf(user.email),
+                        "Если это были не Вы, восстановите пароль!"
+                    )
+            } else {
+                call.respond(HttpStatusCode.Unauthorized)
+            }
+        }
+
+        post("/registry") {
+            val registryData = call.receive<RegistryDTO>()
+
+            /** проверяем на ошибки в веденных данных */
+            val registryDTO = try {
+                RegistryDTO(registryData.login, registryData.password)
+            } catch (error: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+
+                return@post
+            }
+
+            val userService = UserService(DataBase.getCollection())
+
             val user = userService.getUser(registryDTO)
 
             if (user == null) {
@@ -139,81 +176,95 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 call.respond(HttpStatusCode.BadRequest)
             }
         }
-    }
 
-    get("/password/recovery") {
-        val connectUserData = try {
-            call.attributes[Config.userRepoAttributeKey]
-        } catch (error: Exception) {
-            null
-        }
+        route("/password") {
+            post("/code/set") {
+                val setCodeData = call.receive<SetCodeDTO>()
 
-        if (connectUserData == null) {
-            call.respondHtmlTemplate(EmptyLayout(RecoveryPasswordPage())) {
+                /** проверяем на ошибки в веденных данных */
+                val setCodeDTO = try {
+                    SetCodeDTO(setCodeData.login)
+                } catch (error: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
 
+                    return@post
+                }
+
+                val userService = UserService(DataBase.getCollection())
+
+                val user = userService.getUser(setCodeDTO.getEmail())
+                val id = call.sessions.get<UserID>()?.id
+
+                if (user != null && id != null) {
+                    val code = randomCode(10)
+
+                    UserStack.setUserDbId(id, user.id.toString())
+                    UserStack.setPassCode(id, code)
+
+                    call.respond(HttpStatusCode.OK)
+
+                    Mailer(configMailer)
+                        .send(
+                            "Код для восстановления пароля",
+                            codeForChangePassword(code),
+                            setOf(user.email),
+                            "Ваш код для востановления пароля $code, введите его в соответствующее поле. Важно использовать тот-же браузер, с которого был запрос!"
+                        )
+                } else {
+                    call.respond(HttpStatusCode.BadRequest)
+                }
             }
-        } else {
-            call.respondRedirect("/account/${connectUserData.id}")
-        }
-    }
 
-    post("/api/v1/password/code/set") {
-        val setCodeData = call.receive<SetCodeDTO>()
+            post("/change") {
+                val changePassData = call.receive<ChangePasswordDTO>()
 
-        /** проверяем на ошибки в веденных данных */
-        val setCodeDTO = try {
-            SetCodeDTO(setCodeData.login)
-        } catch (error: IllegalArgumentException) {
-            call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+                /** проверяем на ошибки в веденных данных */
+                val changePassDTO = try {
+                    ChangePasswordDTO(changePassData.code, changePassData.password)
+                } catch (error: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
 
-            return@post
-        }
+                    return@post
+                }
 
-        val userService = UserService(DataBase.getCollection())
+                val id = call.sessions.get<UserID>()?.id
 
-        runBlocking {
-            val user = userService.getUser(setCodeDTO.getEmail())
-            val id = call.sessions.get<UserID>()?.id
+                if (id != null) {
+                    val userDataMemory: UserDataMemory? = UserStack.getUser(id)
+                    val userId = userDataMemory?.userDbId
+                    val passwordChangeCode = userDataMemory?.passwordChangeCode
 
-            if (user != null && id != null) {
-                val code = randomCode(10)
-                val userID = UserStack.getUser(id)
+                    if (userId != null && passwordChangeCode == changePassDTO.code) {
+                        val userService = UserService(DataBase.getCollection())
 
-                userID?.passwordChangeCode = code
-                userID?.id = user.id.toString()
+                        val result = userService.updatePassword(userId, changePassDTO.password)
 
-                call.respond(HttpStatusCode.OK)
+                        if (result.wasAcknowledged()) {
+                            call.respond(HttpStatusCode.OK)
 
-                Mailer(configMailer)
-                    .send(
-                        "Код для восстановления пароля",
-                        codeForChangePassword(code),
-                        setOf(user.email),
-                        "Ваш код для востановления пароля $code, введите его в соответствующее поле. Важно использовать тот-же браузер, с которого был запрос!"
-                    )
-            } else {
-                call.respond(HttpStatusCode.BadRequest)
+                            UserStack.setPassCode(id, null)
+
+                            val user = userService.findOneById(userId)
+
+                            if (user != null) {
+                                Mailer(configMailer)
+                                    .send(
+                                        "Вы сменили пароль от ресурса",
+                                        registryMail(),
+                                        setOf(user.email),
+                                        "Вы успешно сменили пароль от ресурса!"
+                                    )
+                            }
+                        } else {
+                            call.respond(HttpStatusCode.InternalServerError)
+                        }
+                    } else {
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
+                } else {
+                    call.respond(HttpStatusCode.Unauthorized)
+                }
             }
         }
-    }
-
-    get("/password/change") {
-        val connectUserData = try {
-            call.attributes[Config.userRepoAttributeKey]
-        } catch (error: Exception) {
-            null
-        }
-
-        if (connectUserData == null) {
-            call.respondHtmlTemplate(EmptyLayout(ChangePasswordPage())) {
-
-            }
-        } else {
-            call.respondRedirect("/account/${connectUserData.id}")
-        }
-    }
-
-    post("/api/v1/password/change") {
-
     }
 }

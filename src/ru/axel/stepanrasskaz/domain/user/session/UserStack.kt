@@ -8,19 +8,22 @@ import kotlin.collections.HashMap
  * Храним данные о подключение пользователей
  */
 object UserStack {
-    private val hashMapUser: HashMap<String, UserData> = HashMap()
+    private val hashMapUser: HashMap<String, UserDataMemory> = HashMap()
 
     fun addUser(id: String) {
         if (id !in hashMapUser) {
-            hashMapUser[id] = UserData(System.currentTimeMillis(), System.currentTimeMillis())
+            hashMapUser[id] = UserDataMemory(System.currentTimeMillis(), System.currentTimeMillis())
 
             autoClear(id)
         } else {
             val data = hashMapUser[id]?.copy(dateTimeAtLastConnect = System.currentTimeMillis())
-            hashMapUser[id] = data ?: UserData(System.currentTimeMillis(), System.currentTimeMillis())
+            hashMapUser[id] = data ?: UserDataMemory(System.currentTimeMillis(), System.currentTimeMillis())
         }
     }
 
+    /**
+     * Автоочищение стэка
+     */
     @OptIn(DelicateCoroutinesApi::class)
     private fun autoClear(id: String) {
         GlobalScope.launch {
@@ -39,12 +42,36 @@ object UserStack {
         }
     }
 
-    fun getUser(id: String): UserData? {
+    fun getUser(id: String): UserDataMemory? {
         return hashMapUser[id]
+    }
+
+    /**
+     * Установить код для смены пароля
+     */
+    fun setPassCode(id: String, code: String?) {
+        val data = hashMapUser[id]?.copy(passwordChangeCode = code)
+
+        if (data != null) {
+            hashMapUser[id] = data
+        }
+    }
+
+    /**
+     * Установить id пользователя в БД
+     */
+    fun setUserDbId(id: String, dbId: String) {
+        val data = hashMapUser[id]?.copy(userDbId = dbId)
+
+        if (data != null) {
+            hashMapUser[id] = data
+        }
     }
 }
 
-data class UserData(val dateTimeAtFirstConnect: Long, val dateTimeAtLastConnect: Long) {
-    var passwordChangeCode: String = ""
-    var id: String = ""
-}
+data class UserDataMemory(
+    val dateTimeAtFirstConnect: Long,
+    val dateTimeAtLastConnect: Long,
+    val passwordChangeCode: String? = null,
+    var userDbId: String? = null
+)

@@ -53,4 +53,8 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
     suspend fun insertOne(registryDTO: RegistryDTO): InsertOneResult {
         return collection.insertOne(UserRepository(email = registryDTO.getEmail(), password = registryDTO.password.sha256()))
     }
+
+    suspend fun updatePassword(id: String, password: String): UpdateResult {
+        return collection.updateOneById(ObjectId(id), setValue(UserRepository::password, password.sha256()))
+    }
 }
