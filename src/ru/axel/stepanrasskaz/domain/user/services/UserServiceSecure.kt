@@ -4,6 +4,9 @@ import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.domain.role.RoleRepository
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 
+/**
+ * Безопасный класс для работы с сервисом пользователей
+ */
 class UserServiceSecure(val client: UserRepository?) {
     /**
      * Проверяем доступ пользователя на загрузку данных пользователей с отличным ID

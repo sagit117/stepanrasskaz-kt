@@ -234,35 +234,45 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                     val userId = userDataMemory?.userDbId
                     val passwordChangeCode = userDataMemory?.passwordChangeCode
 
-                    if (userId != null && passwordChangeCode == changePassDTO.code) {
-                        val userService = UserService(DataBase.getCollection())
+                    if (userId != null && passwordChangeCode != null) {
+                        if (passwordChangeCode == changePassDTO.code) {
+                            val userService = UserService(DataBase.getCollection())
 
-                        val result = userService.updatePassword(userId, changePassDTO.password)
+                            val result = userService.updatePassword(userId, changePassDTO.password)
 
-                        if (result.wasAcknowledged()) {
-                            call.respond(HttpStatusCode.OK)
+                            if (result.wasAcknowledged()) {
+                                call.respond(HttpStatusCode.OK)
 
-                            UserStack.setPassCode(id, null)
+                                UserStack.setPassCode(id, null)
 
-                            val user = userService.findOneById(userId)
+                                val user = userService.findOneById(userId)
 
-                            if (user != null) {
-                                Mailer(configMailer)
-                                    .send(
-                                        "Вы сменили пароль от ресурса",
-                                        registryMail(),
-                                        setOf(user.email),
-                                        "Вы успешно сменили пароль от ресурса!"
-                                    )
+                                if (user != null) {
+                                    Mailer(configMailer)
+                                        .send(
+                                            "Вы сменили пароль от ресурса",
+                                            registryMail(),
+                                            setOf(user.email),
+                                            "Вы успешно сменили пароль от ресурса!"
+                                        )
+                                }
+                            } else {
+                                /** ошибка записи в БД */
+                                call.respond(HttpStatusCode.InternalServerError)
                             }
                         } else {
-                            call.respond(HttpStatusCode.InternalServerError)
+                            /** код не верен */
+                            UserStack.setCountRequestChangePass(id)
+
+                            call.respond(HttpStatusCode.Unauthorized)
                         }
                     } else {
+                        /** или неопределен id для базы или код */
                         call.respond(HttpStatusCode.BadRequest)
                     }
                 } else {
-                    call.respond(HttpStatusCode.Unauthorized)
+                    /** запрос без куки */
+                    call.respond(HttpStatusCode.BadRequest)
                 }
             }
         }

@@ -13,6 +13,7 @@ object Config {
 
     val userRepoAttributeKey = AttributeKey<UserRepository>("userRepo")
 
-    const val hashMapUserSize: Int = 100 // TODO: вписать вывод из БД
+    const val hashMapUserSize: Int = 500 // размер хеша пользователей
     const val lifeTimeUserID: Long = 900 // время жизни куки userID
+    const val maxCountRequestChangePass: Int = 5 // максимальное число попыток ввода кода для смены пароля
 }

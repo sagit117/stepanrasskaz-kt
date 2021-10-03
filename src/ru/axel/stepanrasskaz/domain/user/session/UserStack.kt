@@ -31,7 +31,8 @@ object UserStack {
             delay(Config.lifeTimeUserID * 1000)
 
             if (id in hashMapUser) {
-                val isLife = ((System.currentTimeMillis() - hashMapUser[id]?.dateTimeAtLastConnect!!) / 1000) < Config.lifeTimeUserID
+                val isLife =
+                    ((System.currentTimeMillis() - hashMapUser[id]?.dateTimeAtLastConnect!!) / 1000) < Config.lifeTimeUserID
 
                 if (!isLife) {
                     hashMapUser.remove(id)
@@ -67,11 +68,24 @@ object UserStack {
             hashMapUser[id] = data
         }
     }
+
+    fun setCountRequestChangePass(id: String,) {
+        val data = hashMapUser[id]?.copy(countRequestChangePass = hashMapUser[id]?.countRequestChangePass?.plus(1) ?: 0)
+
+        if (data != null) {
+            hashMapUser[id] = data
+
+            if (data.countRequestChangePass >= Config.maxCountRequestChangePass) {
+                setPassCode(id, null)
+            }
+        }
+    }
 }
 
 data class UserDataMemory(
     val dateTimeAtFirstConnect: Long,
     val dateTimeAtLastConnect: Long,
     val passwordChangeCode: String? = null,
-    var userDbId: String? = null
+    val userDbId: String? = null,
+    val countRequestChangePass: Int = 0
 )
