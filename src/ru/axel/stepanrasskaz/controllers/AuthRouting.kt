@@ -177,8 +177,10 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
 
             if (user != null && id != null) {
                 val code = randomCode(10)
+                val userID = UserStack.getUser(id)
 
-                UserStack.getUser(id)?.passwordChangeCode = code
+                userID?.passwordChangeCode = code
+                userID?.id = user.id.toString()
 
                 call.respond(HttpStatusCode.OK)
 

@@ -8,6 +8,7 @@ class Api {
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify({ login, password }),
+            credentials: "include",
         })
             .then((res) => {
             return Promise.resolve(res);
@@ -25,6 +26,7 @@ class Api {
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify(body),
+            credentials: "include",
         })
             .then((res) => {
             return Promise.resolve(res);
@@ -46,6 +48,7 @@ class Api {
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify(body),
+            credentials: "include",
         })
             .then((res) => {
             return Promise.resolve(res);
@@ -67,6 +70,7 @@ class Api {
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify(body),
+            credentials: "include",
         })
             .then((res) => {
             return Promise.resolve(res);

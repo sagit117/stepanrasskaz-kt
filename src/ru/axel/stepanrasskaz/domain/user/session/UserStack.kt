@@ -46,4 +46,5 @@ object UserStack {
 
 data class UserData(val dateTimeAtFirstConnect: Long, val dateTimeAtLastConnect: Long) {
     var passwordChangeCode: String = ""
+    var id: String = ""
 }
