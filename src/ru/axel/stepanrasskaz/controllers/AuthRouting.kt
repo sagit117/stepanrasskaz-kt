@@ -17,6 +17,8 @@ import ru.axel.stepanrasskaz.domain.user.session.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.SetCodeDTO
+import ru.axel.stepanrasskaz.domain.user.session.UserID
+import ru.axel.stepanrasskaz.domain.user.session.UserStack
 import ru.axel.stepanrasskaz.templates.codeForChangePassword
 import ru.axel.stepanrasskaz.templates.entryMail
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
@@ -171,24 +173,22 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
 
         runBlocking {
             val user = userService.getUser(setCodeDTO.getEmail())
+            val id = call.sessions.get<UserID>()?.id
 
-            if (user != null) {
+            if (user != null && id != null) {
                 val code = randomCode(10)
-                val result = userService.setPassCode(user.id.toString(), code)
 
-                if (result.wasAcknowledged()) {
-                    call.respond(HttpStatusCode.OK)
+                UserStack.getUser(id)?.passwordChangeCode = code
 
-                    Mailer(configMailer)
-                        .send(
-                            "Код для восстановления пароля",
-                            codeForChangePassword(code),
-                            setOf(user.email),
-                            "Ваш код для востановления пароля $code, введите его в соответствующее поле. Важно использовать тот-же браузер, с которого был запрос!"
-                        )
-                } else {
-                    call.respond(HttpStatusCode.InternalServerError)
-                }
+                call.respond(HttpStatusCode.OK)
+
+                Mailer(configMailer)
+                    .send(
+                        "Код для восстановления пароля",
+                        codeForChangePassword(code),
+                        setOf(user.email),
+                        "Ваш код для востановления пароля $code, введите его в соответствующее поле. Важно использовать тот-же браузер, с которого был запрос!"
+                    )
             } else {
                 call.respond(HttpStatusCode.BadRequest)
             }
