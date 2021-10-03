@@ -14,10 +14,13 @@ import ru.axel.stepanrasskaz.controllers.homeRouting
 import ru.axel.stepanrasskaz.controllers.authRoute
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.services.UserService
-import ru.axel.stepanrasskaz.domain.user.UserSession
+import ru.axel.stepanrasskaz.domain.user.session.UserSession
 import ru.axel.stepanrasskaz.domain.user.helpers.HashMapUser
+import ru.axel.stepanrasskaz.domain.user.session.UserID
+import ru.axel.stepanrasskaz.domain.user.session.UserStack
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
+import ru.axel.stepanrasskaz.utils.randomCode
 
 /**
  * Объединяем все модули с маршрутами
@@ -50,7 +53,7 @@ fun Application.moduleRoutingRoot() {
     val configMailer = ConfigMailer(hostName, smtpPort, user, password, from, isSSLOnConnect, charSet)
 
     routing {
-        /** перехват куки и получение данных пользователя */
+        /** перехват куки token и получение данных пользователя */
         intercept(ApplicationCallPipeline.Features) {
             if (!call.request.uri.startsWith("/static/")) {
                 val token = call.sessions.get<UserSession>()?.token
@@ -86,6 +89,25 @@ fun Application.moduleRoutingRoot() {
                     if (userRepository != null) {
                         call.attributes.put(userRepoAttributeKey, userRepository)
                     }
+                }
+            }
+
+            proceed()
+        }
+
+        /** перехват куки userID и получение данных пользователя */
+        intercept(ApplicationCallPipeline.Features) {
+            if (!call.request.uri.startsWith("/static/")) {
+                val userID = call.sessions.get<UserID>()?.id
+
+                if (userID == null) {
+                    val code = randomCode(15)
+
+                    call.sessions.set(UserID(id = code))
+
+                    UserStack.addUser(code)
+                } else {
+                    UserStack.addUser(userID)
                 }
             }
 

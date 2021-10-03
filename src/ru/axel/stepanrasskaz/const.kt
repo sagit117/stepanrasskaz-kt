@@ -7,11 +7,12 @@ import ru.axel.stepanrasskaz.domain.user.UserRepository
  * Конфиг констант для приложения
  */
 object Config {
-    val appTitle: String = "StepanRasskaz.ru";  // TODO: вписать вывод из БД
-    val appFavicon: String = "/static/favicon.png" // TODO: вписать вывод из БД
-    val logoUrl: String = "/static/favicon.png" // TODO: вписать вывод из БД
+    const val appTitle: String = "StepanRasskaz.ru";  // TODO: вписать вывод из БД
+    const val appFavicon: String = "/static/favicon.png" // TODO: вписать вывод из БД
+    const val logoUrl: String = "/static/favicon.png" // TODO: вписать вывод из БД
 
     val userRepoAttributeKey = AttributeKey<UserRepository>("userRepo")
 
-    val hashMapUserSize = 100 // TODO: вписать вывод из БД
+    const val hashMapUserSize: Int = 100 // TODO: вписать вывод из БД
+    const val lifeTimeUserID: Long = 60 // время жизни куки userID
 }

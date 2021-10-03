@@ -11,6 +11,7 @@ import org.litote.kmongo.setValue
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
+import ru.axel.stepanrasskaz.domain.user.helpers.HashMapUser
 import ru.axel.stepanrasskaz.domain.utils.BaseService
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.sha256
@@ -54,6 +55,8 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
     }
 
     suspend fun setPassCode(id: String, code: String): UpdateResult {
+        HashMapUser.removeUser(id)
+
         return collection.updateOneById(ObjectId(id), setValue(UserRepository::passChangeCode, code))
     }
 }

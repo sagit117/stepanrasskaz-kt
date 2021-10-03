@@ -3,6 +3,9 @@ package ru.axel.stepanrasskaz.domain.user.helpers
 import ru.axel.stepanrasskaz.Config.hashMapUserSize
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 
+/**
+ * Объект для получения хеш данных пользователя не из базы
+ */
 object HashMapUser {
     private val mapUser: HashMap<String, UserRepository> = HashMap()
 
@@ -16,6 +19,12 @@ object HashMapUser {
             if (mapUser.size == hashMapUserSize) mapUser.clear()
 
             mapUser[user.id.toString()] = user
+        }
+    }
+
+    fun removeUser(id: String) {
+        if (id !in mapUser) {
+            mapUser.remove(id)
         }
     }
 }
