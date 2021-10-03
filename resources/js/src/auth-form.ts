@@ -25,8 +25,11 @@ btnRegistry?.addEventListener("click", () => preSendCheck(registryClickHandler))
 
 const btnGoForgotPass = document.getElementById("go-forgot-password")
 btnGoForgotPass?.addEventListener("click", () => {
-    goRoute("/recovery/password")
+    goRoute("/password/recovery")
 })
+
+const btnForgotPass = document.getElementById("forgot-password")
+btnForgotPass?.addEventListener("click", () => preSendCheck(passwordSetCode))
 
 /** inputs */
 
@@ -66,7 +69,7 @@ function preSendCheck(cb: () => void) {
 
         return
     }
-    if (!inputPassword?.value) {
+    if (inputPassword?.value === "") {
         inputPassword?.classList.add("input-error")
 
         new Toast("Предупреждение", "Пароль не должен быть пустым", "WARNING", 3)
@@ -144,6 +147,38 @@ function registryClickHandler() {
                 case 400:
                 case 401:
                     new Toast("Ошибка", "Проверьте email, возможно он уже зарегистрирован", "ERROR", 3).render("toasts");
+                    break;
+
+                default:
+                    new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
+            }
+        })
+        .finally(() => spinner.destroy())
+}
+
+/**
+ * Обработчик кнопки выслать код
+ */
+function passwordSetCode() {
+    const spinner = new Spinner("auth-form")
+    spinner.render("spinner-wrapper")
+
+    Api.passwordCodeSet({ login: inputEmail?.value })
+        .then((res) => {
+            if (!res.ok) throw new Error(String(res.status))
+
+            // todo: обработка формы
+
+            new Toast("Учетные данные подтверждены", "Код выслан на указанные email", "SUCCESS", 3, () => {
+                goRoute("/")
+            })
+                .render("toasts")
+        })
+        .catch((error) => {
+            switch (+error.message) {
+                case 400:
+                case 401:
+                    new Toast("Ошибка", "Не верный логин", "ERROR", 3).render("toasts");
                     break;
 
                 default:

@@ -17,6 +17,7 @@ import ru.axel.stepanrasskaz.domain.user.UserSession
 import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.user.auth.dto.SetCodeDTO
+import ru.axel.stepanrasskaz.templates.codeForChangePassword
 import ru.axel.stepanrasskaz.templates.entryMail
 import ru.axel.stepanrasskaz.templates.layouts.EmptyLayout
 import ru.axel.stepanrasskaz.templates.pages.LoginPage
@@ -25,7 +26,7 @@ import ru.axel.stepanrasskaz.templates.pages.RegistryPage
 import ru.axel.stepanrasskaz.templates.registryMail
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
-import ru.axel.stepanrasskaz.utils.RandomCode
+import ru.axel.stepanrasskaz.utils.randomCode
 
 fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     get("/login") {
@@ -45,11 +46,11 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     }
 
     post("/api/v1/login") {
-        val authDTO = call.receive<AuthDTO>()
+        val authData = call.receive<AuthDTO>()
 
         /** проверяем на ошибки в веденных данных */
-        try {
-            AuthDTO(authDTO.login, authDTO.password)
+        val authDTO = try {
+            AuthDTO(authData.login, authData.password)
         } catch (error: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
 
@@ -99,11 +100,11 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
     }
 
     post("api/v1/registry") {
-        val registryDTO = call.receive<RegistryDTO>()
+        val registryData = call.receive<RegistryDTO>()
 
         /** проверяем на ошибки в веденных данных */
-        try {
-            RegistryDTO(registryDTO.login, registryDTO.password)
+        val registryDTO = try {
+            RegistryDTO(registryData.login, registryData.password)
         } catch (error: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
 
@@ -137,7 +138,7 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         }
     }
 
-    get("/recovery/password") {
+    get("/password/recovery") {
         val connectUserData = try {
             call.attributes[Config.userRepoAttributeKey]
         } catch (error: Exception) {
@@ -153,12 +154,12 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
         }
     }
 
-    post("/api/v1/set/passwordcode") {
-        val setCodeDTO = call.receive<SetCodeDTO>()
+    post("/api/v1/password/code/set") {
+        val setCodeData = call.receive<SetCodeDTO>()
 
         /** проверяем на ошибки в веденных данных */
-        try {
-            SetCodeDTO(setCodeDTO.login)
+        val setCodeDTO = try {
+            SetCodeDTO(setCodeData.login)
         } catch (error: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
 
@@ -171,18 +172,19 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
             val user = userService.getUser(setCodeDTO.getEmail())
 
             if (user != null) {
-                val result = userService.setPassCode(user.id.toString(), RandomCode(10))
+                val code = randomCode(10)
+                val result = userService.setPassCode(user.id.toString(), code)
 
                 if (result.wasAcknowledged()) {
                     call.respond(HttpStatusCode.OK)
 
-//                    Mailer(configMailer)
-//                        .send(
-//                            "Вы зарегистрированы",
-//                            registryMail(),
-//                            setOf(user.email),
-//                            "Вы успешно зарегистрировались на ресурсе!"
-//                        )
+                    Mailer(configMailer)
+                        .send(
+                            "Код для восстановления пароля",
+                            codeForChangePassword(code),
+                            setOf(user.email),
+                            "Ваш код для востановления пароля $code, введите его в соответствующее поле"
+                        )
                 } else {
                     call.respond(HttpStatusCode.InternalServerError)
                 }

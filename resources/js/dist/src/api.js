@@ -34,6 +34,27 @@ class Api {
             return Promise.reject(error);
         });
     }
+    /**
+     * Запросить код для восстановления пароля
+     * @param body
+     */
+    passwordCodeSet(body) {
+        return fetch(this.#url + "/password/code/set", {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(body),
+        })
+            .then((res) => {
+            return Promise.resolve(res);
+        })
+            .catch((error) => {
+            console.error(error);
+            return Promise.reject(error);
+        });
+    }
 }
 export default new Api();
 //# sourceMappingURL=api.js.map

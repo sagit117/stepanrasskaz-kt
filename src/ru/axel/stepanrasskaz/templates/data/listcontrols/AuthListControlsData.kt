@@ -24,7 +24,7 @@ class AuthListControlsData {
     fun getControlsForRecoveryPassword(): List<ButtonData> {
         return listOf(
             ButtonData("go-auth", "Войти", setOf("btn", "btn-primary", "mr1", "ml-auto")),
-            ButtonData("forgot-password", "Запросить пароль", setOf("btn", "btn-success"))
+            ButtonData("forgot-password", "Запросить код", setOf("btn", "btn-success"))
         )
     }
 }
