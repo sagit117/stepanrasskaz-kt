@@ -210,4 +210,8 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
             call.respondRedirect("/account/${connectUserData.id}")
         }
     }
+
+    post("/api/v1/password/change") {
+
+    }
 }

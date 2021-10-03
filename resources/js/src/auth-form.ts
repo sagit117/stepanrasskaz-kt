@@ -31,6 +31,9 @@ btnGoForgotPass?.addEventListener("click", () => {
 const btnForgotPass = document.getElementById("forgot-password")
 btnForgotPass?.addEventListener("click", () => preSendCheck(passwordSetCode))
 
+const btnChangePassword = document.getElementById("change-password")
+btnChangePassword?.addEventListener("click", () => preSendCheck(changePassword))
+
 /** inputs */
 
 const inputEmail: HTMLInputElement | null = document.getElementById("email") as HTMLInputElement
@@ -56,12 +59,20 @@ inputPasswordConfirm?.addEventListener("keypress", (event) => {
     inputPasswordConfirm?.classList.remove("input-error")
 })
 
+const inputPassCode: HTMLInputElement | null = document.getElementById("code") as HTMLInputElement
+inputPassCode?.addEventListener("keypress", (event) => {
+    if (event.key === "Enter" && btnChangePassword) preSendCheck(changePassword)
+
+    inputPassCode?.classList.remove("input-error")
+})
+
 /**
  * Предварительная проверка введенных значений, перед отправкой на сервер
  * @param cb - функция выполниться если проверка прошла успешно
  */
 function preSendCheck(cb: () => void) {
-    if (!inputEmail?.value) {
+    /** login */
+    if (inputEmail?.value === "") {
         inputEmail?.classList.add("input-error")
 
         new Toast("Предупреждение", "Email не должен быть пустым", "WARNING", 3)
@@ -83,6 +94,16 @@ function preSendCheck(cb: () => void) {
         inputPasswordConfirm?.classList.add("input-error")
 
         new Toast("Предупреждение", "Пароль должен совпадать с подтверждением пароля", "WARNING", 3)
+            .render("toasts")
+
+        return
+    }
+
+    /** change pass */
+    if (inputPassCode?.value === "") {
+        inputPassCode?.classList.add("input-error")
+
+        new Toast("Предупреждение", "Нужно ввести код из письма", "WARNING", 3)
             .render("toasts")
 
         return
@@ -177,6 +198,36 @@ function passwordSetCode() {
                 case 400:
                 case 401:
                     new Toast("Ошибка", "Не верный логин", "ERROR", 3).render("toasts");
+                    break;
+
+                default:
+                    new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
+            }
+        })
+        .finally(() => spinner.destroy())
+}
+
+/**
+ * Обработчик кнопки сменить пароль
+ */
+function changePassword() {
+    const spinner = new Spinner("auth-form")
+    spinner.render("spinner-wrapper")
+
+    Api.passwordChange({ code: inputPassCode?.value, password: inputPassword?.value })
+        .then((res) => {
+            if (!res.ok) throw new Error(String(res.status))
+
+            new Toast("Учетные данные подтверждены", "Пароль успешно изменен", "SUCCESS", 3, () => {
+                goRoute("/login")
+            })
+                .render("toasts")
+        })
+        .catch((error) => {
+            switch (+error.message) {
+                case 400:
+                case 401:
+                    new Toast("Ошибка", "Не верный код для смены пароля", "ERROR", 3).render("toasts");
                     break;
 
                 default:
