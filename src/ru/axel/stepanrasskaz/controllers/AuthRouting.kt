@@ -261,10 +261,18 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                                 call.respond(HttpStatusCode.InternalServerError)
                             }
                         } else {
-                            /** код не верен */
                             UserStack.setCountRequestChangePass(id)
 
-                            call.respond(HttpStatusCode.Unauthorized)
+                            if (UserStack.getUser(id)?.countRequestChangePass!! > Config.maxCountRequestChangePass) {
+                                /** превышено количество запросов */
+                                call.respond(HttpStatusCode.TooManyRequests)
+
+                                UserStack.setCountRequestChangePass(id, 0)
+                                UserStack.setPassCode(id, null)
+                            } else {
+                                /** код не верен */
+                                call.respond(HttpStatusCode.Unauthorized)
+                            }
                         }
                     } else {
                         /** или неопределен id для базы или код */

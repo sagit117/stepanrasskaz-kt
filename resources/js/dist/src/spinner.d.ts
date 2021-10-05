@@ -7,5 +7,6 @@ export default class Spinner {
     constructor(idDivBlocking?: string);
     render(id: string): void;
     destroy(): void;
+    isRender(): boolean;
 }
 //# sourceMappingURL=spinner.d.ts.map

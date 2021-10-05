@@ -5,6 +5,8 @@ import Toast from "./toasts.js"
 import Spinner from "./spinner.js"
 import { goRoute } from "./utils.js"
 
+const spinner = new Spinner("auth-form")
+
 /** buttons */
 
 const btnAuth = document.getElementById("auth")
@@ -38,30 +40,33 @@ btnChangePassword?.addEventListener("click", () => preSendCheck(changePassword))
 
 const inputEmail: HTMLInputElement | null = document.getElementById("email") as HTMLInputElement
 inputEmail?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnAuth) preSendCheck(authClickHandler)
-    if (event.key === "Enter" && btnRegistry) preSendCheck(registryClickHandler)
+    if (event.key === "Enter" && btnAuth && !spinner.isRender()) preSendCheck(authClickHandler)
+    if (event.key === "Enter" && btnRegistry && !spinner.isRender()) preSendCheck(registryClickHandler)
+    if (event.key === "Enter" && btnForgotPass && !spinner.isRender()) preSendCheck(passwordSetCode)
 
     inputEmail?.classList.remove("input-error")
 })
 
 const inputPassword: HTMLInputElement | null = document.getElementById("password") as HTMLInputElement
 inputPassword?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnAuth) preSendCheck(authClickHandler)
-    if (event.key === "Enter" && btnRegistry) preSendCheck(registryClickHandler)
+    if (event.key === "Enter" && btnAuth && !spinner.isRender()) preSendCheck(authClickHandler)
+    if (event.key === "Enter" && btnRegistry && !spinner.isRender()) preSendCheck(registryClickHandler)
+    if (event.key === "Enter" && btnChangePassword && !spinner.isRender()) preSendCheck(changePassword)
 
     inputPassword?.classList.remove("input-error")
 })
 
 const inputPasswordConfirm: HTMLInputElement | null = document.getElementById("password-confirm") as HTMLInputElement
 inputPasswordConfirm?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnRegistry) preSendCheck(registryClickHandler)
+    if (event.key === "Enter" && btnRegistry && !spinner.isRender()) preSendCheck(registryClickHandler)
+    if (event.key === "Enter" && btnChangePassword && !spinner.isRender()) preSendCheck(changePassword)
 
     inputPasswordConfirm?.classList.remove("input-error")
 })
 
 const inputPassCode: HTMLInputElement | null = document.getElementById("code") as HTMLInputElement
 inputPassCode?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnChangePassword) preSendCheck(changePassword)
+    if (event.key === "Enter" && btnChangePassword && !spinner.isRender()) preSendCheck(changePassword)
 
     inputPassCode?.classList.remove("input-error")
 })
@@ -116,7 +121,6 @@ function preSendCheck(cb: () => void) {
  * обработчик кнопки войти
  */
 function authClickHandler() {
-    const spinner = new Spinner("auth-form")
     spinner.render("spinner-wrapper")
 
     Api.auth(inputEmail?.value, inputPassword?.value)
@@ -151,7 +155,6 @@ function authClickHandler() {
  * обработчик кнопки регистрация
  */
 function registryClickHandler() {
-    const spinner = new Spinner("auth-form")
     spinner.render("spinner-wrapper")
 
     Api.registry({ login: inputEmail?.value, password: inputPassword?.value })
@@ -181,7 +184,6 @@ function registryClickHandler() {
  * Обработчик кнопки выслать код
  */
 function passwordSetCode() {
-    const spinner = new Spinner("auth-form")
     spinner.render("spinner-wrapper")
 
     Api.passwordCodeSet({ login: inputEmail?.value })
@@ -211,7 +213,6 @@ function passwordSetCode() {
  * Обработчик кнопки сменить пароль
  */
 function changePassword() {
-    const spinner = new Spinner("auth-form")
     spinner.render("spinner-wrapper")
 
     Api.passwordChange({ code: inputPassCode?.value, password: inputPassword?.value })
@@ -229,7 +230,11 @@ function changePassword() {
                 case 401:
                     new Toast("Ошибка", "Не верный код для смены пароля", "ERROR", 3).render("toasts");
                     break;
-
+                case 429:
+                    new Toast("Ошибка", "Превышено число попыток ввода кода", "ERROR", 3, () => {
+                        goRoute("/password/recovery")
+                    }).render("toasts");
+                    break;
                 default:
                     new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
             }

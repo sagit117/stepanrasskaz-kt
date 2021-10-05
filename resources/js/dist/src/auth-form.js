@@ -3,6 +3,7 @@ import Api from "./api.js";
 import Toast from "./toasts.js";
 import Spinner from "./spinner.js";
 import { goRoute } from "./utils.js";
+const spinner = new Spinner("auth-form");
 /** buttons */
 const btnAuth = document.getElementById("auth");
 btnAuth?.addEventListener("click", () => preSendCheck(authClickHandler));
@@ -27,29 +28,35 @@ btnChangePassword?.addEventListener("click", () => preSendCheck(changePassword))
 /** inputs */
 const inputEmail = document.getElementById("email");
 inputEmail?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnAuth)
+    if (event.key === "Enter" && btnAuth && !spinner.isRender())
         preSendCheck(authClickHandler);
-    if (event.key === "Enter" && btnRegistry)
+    if (event.key === "Enter" && btnRegistry && !spinner.isRender())
         preSendCheck(registryClickHandler);
+    if (event.key === "Enter" && btnForgotPass && !spinner.isRender())
+        preSendCheck(passwordSetCode);
     inputEmail?.classList.remove("input-error");
 });
 const inputPassword = document.getElementById("password");
 inputPassword?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnAuth)
+    if (event.key === "Enter" && btnAuth && !spinner.isRender())
         preSendCheck(authClickHandler);
-    if (event.key === "Enter" && btnRegistry)
+    if (event.key === "Enter" && btnRegistry && !spinner.isRender())
         preSendCheck(registryClickHandler);
+    if (event.key === "Enter" && btnChangePassword && !spinner.isRender())
+        preSendCheck(changePassword);
     inputPassword?.classList.remove("input-error");
 });
 const inputPasswordConfirm = document.getElementById("password-confirm");
 inputPasswordConfirm?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnRegistry)
+    if (event.key === "Enter" && btnRegistry && !spinner.isRender())
         preSendCheck(registryClickHandler);
+    if (event.key === "Enter" && btnChangePassword && !spinner.isRender())
+        preSendCheck(changePassword);
     inputPasswordConfirm?.classList.remove("input-error");
 });
 const inputPassCode = document.getElementById("code");
 inputPassCode?.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && btnChangePassword)
+    if (event.key === "Enter" && btnChangePassword && !spinner.isRender())
         preSendCheck(changePassword);
     inputPassCode?.classList.remove("input-error");
 });
@@ -91,7 +98,6 @@ function preSendCheck(cb) {
  * обработчик кнопки войти
  */
 function authClickHandler() {
-    const spinner = new Spinner("auth-form");
     spinner.render("spinner-wrapper");
     Api.auth(inputEmail?.value, inputPassword?.value)
         .then((res) => {
@@ -122,7 +128,6 @@ function authClickHandler() {
  * обработчик кнопки регистрация
  */
 function registryClickHandler() {
-    const spinner = new Spinner("auth-form");
     spinner.render("spinner-wrapper");
     Api.registry({ login: inputEmail?.value, password: inputPassword?.value })
         .then((res) => {
@@ -149,7 +154,6 @@ function registryClickHandler() {
  * Обработчик кнопки выслать код
  */
 function passwordSetCode() {
-    const spinner = new Spinner("auth-form");
     spinner.render("spinner-wrapper");
     Api.passwordCodeSet({ login: inputEmail?.value })
         .then((res) => {
@@ -176,7 +180,6 @@ function passwordSetCode() {
  * Обработчик кнопки сменить пароль
  */
 function changePassword() {
-    const spinner = new Spinner("auth-form");
     spinner.render("spinner-wrapper");
     Api.passwordChange({ code: inputPassCode?.value, password: inputPassword?.value })
         .then((res) => {
@@ -192,6 +195,11 @@ function changePassword() {
             case 400:
             case 401:
                 new Toast("Ошибка", "Не верный код для смены пароля", "ERROR", 3).render("toasts");
+                break;
+            case 429:
+                new Toast("Ошибка", "Превышено число попыток ввода кода", "ERROR", 3, () => {
+                    goRoute("/password/recovery");
+                }).render("toasts");
                 break;
             default:
                 new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");

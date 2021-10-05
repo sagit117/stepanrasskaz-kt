@@ -4,6 +4,7 @@ export default class Spinner {
     #id = "spinner-" + Math.random() * 100
     #idDivBlocking: HTMLDivElement | null = null
     #divOverlay: HTMLDivElement | null = null
+    #isRender: boolean = false
 
     /**
      * Класс spinner
@@ -32,6 +33,8 @@ export default class Spinner {
             this.#divOverlay.classList.add("overlay")
 
             this.#idDivBlocking.insertAdjacentElement("afterbegin", this.#divOverlay)
+
+            this.#isRender = true
         }
     }
 
@@ -39,6 +42,13 @@ export default class Spinner {
         const elem = document.getElementById(this.#id)
         elem?.remove()
 
-        if (this.#divOverlay) this.#divOverlay.remove()
+        if (this.#divOverlay) {
+            this.#divOverlay.remove()
+            this.#isRender = false
+        }
+    }
+
+    isRender() {
+        return this.#isRender
     }
 }

@@ -3,6 +3,7 @@ export default class Spinner {
     #id = "spinner-" + Math.random() * 100;
     #idDivBlocking = null;
     #divOverlay = null;
+    #isRender = false;
     /**
      * Класс spinner
      * @param idDivBlocking - id элемента, который необходимо покрыть оверлеем
@@ -26,13 +27,19 @@ export default class Spinner {
             this.#divOverlay = document.createElement("div");
             this.#divOverlay.classList.add("overlay");
             this.#idDivBlocking.insertAdjacentElement("afterbegin", this.#divOverlay);
+            this.#isRender = true;
         }
     }
     destroy() {
         const elem = document.getElementById(this.#id);
         elem?.remove();
-        if (this.#divOverlay)
+        if (this.#divOverlay) {
             this.#divOverlay.remove();
+            this.#isRender = false;
+        }
+    }
+    isRender() {
+        return this.#isRender;
     }
 }
 //# sourceMappingURL=spinner.js.map

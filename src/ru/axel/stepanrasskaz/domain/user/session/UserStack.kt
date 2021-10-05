@@ -69,15 +69,15 @@ object UserStack {
         }
     }
 
-    fun setCountRequestChangePass(id: String,) {
-        val data = hashMapUser[id]?.copy(countRequestChangePass = hashMapUser[id]?.countRequestChangePass?.plus(1) ?: 0)
+    fun setCountRequestChangePass(id: String, count: Int? = null) {
+        val data = if (count == null) {
+            hashMapUser[id]?.copy(countRequestChangePass = hashMapUser[id]?.countRequestChangePass?.plus(1) ?: 0)
+        } else {
+            hashMapUser[id]?.copy(countRequestChangePass = count)
+        }
 
         if (data != null) {
             hashMapUser[id] = data
-
-            if (data.countRequestChangePass >= Config.maxCountRequestChangePass) {
-                setPassCode(id, null)
-            }
         }
     }
 }
