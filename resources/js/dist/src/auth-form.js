@@ -170,6 +170,11 @@ function passwordSetCode() {
             case 401:
                 new Toast("Ошибка", "Не верный логин", "ERROR", 3).render("toasts");
                 break;
+            case 429:
+                new Toast("Ошибка", "Превышено число попыток запроса кода, нужно немного подождать", "ERROR", 3, () => {
+                    goRoute("/password/recovery");
+                }).render("toasts");
+                break;
             default:
                 new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
         }
