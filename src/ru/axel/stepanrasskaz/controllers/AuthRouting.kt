@@ -196,6 +196,18 @@ fun Route.authRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 val id = call.sessions.get<UserID>()?.id
 
                 if (user != null && id != null) {
+                    val userDataMemory = UserStack.getUser(id)
+
+                    /** если время между запросами прошло слишком мало, выкидываем ошибку */
+                    if (userDataMemory?.dateTimeAtSendEmailChangeCode != null &&
+                        (System.currentTimeMillis() - userDataMemory.dateTimeAtSendEmailChangeCode) / 1000
+                        < Config.periodSendEmailChangePass
+                    ) {
+                        call.respond(HttpStatusCode.TooManyRequests)
+
+                        return@post
+                    }
+
                     val code = randomCode(10)
 
                     UserStack.setUserDbId(id, user.id.toString())

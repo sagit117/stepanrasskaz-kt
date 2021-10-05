@@ -16,4 +16,5 @@ object Config {
     const val hashMapUserSize: Int = 500 // размер хеша пользователей
     const val lifeTimeUserID: Long = 900 // время жизни куки userID
     const val maxCountRequestChangePass: Int = 5 // максимальное число попыток ввода кода для смены пароля
+    const val periodSendEmailChangePass: Long = 60 // период, который должен пройти между отправками писем смены кода
 }

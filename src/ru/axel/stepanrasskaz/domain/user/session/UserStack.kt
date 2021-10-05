@@ -51,7 +51,7 @@ object UserStack {
      * Установить код для смены пароля
      */
     fun setPassCode(id: String, code: String?) {
-        val data = hashMapUser[id]?.copy(passwordChangeCode = code)
+        val data = hashMapUser[id]?.copy(passwordChangeCode = code, dateTimeAtSendEmailChangeCode = System.currentTimeMillis())
 
         if (data != null) {
             hashMapUser[id] = data
@@ -69,6 +69,9 @@ object UserStack {
         }
     }
 
+    /**
+     * Установить количество попыток ввода кода для смены пароля
+     */
     fun setCountRequestChangePass(id: String, count: Int? = null) {
         val data = if (count == null) {
             hashMapUser[id]?.copy(countRequestChangePass = hashMapUser[id]?.countRequestChangePass?.plus(1) ?: 0)
@@ -85,6 +88,7 @@ object UserStack {
 data class UserDataMemory(
     val dateTimeAtFirstConnect: Long,
     val dateTimeAtLastConnect: Long,
+    val dateTimeAtSendEmailChangeCode: Long? = null,
     val passwordChangeCode: String? = null,
     val userDbId: String? = null,
     val countRequestChangePass: Int = 0
