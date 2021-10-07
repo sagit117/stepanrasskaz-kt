@@ -14,5 +14,6 @@ data class UserRepository(
     val role: MutableList<RoleRepository> = mutableListOf(RoleRepository.TEMP),
     val isBlocked: Boolean = false,         // перманентная блокировка
     val isNeedPassword: Boolean = false,    // блокировка до ввода пароля
-    val dateTimeAtCreation: Long = System.currentTimeMillis()
+    val dateTimeAtCreation: Long = System.currentTimeMillis(),
+    val roleGroupsId: MutableList<String> = mutableListOf("")
 )

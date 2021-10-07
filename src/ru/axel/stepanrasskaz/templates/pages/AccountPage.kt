@@ -1,15 +1,16 @@
 package ru.axel.stepanrasskaz.templates.pages
 
-import kotlinx.html.FlowContent
-import kotlinx.html.div
-import kotlinx.html.h1
+import kotlinx.html.*
 
-class AccountPage(): BasePage() {
+class AccountPage: BasePage() {
     override fun FlowContent.apply() {
         div {
-            h1 {
-                +"account "
-            }
+            id = "account-page"
+        }
+
+        script {
+            src = "/static/account.js"
+            type = "module"
         }
     }
 }

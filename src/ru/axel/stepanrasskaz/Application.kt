@@ -95,6 +95,7 @@ fun Application.module(testing: Boolean = false) {
             resources("css")
             resources("image")
             resources("js/dist/src")
+            resources("js/lk/dist")
         }
     }
 }
