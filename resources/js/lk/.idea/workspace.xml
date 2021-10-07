@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e512109-3bc6-4ce4-8ad9-83726264c272" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/hooks/hooks.users.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaces.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/account.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/account.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/account.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/account.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/hooks.users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/hooks.users.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/api.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +47,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1633584817410</updated>
-      <workItem from="1633584823933" duration="9190000" />
+      <workItem from="1633584823933" duration="12109000" />
     </task>
     <servers />
   </component>

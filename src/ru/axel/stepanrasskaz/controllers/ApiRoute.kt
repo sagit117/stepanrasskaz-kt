@@ -237,7 +237,7 @@ fun Route.apiRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 if (showUser == null) {
                     call.respond(HttpStatusCode.Unauthorized)
                 } else {
-                    call.respond(HttpStatusCode.OK, mapOf("user" to showUser))
+                    call.respond(HttpStatusCode.OK, mapOf("user" to showUser.copy(password = "")))
                 }
             }
         }

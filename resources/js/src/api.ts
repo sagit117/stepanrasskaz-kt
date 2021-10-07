@@ -90,13 +90,8 @@ class Api {
     }
 
     getUserById(id: string) {
-        return fetch(this.#url + "/password/change", {
-            method: "post",
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: JSON.stringify(body),
+        return fetch(this.#url + `/user/get/${id}`, {
+            method: "get",
             credentials: "include",
         })
             .then((res) => {
