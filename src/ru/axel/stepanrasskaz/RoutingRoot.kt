@@ -6,10 +6,10 @@ import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
-import kotlinx.coroutines.runBlocking
 import ru.axel.stepanrasskaz.Config.userRepoAttributeKey
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.controllers.accountRoute
+import ru.axel.stepanrasskaz.controllers.apiRoute
 import ru.axel.stepanrasskaz.controllers.homeRouting
 import ru.axel.stepanrasskaz.controllers.authRoute
 import ru.axel.stepanrasskaz.domain.user.UserRepository
@@ -114,7 +114,8 @@ fun Application.moduleRoutingRoot() {
             proceed()
         }
 
-        authRoute(configJWT, configMailer)
+        apiRoute(configJWT, configMailer)
+        authRoute()
         homeRouting()
         accountRoute()
     }

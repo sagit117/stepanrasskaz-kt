@@ -56,7 +56,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \********************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ \"./node_modules/vue/dist/vue.runtime.esm-bundler.js\");\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({\n    name: \"Account\",\n    setup() {\n        const user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(\"test@test\");\n        return {\n            user\n        };\n    }\n}));\n\n\n//# sourceURL=webpack://lk/./src/account.vue?./node_modules/ts-loader/index.js??clonedRuleSet-3!./node_modules/vue-loader/dist/index.js??ruleSet%5B0%5D");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ \"./node_modules/vue/dist/vue.runtime.esm-bundler.js\");\n/* harmony import */ var _hooks_hooks_users__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./hooks/hooks.users */ \"./src/hooks/hooks.users.ts\");\n\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({\n    name: \"Account\",\n    setup() {\n        const params = document.location.pathname.split(\"/\");\n        const userId = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(params[params.length - 1]);\n        const user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);\n        (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(() => {\n            user.value = (0,_hooks_hooks_users__WEBPACK_IMPORTED_MODULE_1__.getUserRepositories)(userId.value);\n        });\n        return {\n            user\n        };\n    }\n}));\n\n\n//# sourceURL=webpack://lk/./src/account.vue?./node_modules/ts-loader/index.js??clonedRuleSet-3!./node_modules/vue-loader/dist/index.js??ruleSet%5B0%5D");
 
 /***/ }),
 
@@ -67,6 +67,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"render\": () => (/* binding */ render)\n/* harmony export */ });\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ \"./node_modules/vue/dist/vue.runtime.esm-bundler.js\");\n\nfunction render(_ctx, _cache, $props, $setup, $data, $options) {\n    return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(\"div\", null, \" account \" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.user), 1));\n}\n\n\n//# sourceURL=webpack://lk/./src/account.vue?./node_modules/ts-loader/index.js??clonedRuleSet-3!./node_modules/vue-loader/dist/templateLoader.js??ruleSet%5B1%5D.rules%5B2%5D!./node_modules/vue-loader/dist/index.js??ruleSet%5B0%5D");
+
+/***/ }),
+
+/***/ "./src/hooks/hooks.users.ts":
+/*!**********************************!*\
+  !*** ./src/hooks/hooks.users.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"getUserRepositories\": () => (/* binding */ getUserRepositories)\n/* harmony export */ });\n/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ \"./node_modules/vue/dist/vue.runtime.esm-bundler.js\");\n\nfunction getUserRepositories(id) {\n    if (!id)\n        return null;\n    const user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({\n        email: \"test@test\"\n    });\n    return user;\n}\n\n\n//# sourceURL=webpack://lk/./src/hooks/hooks.users.ts?");
 
 /***/ }),
 

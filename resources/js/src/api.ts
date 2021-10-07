@@ -88,6 +88,26 @@ class Api {
                 return Promise.reject(error)
             })
     }
+
+    getUserById(id: string) {
+        return fetch(this.#url + "/password/change", {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(body),
+            credentials: "include",
+        })
+            .then((res) => {
+                return Promise.resolve(res)
+            })
+            .catch((error) => {
+                console.error(error)
+
+                return Promise.reject(error)
+            })
+    }
 }
 
 export default new Api()

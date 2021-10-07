@@ -1,31 +1,49 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
     "module": "esnext",
     // использование более строгого вывода типов для свойств данных в `this`
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "allowSyntheticDefaultImports": true,
     "declaration": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "noImplicitAny": false,
     "noLib": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "strictPropertyInitialization": false,
     "suppressImplicitAnyIndexErrors": true,
     "baseUrl": ".",
     "removeComments": true,
-    //    "noEmitOnError": true, // не компилируем, если есть ошибка
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true
-    //    "skipLibCheck": true
+    "noImplicitReturns": true,
+    "rootDir": "./",
+    "resolveJsonModule": true,
+    "declarationMap": false,
+    "outDir": "./dist",
+    "isolatedModules": true /* Ensure that each file can be safely transpiled without relying on other imports. */,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true /* When type checking, take into account `null` and `undefined`. */,
+    "strictFunctionTypes": true /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */,
+    "strictBindCallApply": true /* Check that the arguments for `bind`, `call`, and `apply` methods match the original function. */,
+    "noImplicitThis": true /* Enable error reporting when `this` is given the type `any`. */,
+    "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
+    "allowUnusedLabels": false /* Disable error reporting for unused labels. */,
+    "allowUnreachableCode": false /* Disable error reporting for unreachable code. */,
+    "skipDefaultLibCheck": false /* Skip type checking .d.ts files that are included with TypeScript. */,
+    "skipLibCheck": false /* Skip type checking all .d.ts files. */
   },
   "exclude": [
     "./node_modules"
-  ]
+  ],
+  "include": ["./src/**/*.ts", "./src/**/*.js", "**/*"]
 }
