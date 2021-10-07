@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    // использование более строгого вывода типов для свойств данных в `this`
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "checkJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "noLib": false,
+    "sourceMap": true,
+    "strictPropertyInitialization": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "baseUrl": ".",
+    "removeComments": true,
+    //    "noEmitOnError": true, // не компилируем, если есть ошибка
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true
+    //    "skipLibCheck": true
+  },
+  "exclude": [
+    "./node_modules"
+  ]
+}
