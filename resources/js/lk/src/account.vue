@@ -1,10 +1,16 @@
 <template>
-  <div> account {{user}}</div>
+  <div class="account-wrapper">
+    <div class="account-wrapper__title">Пользователь: {{user?.email}}</div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import { getUserRepositories } from "./hooks/hooks.users";
+// @ts-ignore
+import Toast from "../../src/toasts"
+// @ts-ignore
+import { goRoute } from "../../src/utils"
 
 export default defineComponent({
   name: "Account",
@@ -14,9 +20,36 @@ export default defineComponent({
     const userId = ref<string>(params[params.length - 1])
     const { user, error, isLoading } = getUserRepositories(userId.value)
 
+    watchEffect(() => {
+      if (error.value) {
+        switch (error.value) {
+          case 401:
+            new Toast("Ошибка", "Нет доступа к данным", "ERROR", 3, () => goRoute("/")).render("toasts");
+            break;
+
+          default:
+            new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
+        }
+      }
+    })
+
     return {
-      user
+      user,
+      isLoading
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.account-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+
+  &__title {
+    font-weight: 800;
+    font-size: 1.2rem;
+  }
+}
+</style>

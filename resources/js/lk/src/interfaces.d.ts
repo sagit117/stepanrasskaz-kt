@@ -14,6 +14,10 @@ export interface IUser {
 
 export interface IUserRepository {
     user: Ref<IUser | null>,
-    error: Ref<string>,
+    error: Ref<number>,
     isLoading: Ref<boolean>
+}
+
+export interface IUserGetResponse {
+    user: IUser
 }
