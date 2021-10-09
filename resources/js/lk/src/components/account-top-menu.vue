@@ -39,17 +39,19 @@ export default defineComponent({
   height: 4rem;
   border-top-right-radius: 1rem;
   border-top-left-radius: 1rem;
+  padding: 2px;
 
   &__item {
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
-    border-bottom: 2px solid var(--color-black);
     text-transform: uppercase;
     font-size: .8rem;
     font-weight: 600;
     border-right: 1px solid var(--color-grey-light);
+    cursor: pointer;
+    user-select: none;
 
     &__red {
       color: var(--color-red);
