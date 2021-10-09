@@ -1,7 +1,7 @@
 <template>
   <div class="account-wrapper">
     <div class="account-wrapper__title">Пользователь: {{user?.email}}</div>
-    <AccountTopMenu />
+    <AccountTopMenu :items="accountTopMenuItems" />
   </div>
 </template>
 
@@ -14,6 +14,7 @@ import Toast from "../../src/toasts"
 import { goRoute } from "../../src/utils"
 // @ts-ignore
 import AccountTopMenu from "./components/account-top-menu.vue"
+import { accountTopMenuItems } from "./config/menu/account-top-menu";
 
 export default defineComponent({
   name: "Account",
@@ -39,7 +40,8 @@ export default defineComponent({
 
     return {
       user,
-      isLoading
+      isLoading,
+      accountTopMenuItems
     }
   }
 })
@@ -53,6 +55,13 @@ export default defineComponent({
 
   &__title {
     font-weight: 600;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .account-wrapper {
+    padding: 2rem .1rem .1rem .1rem;
   }
 }
 </style>
