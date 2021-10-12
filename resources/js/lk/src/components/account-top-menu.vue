@@ -5,6 +5,7 @@
         :key="item.id"
         class="accountTopMenu__item"
         :class="[ item?.extClass ? item.extClass : '']"
+        @click="$emit('selectedPage', item.component)"
     >
       {{item.title}}
     </div>
@@ -22,6 +23,7 @@ export default defineComponent({
       required: true
     }
   },
+  emits: ["selectedPage"],
 
   setup(props) {
     return {

@@ -1,7 +1,11 @@
+// @ts-ignore
+import Owner from "../../components/owner.vue"
+
 export interface IAccountTopMenuItem {
     id: AccountTopMenuItems
-    title: String
-    extClass?: String
+    title: string
+    component?: any
+    extClass?: string
 }
 
 export enum AccountTopMenuItems {
@@ -13,11 +17,12 @@ export enum AccountTopMenuItems {
 export const accountTopMenuItems: IAccountTopMenuItem[] = [
     {
         id: AccountTopMenuItems.owner,
-        title: "Владелец"
+        title: "Владелец",
+        component: Owner
     },
     {
         id: AccountTopMenuItems.changePass,
-        title: "Смена пароля"
+        title: "Смена пароля",
     },
     {
         id: AccountTopMenuItems.exit,

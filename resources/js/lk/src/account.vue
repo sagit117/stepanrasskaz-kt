@@ -1,7 +1,12 @@
 <template>
   <div class="account-wrapper">
     <div class="account-wrapper__title">Пользователь: {{user?.email}}</div>
-    <AccountTopMenu :items="accountTopMenuItems" />
+
+    <AccountTopMenu :items="accountTopMenuItems" @selectedPage="setPage" />
+
+    <div class="account__pages">
+      <component :is="page" />
+    </div>
   </div>
 </template>
 
@@ -24,6 +29,7 @@ export default defineComponent({
     const params = document.location.pathname.split("/")
     const userId = ref<string>(params[params.length - 1])
     const { user, error, isLoading } = getUserRepositories(userId.value)
+    const page = ref<any>(accountTopMenuItems[0].component || null)
 
     watchEffect(() => {
       if (error.value) {
@@ -38,10 +44,16 @@ export default defineComponent({
       }
     })
 
+    function setPage(selectPage: any) {
+      page.value = selectPage
+    }
+
     return {
       user,
       isLoading,
-      accountTopMenuItems
+      accountTopMenuItems,
+      page,
+      setPage
     }
   }
 })
@@ -57,6 +69,16 @@ export default defineComponent({
     font-weight: 600;
     margin-bottom: 2rem;
   }
+}
+
+.account__pages {
+  display: flex;
+  box-shadow: 1px 1px 6px 0 var(--color-grey);
+  width: 100%;
+  height: 100%;
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  padding: 1rem;
 }
 
 @media (max-width: 1024px) {
