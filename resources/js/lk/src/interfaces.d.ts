@@ -1,9 +1,11 @@
 import { Ref } from "vue";
 
 export interface IUser {
-    email: string
-    dateTimeAtCreation: number
     id: string
+    dateTimeAtCreation: number
+    email: string
+    zipCode: string
+    address: string
     isBlocked: boolean
     isNeedPassword: boolean
     name: string

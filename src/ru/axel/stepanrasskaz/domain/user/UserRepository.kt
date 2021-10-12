@@ -9,6 +9,8 @@ data class UserRepository(
     @BsonId
     val id: Id<UserRepository> = newId(),
     val name: String = "",
+    val zipCode: String = "",
+    val address: String = "",
     val email: String,
     val password: String,
     val role: MutableList<RoleRepository> = mutableListOf(RoleRepository.TEMP),

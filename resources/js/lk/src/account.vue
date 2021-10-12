@@ -1,11 +1,12 @@
 <template>
   <div class="account-wrapper">
     <div class="account-wrapper__title">Пользователь: {{user?.email}}</div>
+    <div class="account-wrapper__dateAtCreation">Дата регистрации: {{new Date(user?.dateTimeAtCreation).toLocaleDateString()}}</div>
 
     <AccountTopMenu :items="accountTopMenuItems" @selectedPage="setPage" />
 
     <div class="account__pages">
-      <component :is="page" />
+      <component :is="page" :user="user" />
     </div>
   </div>
 </template>
@@ -67,6 +68,10 @@ export default defineComponent({
 
   &__title {
     font-weight: 600;
+  }
+
+  &__dateAtCreation {
+    font-size: .7rem;
     margin-bottom: 2rem;
   }
 }
