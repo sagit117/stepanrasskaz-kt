@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e512109-3bc6-4ce4-8ad9-83726264c272" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../image/alert-box-outline.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/account.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/account.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/owner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/owner.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaces.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +52,7 @@
       <workItem from="1633800404219" duration="763000" />
       <workItem from="1633801256999" duration="943000" />
       <workItem from="1634019342100" duration="7911000" />
-      <workItem from="1634054290170" duration="7389000" />
+      <workItem from="1634054290170" duration="9556000" />
     </task>
     <servers />
   </component>

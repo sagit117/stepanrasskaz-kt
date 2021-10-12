@@ -1,12 +1,12 @@
 <template>
   <div class="owner">
-    <label for="name">ФИО:</label>
+    <label for="name" :class="[!name ? 'label__warning_icon' : '']">ФИО:</label>
     <input type="text" id="name" class="mb2" v-model="name" placeholder="Введите ФИО полностью">
 
-    <label for="zip">Индекс:</label>
+    <label for="zip" :class="[!zip ? 'label__warning_icon' : '']">Индекс:</label>
     <input type="text" id="zip" class="mb2" v-model="zip" placeholder="Введите почтовый индекс">
 
-    <label for="address">Адрес доставки:</label>
+    <label for="address" :class="[!address ? 'label__warning_icon' : '']">Адрес доставки:</label>
     <textarea id="address" class="mb2" v-model="address" placeholder="Введите адрес доставки"></textarea>
 
     <div class="owner__controls">
@@ -60,6 +60,7 @@ export default defineComponent({
   &__controls {
     display: flex;
     justify-content: flex-end;
+    height: 3rem;
   }
 }
 </style>
