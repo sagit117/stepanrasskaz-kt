@@ -11,7 +11,7 @@ object Config {
     const val appFavicon: String = "/static/favicon.png" // TODO: вписать вывод из БД
     const val logoUrl: String = "/static/favicon.png" // TODO: вписать вывод из БД
 
-    val userRepoAttributeKey = AttributeKey<UserRepository>("userRepo")
+    val userRepoAttributeKey = AttributeKey<UserRepository>("userRepo") // ключ для поиска проверенных данных пользователя взятых из токена
 
     const val hashMapUserSize: Int = 500 // размер хеша пользователей
     const val lifeTimeUserID: Long = 900 // время жизни куки userID

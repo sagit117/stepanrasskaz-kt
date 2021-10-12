@@ -67,7 +67,7 @@ fun Application.moduleRoutingRoot() {
                 val id = verifierToken?.getClaim("id")?.asString()
                 val userService = UserService(DataBase.getCollection())
 
-                val userRepository: UserRepository? = id?.let { it ->
+                val userRepository: UserRepository? = id?.let {
                     /** хеширование запросов к бд */
                     val hashUser = HashMapUser.getUsers(id)
 
@@ -87,7 +87,7 @@ fun Application.moduleRoutingRoot() {
                 }
 
                 if (userRepository != null) {
-                    /** передаем в дальнейшие вызывы данные пользователя */
+                    /** передаем в дальнейшие вызывы проверенные данные пользователя */
                     call.attributes.put(userRepoAttributeKey, userRepository)
                 }
             }

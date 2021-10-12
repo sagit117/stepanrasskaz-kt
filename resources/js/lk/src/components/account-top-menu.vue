@@ -1,11 +1,11 @@
 <template>
   <div class="accountTopMenu">
     <div
-        v-for="item in items"
+        v-for="(item, index) in items"
         :key="item.id"
         class="accountTopMenu__item"
-        :class="[ item?.extClass ? item.extClass : '']"
-        @click="$emit('selectedPage', item.component)"
+        :class="[item?.extClass ? item.extClass : '', activePageIndex === index ? 'active' : '']"
+        @click="() => selectPage(index, item.component)"
     >
       {{item.title}}
     </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, ref } from "vue"
 
 export default defineComponent({
   name: "AccountTopMenu",
@@ -25,9 +25,18 @@ export default defineComponent({
   },
   emits: ["selectedPage"],
 
-  setup(props) {
+  setup(props, { emit }) {
+    const activePageIndex = ref<number>(0);
+
+    function selectPage(index: number, component: any) {
+      activePageIndex.value = index
+      emit('selectedPage', component)
+    }
+
     return {
-      items: props.items
+      items: props.items,
+      activePageIndex,
+      selectPage
     }
   }
 })
@@ -58,10 +67,25 @@ export default defineComponent({
     &__red {
       color: var(--color-red);
     }
+
+    &.active {
+      box-shadow: inset -9px 7px 20px 1px var(--color-purpur);
+    }
   }
 
   &__item:last-child {
     border-right: none;
+
+    &.active {
+      border-top-right-radius: 1rem;
+    }
+  }
+
+  &__item:first-child {
+
+    &.active {
+      border-top-left-radius: 1rem;
+    }
   }
 }
 </style>

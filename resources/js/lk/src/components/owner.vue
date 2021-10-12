@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="owner">
     owner
   </div>
 </template>
@@ -11,3 +11,10 @@ export default defineComponent({
   name: "Owner"
 })
 </script>
+
+
+<style lang="scss" scoped>
+.owner {
+
+}
+</style>

@@ -6,6 +6,7 @@ import kotlin.collections.HashMap
 
 /**
  * Храним данные о подключение пользователей
+ * и служебную инфу о действиях
  */
 object UserStack {
     private val hashMapUser: HashMap<String, UserDataMemory> = HashMap()
@@ -23,6 +24,7 @@ object UserStack {
 
     /**
      * Автоочищение стэка
+     * Если пользователь не выполнял действия более Config.lifeTimeUserID времени, удаляем из стэка
      */
     @OptIn(DelicateCoroutinesApi::class)
     private fun autoClear(id: String) {

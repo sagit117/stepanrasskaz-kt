@@ -6,6 +6,7 @@ import ru.axel.stepanrasskaz.domain.user.UserRepository
 
 /**
  * Безопасный класс для работы с сервисом пользователей
+ * @param client - проверенные данные пользователя взятые из токена
  */
 class UserServiceSecure(val client: UserRepository?) {
     /**
