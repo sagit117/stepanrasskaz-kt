@@ -14,6 +14,12 @@ import ru.axel.stepanrasskaz.domain.user.session.UserSession
 
 fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
+/**
+ * Проблемы
+ * TODO: Нет системы редиректов если пользователь входит без прав, сейчас каждый контроллер отрабатывает отдельно, легко забыть
+ * TODO: Нужен swagger
+ */
+
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {

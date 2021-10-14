@@ -1,4 +1,4 @@
-package ru.axel.stepanrasskaz.domain.user.auth.dto
+package ru.axel.stepanrasskaz.domain.user.dto
 
 import ru.axel.stepanrasskaz.domain.user.helpers.Email
 

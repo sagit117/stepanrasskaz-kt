@@ -20,6 +20,12 @@ fun Route.accountRoute() {
             null
         }
 
+        if (connectUserData == null) {
+            call.respondRedirect("/login")
+
+            return@get
+        }
+
         /** проверяем доступ */
         val showUser = UserServiceSecure(connectUserData).findOneById(call.parameters["id"].toString())
 

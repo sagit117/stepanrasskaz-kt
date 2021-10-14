@@ -23,3 +23,10 @@ export interface IUserRepository {
 export interface IUserGetResponse {
     user: IUser
 }
+
+export interface IUserSaveDTO {
+    id: string
+    zipCode?: string
+    address?: string
+    name?: string
+}

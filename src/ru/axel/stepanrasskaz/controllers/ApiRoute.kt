@@ -9,10 +9,10 @@ import io.ktor.sessions.*
 import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.connectors.Mailer
-import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
-import ru.axel.stepanrasskaz.domain.user.auth.dto.ChangePasswordDTO
-import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
-import ru.axel.stepanrasskaz.domain.user.auth.dto.SetCodeDTO
+import ru.axel.stepanrasskaz.domain.user.dto.AuthDTO
+import ru.axel.stepanrasskaz.domain.user.dto.ChangePasswordDTO
+import ru.axel.stepanrasskaz.domain.user.dto.RegistryDTO
+import ru.axel.stepanrasskaz.domain.user.dto.SetCodeDTO
 import ru.axel.stepanrasskaz.domain.user.services.UserService
 import ru.axel.stepanrasskaz.domain.user.services.UserServiceSecure
 import ru.axel.stepanrasskaz.domain.user.session.UserDataMemory
@@ -239,6 +239,17 @@ fun Route.apiRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                 } else {
                     call.respond(HttpStatusCode.OK, mapOf("user" to showUser.copy(password = "")))
                 }
+            }
+
+            post("/save") {
+                /** получаем данные пользователя */
+                val connectUserData = try {
+                    call.attributes[Config.userRepoAttributeKey]
+                } catch (error: Exception) {
+                    null
+                }
+
+
             }
         }
     }

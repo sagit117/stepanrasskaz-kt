@@ -9,9 +9,8 @@ import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 import ru.axel.stepanrasskaz.domain.user.UserRepository
-import ru.axel.stepanrasskaz.domain.user.auth.dto.AuthDTO
-import ru.axel.stepanrasskaz.domain.user.auth.dto.RegistryDTO
-import ru.axel.stepanrasskaz.domain.user.helpers.HashMapUser
+import ru.axel.stepanrasskaz.domain.user.dto.AuthDTO
+import ru.axel.stepanrasskaz.domain.user.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.utils.BaseService
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.sha256
