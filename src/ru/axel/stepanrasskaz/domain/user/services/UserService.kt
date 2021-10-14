@@ -10,6 +10,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 import ru.axel.stepanrasskaz.domain.user.UserRepository
 import ru.axel.stepanrasskaz.domain.user.dto.AuthDTO
+import ru.axel.stepanrasskaz.domain.user.dto.ChangeUserDataDTO
 import ru.axel.stepanrasskaz.domain.user.dto.RegistryDTO
 import ru.axel.stepanrasskaz.domain.utils.BaseService
 import ru.axel.stepanrasskaz.utils.ConfigJWT
@@ -55,5 +56,9 @@ class UserService(collection: CoroutineCollection<UserRepository>): BaseService<
 
     suspend fun updatePassword(id: String, password: String): UpdateResult {
         return collection.updateOneById(ObjectId(id), setValue(UserRepository::password, password.sha256()))
+    }
+
+    suspend fun updateData(data: ChangeUserDataDTO): UpdateResult {
+        return collection.updateOneById(ObjectId(data.id), data)
     }
 }

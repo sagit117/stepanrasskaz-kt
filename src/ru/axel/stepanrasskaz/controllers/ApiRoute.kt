@@ -9,10 +9,7 @@ import io.ktor.sessions.*
 import ru.axel.stepanrasskaz.Config
 import ru.axel.stepanrasskaz.connectors.DataBase
 import ru.axel.stepanrasskaz.connectors.Mailer
-import ru.axel.stepanrasskaz.domain.user.dto.AuthDTO
-import ru.axel.stepanrasskaz.domain.user.dto.ChangePasswordDTO
-import ru.axel.stepanrasskaz.domain.user.dto.RegistryDTO
-import ru.axel.stepanrasskaz.domain.user.dto.SetCodeDTO
+import ru.axel.stepanrasskaz.domain.user.dto.*
 import ru.axel.stepanrasskaz.domain.user.services.UserService
 import ru.axel.stepanrasskaz.domain.user.services.UserServiceSecure
 import ru.axel.stepanrasskaz.domain.user.session.UserDataMemory
@@ -249,7 +246,27 @@ fun Route.apiRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                     null
                 }
 
+                val newUserData = call.receive<ChangeUserDataDTO>()
 
+                /** проверяем на ошибки в веденных данных */
+                val changeUserDataDTO = try {
+                    ChangeUserDataDTO(newUserData.id, newUserData.name, newUserData.zipCode, newUserData.address)
+                } catch (error: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to error.message.toString()))
+
+                    return@post
+                }
+
+                /** проверяем доступ */
+                val writeUser = UserServiceSecure(connectUserData).updateOneById(changeUserDataDTO)
+
+                if (writeUser == null) {
+                    call.respond(HttpStatusCode.Unauthorized)
+                } else if (writeUser.wasAcknowledged()) {
+                    call.respond(HttpStatusCode.OK)
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError)
+                }
             }
         }
     }

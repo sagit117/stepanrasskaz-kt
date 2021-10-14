@@ -17,7 +17,7 @@ export function getUserRepositories(id: string): IUserRepository {
         .then((userRepo: IUserGetResponse) => {
             user.value = userRepo.user
 
-            Object.assign(user.value.id, id)
+            Object.assign(user.value, { id })
         })
         .catch((err: Error) => {
             error.value = Number(err?.message)
