@@ -16,8 +16,10 @@ fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
 /**
  * Проблемы
- * TODO: Нет системы редиректов если пользователь входит без прав, сейчас каждый контроллер отрабатывает отдельно, легко забыть
+ * TODO: Система ролей доступа жестко вбита в программу
  * TODO: Нужен swagger
+ * TODO: Не отрабатывает блокировка пользователя перманентная и до ввода пароля
+ * TODO: Мало тестов
  */
 
 @Suppress("unused") // Referenced in application.conf

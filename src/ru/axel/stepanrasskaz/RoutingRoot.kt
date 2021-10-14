@@ -29,7 +29,7 @@ import ru.axel.stepanrasskaz.utils.randomCode
  * Объединяем все модули с маршрутами
  */
 @Suppress("unused") // Referenced in application.conf
-fun Application.moduleRoutingRoot() {
+fun Application.moduleRoutingRoot(testing: Boolean = false) {
     /** настройки jwt */
     val secret = environment.config.property("jwt.secret").getString()
     val issuer = environment.config.property("jwt.issuer").getString()
@@ -56,129 +56,131 @@ fun Application.moduleRoutingRoot() {
     val configMailer = ConfigMailer(hostName, smtpPort, user, password, from, isSSLOnConnect, charSet)
 
     routing {
-        /**
-         * перехват куки token и получение данных пользователя
-         * определение доступности маршрута на основание данных в ConfigSecureRoute
-         */
-        intercept(ApplicationCallPipeline.Features) {
-            if (!call.request.uri.startsWith("/static/")) {
-                val token = call.sessions.get<UserSession>()?.token
+        if (!testing) {
+            /**
+             * перехват куки token и получение данных пользователя
+             * определение доступности маршрута на основание данных в ConfigSecureRoute
+             */
+            intercept(ApplicationCallPipeline.Features) {
+                if (!call.request.uri.startsWith("/static/")) {
+                    val token = call.sessions.get<UserSession>()?.token
 
-                val verifierToken = try {
-                    jwtVerifier.verify(token)
-                } catch (error: Exception) {
-                    null
-                }
+                    val verifierToken = try {
+                        jwtVerifier.verify(token)
+                    } catch (error: Exception) {
+                        null
+                    }
 
-                val id = verifierToken?.getClaim("id")?.asString()
-                val userService = UserService(DataBase.getCollection())
+                    val id = verifierToken?.getClaim("id")?.asString()
+                    val userService = UserService(DataBase.getCollection())
 
-                val userRepository: UserRepository? = id?.let {
-                    /** хеширование запросов к бд */
-                    val hashUser = HashMapUser.getUsers(id)
+                    val userRepository: UserRepository? = id?.let {
+                        /** хеширование запросов к бд */
+                        val hashUser = HashMapUser.getUsers(id)
 
-                    if (hashUser != null) {
-                        return@let hashUser
-                    } else {
-                        val dbUser = userService.findOneById(it)
-
-                        if (dbUser != null) {
-                            HashMapUser.addUsers(dbUser)
-
-                            return@let dbUser
+                        if (hashUser != null) {
+                            return@let hashUser
                         } else {
-                            return@let null
+                            val dbUser = userService.findOneById(it)
+
+                            if (dbUser != null) {
+                                HashMapUser.addUsers(dbUser)
+
+                                return@let dbUser
+                            } else {
+                                return@let null
+                            }
                         }
                     }
-                }
 
-                /**
-                 * Кого мы пропускаем
-                 * Если ограничения по маршруту не заполнены, то всех
-                 * Если ограничения заполнены, то только в пределах ограничений
-                 * Если у пользователя роль попадает в заблокированные, то разрешенные уже не проверяем
-                 * Если у пользователя нет разрешенной роли - блокируем, иначе пропускаем
-                 */
-                val key = ConfigSecureRoute.realm.keys.find { call.request.uri.startsWith(it) }
+                    /**
+                     * Кого мы пропускаем
+                     * Если ограничения по маршруту не заполнены, то всех
+                     * Если ограничения заполнены, то только в пределах ограничений
+                     * Если у пользователя роль попадает в заблокированные, то разрешенные уже не проверяем
+                     * Если у пользователя нет разрешенной роли - блокируем, иначе пропускаем
+                     */
+                    val key = ConfigSecureRoute.realm.keys.find { call.request.uri.startsWith(it) }
 
-                /** если пользователь определен */
-                if (userRepository != null) {
-                    if (key == null) {
-                        /**
-                         * Если нет записей о правах доступа
-                         * передаем в дальнейшие вызывы проверенные данные пользователя
-                         */
-                        call.attributes.put(userRepoAttributeKey, userRepository)
-                        proceed()
-                    } else {
-                        val deniedList = ConfigSecureRoute.realm[key]?.denied
-                        val acceptList = ConfigSecureRoute.realm[key]?.accept
-
-                        val isDenied: Boolean = if (!deniedList.isNullOrEmpty()) {
-                            userRepository.role.intersect(deniedList).isNotEmpty()
+                    /** если пользователь определен */
+                    if (userRepository != null) {
+                        if (key == null) {
+                            /**
+                             * Если нет записей о правах доступа
+                             * передаем в дальнейшие вызывы проверенные данные пользователя
+                             */
+                            call.attributes.put(userRepoAttributeKey, userRepository)
+                            proceed()
                         } else {
-                            false
-                        }
+                            val deniedList = ConfigSecureRoute.realm[key]?.denied
+                            val acceptList = ConfigSecureRoute.realm[key]?.accept
 
-                        /** если роль пользователя не попала в запрещенные роли */
-                        if (!isDenied) {
-                            if (!acceptList.isNullOrEmpty()) {
-                                if (userRepository.role.intersect(acceptList).isNotEmpty()) {
+                            val isDenied: Boolean = if (!deniedList.isNullOrEmpty()) {
+                                userRepository.role.intersect(deniedList).isNotEmpty()
+                            } else {
+                                false
+                            }
+
+                            /** если роль пользователя не попала в запрещенные роли */
+                            if (!isDenied) {
+                                if (!acceptList.isNullOrEmpty()) {
+                                    if (userRepository.role.intersect(acceptList).isNotEmpty()) {
+                                        /**
+                                         * Если найдена роль пользователя в разрешенных ролях
+                                         * передаем в дальнейшие вызывы проверенные данные пользователя
+                                         */
+                                        call.attributes.put(userRepoAttributeKey, userRepository)
+                                        proceed()
+                                    } else {
+                                        /** доступ заблокирован */
+                                        call.respond(HttpStatusCode.Unauthorized)
+                                        finish()
+                                    }
+                                } else {
                                     /**
-                                     * Если найдена роль пользователя в разрешенных ролях
+                                     * Если запрета нет и нет записей о разрешенных ролях
                                      * передаем в дальнейшие вызывы проверенные данные пользователя
                                      */
                                     call.attributes.put(userRepoAttributeKey, userRepository)
                                     proceed()
-                                } else {
-                                    /** доступ заблокирован */
-                                    call.respond(HttpStatusCode.Unauthorized)
-                                    finish()
                                 }
                             } else {
-                                /**
-                                 * Если запрета нет и нет записей о разрешенных ролях
-                                 * передаем в дальнейшие вызывы проверенные данные пользователя
-                                 */
-                                call.attributes.put(userRepoAttributeKey, userRepository)
-                                proceed()
+                                /** доступ заблокирован */
+                                call.respond(HttpStatusCode.Unauthorized)
+                                finish()
                             }
-                        } else {
+                        }
+                    } else {
+                        /** есть запись с правами доступа, но пользователь не авторизован */
+                        if (key !== null) {
                             /** доступ заблокирован */
                             call.respond(HttpStatusCode.Unauthorized)
                             finish()
+                        } else {
+                            proceed()
                         }
                     }
-                } else {
-                    /** есть запись с правами доступа, но пользователь не авторизован */
-                    if (key !== null) {
-                        /** доступ заблокирован */
-                        call.respond(HttpStatusCode.Unauthorized)
-                        finish()
+                }
+            }
+
+            /** перехват куки userID и получение данных пользователя */
+            intercept(ApplicationCallPipeline.Features) {
+                if (!call.request.uri.startsWith("/static/")) {
+                    val userID = call.sessions.get<UserID>()?.id
+
+                    if (userID == null) {
+                        val code = randomCode(15)
+
+                        call.sessions.set(UserID(id = code))
+
+                        UserStack.addUser(code)
                     } else {
-                        proceed()
+                        UserStack.addUser(userID)
                     }
                 }
+
+                proceed()
             }
-        }
-
-        /** перехват куки userID и получение данных пользователя */
-        intercept(ApplicationCallPipeline.Features) {
-            if (!call.request.uri.startsWith("/static/")) {
-                val userID = call.sessions.get<UserID>()?.id
-
-                if (userID == null) {
-                    val code = randomCode(15)
-
-                    call.sessions.set(UserID(id = code))
-
-                    UserStack.addUser(code)
-                } else {
-                    UserStack.addUser(userID)
-                }
-            }
-
-            proceed()
         }
 
         apiRoute(configJWT, configMailer)
