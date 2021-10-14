@@ -13,7 +13,7 @@ data class UserRepository(
     val address: String = "",
     val email: String,
     val password: String,
-    val role: MutableList<RoleRepository> = mutableListOf(RoleRepository.TEMP),
+    val role: MutableList<RoleRepository> = mutableListOf(RoleRepository.USER),
     val isBlocked: Boolean = false,         // перманентная блокировка
     val isNeedPassword: Boolean = false,    // блокировка до ввода пароля
     val dateTimeAtCreation: Long = System.currentTimeMillis(),

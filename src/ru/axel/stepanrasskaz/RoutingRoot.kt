@@ -3,7 +3,9 @@ package ru.axel.stepanrasskaz
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
+import io.ktor.http.*
 import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
 import ru.axel.stepanrasskaz.Config.userRepoAttributeKey
@@ -20,6 +22,7 @@ import ru.axel.stepanrasskaz.domain.user.session.UserID
 import ru.axel.stepanrasskaz.domain.user.session.UserStack
 import ru.axel.stepanrasskaz.utils.ConfigJWT
 import ru.axel.stepanrasskaz.utils.ConfigMailer
+import ru.axel.stepanrasskaz.utils.ConfigSecureRoute
 import ru.axel.stepanrasskaz.utils.randomCode
 
 /**
@@ -53,7 +56,10 @@ fun Application.moduleRoutingRoot() {
     val configMailer = ConfigMailer(hostName, smtpPort, user, password, from, isSSLOnConnect, charSet)
 
     routing {
-        /** перехват куки token и получение данных пользователя */
+        /**
+         * перехват куки token и получение данных пользователя
+         * определение доступности маршрута на основание данных в ConfigSecureRoute
+         */
         intercept(ApplicationCallPipeline.Features) {
             if (!call.request.uri.startsWith("/static/")) {
                 val token = call.sessions.get<UserSession>()?.token
@@ -86,13 +92,74 @@ fun Application.moduleRoutingRoot() {
                     }
                 }
 
+                /**
+                 * Кого мы пропускаем
+                 * Если ограничения по маршруту не заполнены, то всех
+                 * Если ограничения заполнены, то только в пределах ограничений
+                 * Если у пользователя роль попадает в заблокированные, то разрешенные уже не проверяем
+                 * Если у пользователя нет разрешенной роли - блокируем, иначе пропускаем
+                 */
+                val key = ConfigSecureRoute.realm.keys.find { call.request.uri.startsWith(it) }
+
+                /** если пользователь определен */
                 if (userRepository != null) {
-                    /** передаем в дальнейшие вызывы проверенные данные пользователя */
-                    call.attributes.put(userRepoAttributeKey, userRepository)
+                    if (key == null) {
+                        /**
+                         * Если нет записей о правах доступа
+                         * передаем в дальнейшие вызывы проверенные данные пользователя
+                         */
+                        call.attributes.put(userRepoAttributeKey, userRepository)
+                        proceed()
+                    } else {
+                        val deniedList = ConfigSecureRoute.realm[key]?.denied
+                        val acceptList = ConfigSecureRoute.realm[key]?.accept
+
+                        val isDenied: Boolean = if (!deniedList.isNullOrEmpty()) {
+                            userRepository.role.intersect(deniedList).isNotEmpty()
+                        } else {
+                            false
+                        }
+
+                        /** если роль пользователя не попала в запрещенные роли */
+                        if (!isDenied) {
+                            if (!acceptList.isNullOrEmpty()) {
+                                if (userRepository.role.intersect(acceptList).isNotEmpty()) {
+                                    /**
+                                     * Если найдена роль пользователя в разрешенных ролях
+                                     * передаем в дальнейшие вызывы проверенные данные пользователя
+                                     */
+                                    call.attributes.put(userRepoAttributeKey, userRepository)
+                                    proceed()
+                                } else {
+                                    /** доступ заблокирован */
+                                    call.respond(HttpStatusCode.Unauthorized)
+                                    finish()
+                                }
+                            } else {
+                                /**
+                                 * Если запрета нет и нет записей о разрешенных ролях
+                                 * передаем в дальнейшие вызывы проверенные данные пользователя
+                                 */
+                                call.attributes.put(userRepoAttributeKey, userRepository)
+                                proceed()
+                            }
+                        } else {
+                            /** доступ заблокирован */
+                            call.respond(HttpStatusCode.Unauthorized)
+                            finish()
+                        }
+                    }
+                } else {
+                    /** есть запись с правами доступа, но пользователь не авторизован */
+                    if (key !== null) {
+                        /** доступ заблокирован */
+                        call.respond(HttpStatusCode.Unauthorized)
+                        finish()
+                    } else {
+                        proceed()
+                    }
                 }
             }
-
-            proceed()
         }
 
         /** перехват куки userID и получение данных пользователя */

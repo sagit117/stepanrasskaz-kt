@@ -1,5 +1,5 @@
 package ru.axel.stepanrasskaz.domain.role
 
 enum class RoleRepository {
-    TEMP, ADMIN, CLIENT, USER_DATA_READ
+    USER /** пользователь, который только зарегистрировался */, ADMIN, CLIENT, USER_DATA_READ
 }
