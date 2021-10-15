@@ -5,9 +5,16 @@
 
     <AccountTopMenu :items="accountTopMenuItems" @selectedPage="setPage" />
 
-    <div class="account__pages">
+    <div class="account__pages" v-if="isLoading === false && !error">
       <component :is="page" :user="user" />
     </div>
+
+    <div class="spinner__wrapper" v-if="isLoading">
+      <div class="spinner">...loading</div>
+    </div>
+
+    <div v-if="error">Код ошибки: {{error}}</div>
+
   </div>
 </template>
 
@@ -54,6 +61,7 @@ export default defineComponent({
       isLoading,
       accountTopMenuItems,
       page,
+      error,
       setPage
     }
   }
@@ -84,6 +92,10 @@ export default defineComponent({
   border-bottom-right-radius: 1rem;
   border-bottom-left-radius: 1rem;
   padding: 1rem;
+}
+
+.spinner__wrapper {
+
 }
 
 @media (max-width: 1024px) {

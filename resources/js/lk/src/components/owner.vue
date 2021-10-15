@@ -44,7 +44,7 @@ export default defineComponent({
     })
 
     function saveUser() {
-      saveUserRepositories({
+      /*const { result, error, isLoading } = */saveUserRepositories({
         id: user.value.id,
         name: name.value,
         zipCode: zipCode.value,
