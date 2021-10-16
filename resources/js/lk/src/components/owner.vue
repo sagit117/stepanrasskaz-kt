@@ -74,4 +74,16 @@ export default defineComponent({
     height: 3rem;
   }
 }
+
+@media (min-width: 1025px) {
+  .owner {
+    input {
+      width: 50%;
+    }
+
+    textarea {
+      width: 50%;
+    }
+  }
+}
 </style>
