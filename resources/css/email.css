@@ -1,5 +1,6 @@
 .email-not-confirm {
     position: relative;
+    cursor: pointer;
 }
 
 .email-not-confirm::after {
@@ -14,19 +15,22 @@
     background-color: #0a58ca;
     border-radius: 5px;
     filter: invert(1);
+    cursor: pointer;
 }
 
 .email-confirm-wrapper {
     position: absolute;
     display: none;
-    height: 4rem;
-    width: 10rem;
-    background-color: var(--color-white);
+    width: 15rem;
+    background-color: var(--color-black-light);
     border-radius: .5rem;
     box-shadow: 4px 3px 6px 2px var(--color-grey);
     font-weight: 400;
-    font-size: 1rem;
+    font-size: .9rem;
     padding: .5rem;
+    color: var(--color-error);
+    text-align: center;
+    margin-top: .5rem;
 }
 
 .email-not-confirm:hover .email-confirm-wrapper {

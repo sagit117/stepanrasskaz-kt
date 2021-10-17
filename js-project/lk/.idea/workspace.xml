@@ -2,100 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e512109-3bc6-4ce4-8ad9-83726264c272" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dist/account.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/account.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/account-top-menu.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/owner.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/config/menu/account-top-menu.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hooks/hooks.users.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaces.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/auth-form.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/emailData.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/panel-top.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/spinner.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/toasts.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../resources/js/dist/auth-form.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../resources/js/dist/panel-top.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/emailData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/emailData.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../resources/css/email.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/css/email.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/css/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/api.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/api.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/api.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/api.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/auth-form.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/auth-form.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/auth-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/auth-form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/auth-form.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/emailData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/emailData.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/emailData.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/emailData.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/emailData.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/emailData.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/panel-top.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/panel-top.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/panel-top.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/panel-top.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/panel-top.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/spinner.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/spinner.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/spinner.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/spinner.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/spinner.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/spinner.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/toasts.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/toasts.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/toasts.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/toasts.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/toasts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/toasts.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/utils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/utils.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/utils.d.ts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/src/utils.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/dist/account.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/account.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/components/account-top-menu.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/components/owner.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/config/menu/account-top-menu.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/hooks/hooks.users.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/src/interfaces.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/lk/webpack.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/api.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/auth-form.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/emailData.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/panel-top.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/spinner.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/toasts.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/src/utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/tsconfig.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +32,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../src" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="ts.external.directory.path" value="D:\Документы\kotlin\stepanrasskaz-kt\js-project\lk\node_modules\typescript\lib" />
@@ -148,7 +58,7 @@
       <workItem from="1634292585648" duration="3897000" />
       <workItem from="1634375377042" duration="1945000" />
       <workItem from="1634451222261" duration="5324000" />
-      <workItem from="1634461105843" duration="37000" />
+      <workItem from="1634461105843" duration="1001000" />
     </task>
     <servers />
   </component>

@@ -32,7 +32,7 @@ export default class Email {
 
             const emailConfirmDiv = document.createElement("div")
             emailConfirmDiv.classList.add("email-confirm-wrapper")
-            emailConfirmDiv.innerText = "Email не подтвержден"
+            emailConfirmDiv.innerHTML = "<div>Email не подтвержден</div><div style='color: white'>нажмите для подтверждения</div>"
 
             this.#emailDiv.insertAdjacentElement("beforeend", emailConfirmDiv)
         }
