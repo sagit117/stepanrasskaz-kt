@@ -17,4 +17,3 @@ declare class Api {
 }
 declare const _default: Api;
 export default _default;
-//# sourceMappingURL=api.d.ts.map

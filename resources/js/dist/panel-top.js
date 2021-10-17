@@ -12,4 +12,3 @@ title?.addEventListener("click", goHomeClickHandler);
 function goHomeClickHandler() {
     goRoute("/");
 }
-//# sourceMappingURL=panel-top.js.map

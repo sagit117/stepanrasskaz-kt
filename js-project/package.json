@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/api.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ../../resources/js/dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aksenov Pavel <sagit117@gmail.com>",

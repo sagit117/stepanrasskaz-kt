@@ -9,4 +9,3 @@ export default class Spinner {
     destroy(): void;
     isRender(): boolean;
 }
-//# sourceMappingURL=spinner.d.ts.map

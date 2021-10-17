@@ -212,4 +212,3 @@ function changePassword() {
     })
         .finally(() => spinner.destroy());
 }
-//# sourceMappingURL=auth-form.js.map

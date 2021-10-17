@@ -29,7 +29,7 @@
     "rootDir": "./",
     "resolveJsonModule": true,
     "declarationMap": false,
-    "outDir": "./dist",
+    "outDir": "../../resources/js/dist",
     "isolatedModules": true /* Ensure that each file can be safely transpiled without relying on other imports. */,
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true /* When type checking, take into account `null` and `undefined`. */,

@@ -26,4 +26,3 @@ export default class Email {
         this.#rootDiv?.insertAdjacentElement("beforeend", this.#emailDiv);
     }
 }
-//# sourceMappingURL=emailData.js.map

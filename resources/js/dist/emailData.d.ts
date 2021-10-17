@@ -7,4 +7,3 @@ export default class Email {
     constructor(emailData: IEmailData, divId: string);
     render(): void;
 }
-//# sourceMappingURL=emailData.d.ts.map

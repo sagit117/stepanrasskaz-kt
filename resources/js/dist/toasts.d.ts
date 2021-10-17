@@ -12,4 +12,3 @@ export default class Toast {
     destroy(): void;
     render(id: string): void;
 }
-//# sourceMappingURL=toasts.d.ts.map

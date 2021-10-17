@@ -60,4 +60,3 @@ export default class Toast {
         root.insertAdjacentElement("afterbegin", toastDiv);
     }
 }
-//# sourceMappingURL=toasts.js.map

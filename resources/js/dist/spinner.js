@@ -42,4 +42,3 @@ export default class Spinner {
         return this.#isRender;
     }
 }
-//# sourceMappingURL=spinner.js.map

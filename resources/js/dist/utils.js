@@ -6,4 +6,3 @@ export function goRoute(path) {
     if (loc.pathname !== path)
         loc.assign(path);
 }
-//# sourceMappingURL=utils.js.map

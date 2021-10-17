@@ -113,4 +113,3 @@ class Api {
     }
 }
 export default new Api();
-//# sourceMappingURL=api.js.map
