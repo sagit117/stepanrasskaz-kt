@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e512109-3bc6-4ce4-8ad9-83726264c272" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/account.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/account.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/emailData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/emailData.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/api.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/api.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/emailData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/emailData.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../resources/js/dist/emailData.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../resources/js/dist/emailData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/ru/axel/stepanrasskaz/domain/user/session/UserStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/ru/axel/stepanrasskaz/domain/user/session/UserStack.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

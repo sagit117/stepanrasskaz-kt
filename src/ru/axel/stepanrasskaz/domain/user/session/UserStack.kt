@@ -5,8 +5,8 @@ import ru.axel.stepanrasskaz.Config
 import kotlin.collections.HashMap
 
 /**
- * Храним данные о подключение пользователей
- * и служебную инфу о действиях
+ * Храним данные о подключение пользователей и служебную инфу о действиях
+ * Инфо храниться по рандомных ключам
  */
 object UserStack {
     private val hashMapUser: HashMap<String, UserDataMemory> = HashMap()
