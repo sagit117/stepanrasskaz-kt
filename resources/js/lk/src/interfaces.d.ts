@@ -12,6 +12,7 @@ export interface IUser {
     password: string
     role: string[]
     roleGroupsId: string[]
+    isConfirmEmail: boolean
 }
 
 export interface IUserRepository {

@@ -12,6 +12,8 @@ declare class Api {
      * @param body
      */
     passwordChange(body: object): Promise<Response>;
+    getUserById(id: string): Promise<Response>;
+    saveUser(body: object): Promise<Response>;
 }
 declare const _default: Api;
 export default _default;

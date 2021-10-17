@@ -1,6 +1,9 @@
 <template>
   <div class="account-wrapper">
-    <div class="account-wrapper__title">Пользователь: {{user?.email}}</div>
+    <div class="account-wrapper__title" id="email">
+      <div style="margin-right: .3rem">Пользователь: </div>
+      <!-- insert email from EmailData -->
+    </div>
     <div class="account-wrapper__dateAtCreation">Дата регистрации: {{new Date(user?.dateTimeAtCreation).toLocaleDateString()}}</div>
 
     <AccountTopMenu :items="accountTopMenuItems" @selectedPage="setPage" />
@@ -28,6 +31,8 @@ import { goRoute } from "../../src/utils"
 // @ts-ignore
 import AccountTopMenu from "./components/account-top-menu.vue"
 import { accountTopMenuItems } from "./config/menu/account-top-menu";
+// @ts-ignore
+import EmailData from "../../src/emailData"
 
 export default defineComponent({
   name: "Account",
@@ -49,6 +54,11 @@ export default defineComponent({
           default:
             new Toast("Ошибка", "Произошла внутренняя ошибка сервера", "ERROR", 3).render("toasts");
         }
+      }
+
+      if (user.value && !error.value) {
+          const emailData = new EmailData({ email: user.value?.email || "undefined", isConfirmEmail: user.value?.isConfirmEmail || false }, "email")
+          emailData.render()
       }
     })
 
@@ -75,6 +85,7 @@ export default defineComponent({
   padding: 2rem;
 
   &__title {
+    display: flex;
     font-weight: 600;
   }
 
