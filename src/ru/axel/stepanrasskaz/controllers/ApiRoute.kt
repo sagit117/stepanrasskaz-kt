@@ -268,6 +268,17 @@ fun Route.apiRoute(configJWT: ConfigJWT, configMailer: ConfigMailer) {
                     call.respond(HttpStatusCode.InternalServerError)
                 }
             }
+
+            get("/{id}/confirmation/email/code/get") {
+                /** получаем данные пользователя */
+                val connectUserData = try {
+                    call.attributes[Config.userRepoAttributeKey]
+                } catch (error: Exception) {
+                    null
+                }
+
+                val id = call.parameters["id"].toString()
+            }
         }
     }
 }

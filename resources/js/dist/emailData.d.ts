@@ -1,4 +1,5 @@
 export interface IEmailData {
+    id: string;
     email: string;
     isConfirmEmail: boolean;
 }

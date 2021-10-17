@@ -111,5 +111,18 @@ class Api {
             return Promise.reject(error);
         });
     }
+    confirmationEmailGetCode(id) {
+        return fetch(this.#url + `/user/${id}/confirmation/email/code/get`, {
+            method: "get",
+            credentials: "include",
+        })
+            .then((res) => {
+            return Promise.resolve(res);
+        })
+            .catch((error) => {
+            console.error(error);
+            return Promise.reject(error);
+        });
+    }
 }
 export default new Api();

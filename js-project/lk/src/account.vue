@@ -57,8 +57,11 @@ export default defineComponent({
       }
 
       if (user.value && !error.value) {
-          const emailData = new EmailData({ email: user.value?.email || "undefined", isConfirmEmail: user.value?.isConfirmEmail || false }, "email")
-          emailData.render()
+          new EmailData({
+            id: user.value?.id || "",
+            email: user.value?.email || "undefined",
+            isConfirmEmail: user.value?.isConfirmEmail || false
+          }, "email").render()
       }
     })
 
